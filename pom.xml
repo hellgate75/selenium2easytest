@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.selenium2.easytest</groupId>
+  <artifactId>easytest</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Selenium2 Easy Test Maven Main</name>
+  <organization>
+  	<name>Fabrizio Torelli</name>
+  	<url>http://ie.linkedin.com/in/fabriziotorelli</url>
+  </organization>
+  <modules>
+  	<module>selenium2-aggregator</module>
+  	<module>container-boom</module>
+  	<module>selenium2-libraries</module>
+  	<!-- <module>plugins</module> -->
+  </modules>
+	<build>
+		<defaultGoal>clean install test</defaultGoal>
+	</build>
+</project>
