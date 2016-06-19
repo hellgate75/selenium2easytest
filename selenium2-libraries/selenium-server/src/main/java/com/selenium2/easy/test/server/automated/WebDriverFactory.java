@@ -1,13 +1,13 @@
 package com.selenium2.easy.test.server.automated;
 
 
-public class WebDriveFactory {
-	private static WebDriveFactory instance = null;
+public class WebDriverFactory {
+	private static WebDriverFactory instance = null;
 
 	public static enum SELECTOR_TYPE {IE_SELECTOR, REMOTE_SELECTOR, IE_INTERNAL_SELECTOR, CHROME_SELECTOR, CHROME_INTERNAL_SELECTOR,
 									  OPERA_SELECTOR, HTML_UNIT_SELECTOR, EVENT_FIRING_SELECTOR}; 
 	
-	protected WebDriveFactory() {
+	protected WebDriverFactory() {
 		super();
 	}
 	
@@ -15,9 +15,9 @@ public class WebDriveFactory {
 		return new WebDriverSelector(selector, parameters);
 	}
 	
-	public static WebDriveFactory getInstance() {
+	public static WebDriverFactory getInstance() {
 		if (instance == null)
-			instance = new WebDriveFactory();
+			instance = new WebDriverFactory();
 		return instance;
 	}
 

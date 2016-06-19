@@ -4,5 +4,5 @@ import javax.xml.bind.annotation.XmlEnum;
 
 @XmlEnum
 public enum AssertionsType {
-	EQUALS, TRUE, FALSE, ARRAY_EQUALS, NULL, NOT_NULL
+	EQUALS, NOT_EQUALS, TRUE, FALSE, ARRAY_EQUALS, ARRAY_NOT_EQUALS, NULL, NOT_NULL, SAME, NOT_SAME, THAT, NOT_THAT
 }

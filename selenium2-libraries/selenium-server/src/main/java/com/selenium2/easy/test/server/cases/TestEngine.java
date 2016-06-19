@@ -3,6 +3,7 @@ package com.selenium2.easy.test.server.cases;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +30,8 @@ import com.selenium2.easy.test.server.automated.multithread.WebDriverParallelFac
 import com.selenium2.easy.test.server.cases.BaseTestCase.TIMER_TYPE;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
-import com.selenium2.easy.test.server.xml.XMLTestFramework;
+import com.selenium2.easy.test.server.xml.XMLTestCase;
+import com.selenium2.easy.test.server.xml.XMLTestGroup;
 
 public class TestEngine implements Callable<UserCaseResult>{
 	static {
@@ -146,8 +148,28 @@ public class TestEngine implements Callable<UserCaseResult>{
 			FilenameFilter filter = new PatternFilenameFilter(".*\\.xml");
 			String[] xmlFiles = new File(directory).list(filter);
 			for(String xmlFile: xmlFiles) {
-				XMLTestFramework framework = SeleniumUtilities.loadXMLTestFramework(new File(xmlFile));
-				//TODO Create the XMLTestCase with a static parser from the XMLTestFramework JAXB type
+				XMLTestGroup testGroup = SeleniumUtilities.loadXMLTestFramework(new File(xmlFile));
+				for(XMLTestCase testCase: testGroup.getTestCases()) {
+					try {
+						if (testGroup.getImplementationClassFullName()==null) {
+							BaseTestCase xmlTestCase = new XMLGroupedTestCase(testGroup.getGroupName(), testCase);
+							if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
+								caseList.add(xmlTestCase);
+							}
+						}
+						else {
+							Constructor<?> constructor = Class.forName(testGroup.getImplementationClassFullName()).getConstructor(String.class, XMLTestCase.class);
+							BaseTestCase xmlTestCase = (XMLGroupedTestCase)constructor.newInstance(testGroup.getGroupName(), testCase);
+							if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
+								caseList.add(xmlTestCase);
+							}
+							
+						}
+					} catch (Throwable e) {
+						error("Error creating test Case : " + testCase, e);
+						throw new FrameworkException("Error creating test Case : " + testCase, e);
+					}
+				}
 			}
 		} catch (Throwable e) {
 			error("Error loading from XML Directory : " + directory, e);
@@ -278,26 +300,23 @@ public class TestEngine implements Callable<UserCaseResult>{
 	private void executeTestCase(BaseTestCase testCase) throws Throwable {
 		testCase.resetCounters();
 		testCase.startTimeCounter(TIMER_TYPE.TEST_CASE);
-		if (testCase.isConnectionRequired()) {
-			if(!testCase.isSecureConnection()) {
-				testCase.startTimeCounter(TIMER_TYPE.RENDERING);
-				this.driver.get(testCase.getConnectionURL());
-				testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
-			}
-			else {
-				
-				testCase.startTimeCounter(TIMER_TYPE.SECURITY);
-				testCase.startTimeCounter(TIMER_TYPE.RENDERING);
-				if (!testCase.handleSecureConnection(driver)) {
-					testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
-					testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
-					throw new FrameworkException("Unable to connect to " + testCase.getConnectionURL() + " authentication Failed ... ");
-				}
+		if(!testCase.isSecureConnection()) {
+			testCase.startTimeCounter(TIMER_TYPE.SECURITY);
+			if (!testCase.handleSecureConnection(driver)) {
 				testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
-				testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
+				testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
+				throw new FrameworkException("Unable to connect to " + testCase.getConnectionURL() + " authentication Failed ... ");
 			}
+			testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
 		}
+		if (testCase.isConnectionRequired()) {
+			testCase.startTimeCounter(TIMER_TYPE.RENDERING);
+			driver.get(testCase.getConnectionURL());
+			testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
+		}
+		testCase.startTimeCounter(TIMER_TYPE.TEST_ACTION);
 		testCase.automatedTest(this.driver);
+		testCase.stopTimeCounter(TIMER_TYPE.TEST_ACTION);
 		testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
 		info("Executed test case [UID:"+testCase.getCaseUID()+"] name : " + testCase.getCaseName());
 		caseMessages.put(testCase.getCaseUID(), "[SUCCESS]: Test Case '"+testCase.getCaseName()+"' executed correctly");

@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlValue;
 
-import com.selenium2.easy.test.server.automated.WebDriveFactory.SELECTOR_TYPE;
+import com.selenium2.easy.test.server.automated.WebDriverFactory.SELECTOR_TYPE;
 
 public class XMLTestCase {
 	@XmlAttribute(required=true)
@@ -26,7 +28,11 @@ public class XMLTestCase {
 	@XmlAttribute(required=false)
 	private String connectionURL;
 	
+	@XmlAttribute(required=false)
+	private boolean retrowException=Boolean.FALSE;
+	
 	@XmlAttribute(name="children", required=false)
+	@XmlList
 	private List<XMLTestCase> childrenCases;
 	
 	@XmlAttribute(required=true)
@@ -36,13 +42,19 @@ public class XMLTestCase {
 	private boolean secureAccess;
 
 	@XmlAttribute(required=false)
+	@XmlValue
 	private SELECTOR_TYPE webDriverSelector;
 
 	@XmlAttribute(name="security", required=false)
 	private Map<String, String> securityInfo;
 	
 	@XmlAttribute(name="actions", required=true)
+	@XmlList
 	private List<XMLTestCaseAction> testCaseActions;
+
+	@XmlAttribute(name="assertions", required=true)
+	@XmlList
+	private List<XMLTestAssertion> testCaseAssertions;
 
 	public String getName() {
 		return name;
@@ -138,6 +150,22 @@ public class XMLTestCase {
 
 	public void setTestCaseActions(List<XMLTestCaseAction> testCaseActions) {
 		this.testCaseActions = testCaseActions;
+	}
+
+	public boolean isRetrowException() {
+		return retrowException;
+	}
+
+	public void setRetrowException(boolean retrowException) {
+		this.retrowException = retrowException;
+	}
+
+	public List<XMLTestAssertion> getTestCaseAssertions() {
+		return testCaseAssertions;
+	}
+
+	public void setTestCaseAssertions(List<XMLTestAssertion> testCaseAssertions) {
+		this.testCaseAssertions = testCaseAssertions;
 	}
 	
 }

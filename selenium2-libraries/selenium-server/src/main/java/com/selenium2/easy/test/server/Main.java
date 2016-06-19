@@ -5,6 +5,16 @@ import org.slf4j.LoggerFactory;
 
 import com.selenium2.easy.test.server.automated.SeleniumAutomatedServer;
 
+/**
+ * Main Class that provides a command line execution feature
+ * <br/>Expected parameters:
+ * <br/>
+ * <ul>
+ * <br><li><b>--configFile <file></b> It recover the information of the custom position of the configuration file </li>
+ * </ul>
+ * @author Fabrizio Torelli
+ *
+ */
 public class Main {
 	static {
 		if (System.getProperty("log4j.configurationFile")==null)
@@ -12,6 +22,11 @@ public class Main {
 	}
 	private static Logger logger = LoggerFactory.getLogger("com.service.restfy.selenium.server");
 
+	/**
+	 * Main class default execution method
+	 * @param args arguments passed by the java runtime environment
+	 * @throws Throwable Any exception raised in the program
+	 */
 	public static void main(String[] args) throws Throwable{
 		logger.info("****************************************************************");
 		logger.info("Selenium 2 Automated Test Server Bootstrap in progress");

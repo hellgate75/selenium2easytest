@@ -15,13 +15,13 @@ import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.service.DriverService;
 
-import com.selenium2.easy.test.server.automated.WebDriveFactory.SELECTOR_TYPE;
+import com.selenium2.easy.test.server.automated.WebDriverFactory.SELECTOR_TYPE;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities.BROWSER_TYPE;
 
 public class WebDriverSelector {
-	private static final boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("win")>=0;
+	public static final boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("win")>=0;
 
 	private List<Object> parameters = new ArrayList<Object>();
 	private SELECTOR_TYPE selector = null;

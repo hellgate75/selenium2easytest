@@ -200,8 +200,31 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
+		<!-- Java source directory -->
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<!-- Java resources directory -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.*</include>
+				</includes>
+			</resource>
+		</resources>
+		<!-- Java test directory -->
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<!-- Java test resources directory -->
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>*.*</include>
+				</includes>
+			</testResource>
+		</testResources>
 		<pluginManagement>
 			<plugins>
+				<!-- Eclipse compatibility and dependency resolver Plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-eclipse-plugin</artifactId>
@@ -225,6 +248,7 @@
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>2.5</version>
 				</plugin>
+				<!-- JUnit Test Plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -257,6 +281,7 @@
 						</execution>
 					</executions>
 				</plugin>
+				<!-- Java Compiler Plugin -->
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.1</version>
@@ -273,6 +298,7 @@
 						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
+				<!-- Library and dependencies resolver Plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
@@ -286,13 +312,15 @@
 										<artifactId>maven-dependency-plugin</artifactId>
 										<versionRange>[2.1,)</versionRange>
 										<goals>
-											<goal>resolve-plugins</goal>
-											<goal>unpack</goal>
+											<!-- <goal>resolve-plugins</goal>
+											<goal>unpack</goal> -->
+											<goal>manifest</goal>
 											<goal>copy-dependencies</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
+										<execute />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -326,6 +354,44 @@
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.4</version>
+					<executions>
+						<!-- Javadoc And Jar generation -->
+						<execution>
+							<id>javadoc</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.build.directory}/javadocs</outputDirectory>
+								<nohelp>true</nohelp>
+							</configuration>
+						</execution>
+						<!-- UML diagrm generation -->
+						<execution>
+							<id>models</id>
+							<goals>
+								<goal>javadoc</goal>
+							</goals>
+					          <configuration>
+								<outputDirectory>${project.build.directory}/umlgraphs</outputDirectory>
+								<name>UML Models</name>
+								<finalName>{project.artifactId}-models-{project.version}.jar</finalName>
+								<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+								<docletArtifact>
+								    <groupId>org.umlgraph</groupId>
+								    <artifactId>umlgraph</artifactId>
+								    <version>5.6</version>
+								</docletArtifact>
+								<additionalparam>-views -all</additionalparam>
+								<useStandardDocletOptions>true</useStandardDocletOptions>
+					          </configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

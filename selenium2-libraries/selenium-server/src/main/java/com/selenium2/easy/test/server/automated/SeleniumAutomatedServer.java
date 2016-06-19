@@ -15,12 +15,17 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.selenium2.easy.test.server.automated.WebDriveFactory.SELECTOR_TYPE;
+import com.selenium2.easy.test.server.automated.WebDriverFactory.SELECTOR_TYPE;
 import com.selenium2.easy.test.server.automated.multithread.WebDriverParallelFactory;
 import com.selenium2.easy.test.server.cases.TestEngine;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.exceptions.NotFoundException;
 
+/**
+ * 
+ * @author Fabrizio Torelli
+ *
+ */
 public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	static {
 		if (System.getProperty("log4j.configurationFile")==null)
@@ -36,10 +41,18 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	private List<Object> parameters = new ArrayList<Object>(0);
 	
 
+	/**
+	 * 
+	 */
 	public SeleniumAutomatedServer() {
 		super();
 	}
 
+	/**
+	 * @param filePath
+	 * @throws NotFoundException
+	 * @throws FrameworkException
+	 */
 	public void readConfig(String filePath) throws NotFoundException, FrameworkException{
 		engineProperties.clear();
 		try {
@@ -53,6 +66,11 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		}
 	}
 
+	/**
+	 * @param filePath
+	 * @throws NotFoundException
+	 * @throws FrameworkException
+	 */
 	public void readConfigXml(String filePath) throws NotFoundException, FrameworkException{
 		engineProperties.clear();
 		try {
@@ -66,6 +84,9 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		}
 	}
 	
+	/**
+	 * @throws FrameworkException
+	 */
 	public void startTests() throws FrameworkException {
 		if (engineProperties.size()==0) {
 			throw new FrameworkException(logginPrefix+"Configuration not loaded correctly ...");
@@ -113,7 +134,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 			if (engineProperties.containsKey(SeleniumServerConstants.testCasePackages)) {
 				String[] packages = engineProperties.getProperty(SeleniumServerConstants.testCasePackages).split(",");
 				for (String packageName: packages) {
-					this.testEngine.addCaseByPackageName(packageName);;
+					this.testEngine.addCaseByPackageName(packageName);
 				}
 			}
 		} catch (Throwable e1) {
@@ -229,7 +250,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		if (reportJSONActive) {
 			if (engineProperties.containsKey(SeleniumServerConstants.outputJSon)) {
 				try {
-					//TODO Report JSON: Includere modulo per scrittura su stream web
+					//TODO Report JSON: Include the web module writing feature
 					reportJSONOut = new PrintStream(new FileOutputStream(engineProperties.getProperty(SeleniumServerConstants.outputJSon), false));
 					customReportJSONOut = true;
 				} catch (Throwable e) {
@@ -245,7 +266,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 			reportJSONOut = null;
 		if (!runParallel) {
 			try {
-				driverSelector = WebDriveFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
+				driverSelector = WebDriverFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
 			} catch (Throwable e) {
 				throw new FrameworkException(logginPrefix+"Unable to run the web driver due to : ", e);
 			}
@@ -284,15 +305,22 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.automated.multithread.WebDriverParallelFactory#nextWebDriver()
+	 */
 	@Override
 	public WebDriverSelector nextWebDriver() throws FrameworkException {
 		try {
-			return driverSelector = WebDriveFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
+			return driverSelector = WebDriverFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
 		} catch (Throwable e) {
 			throw new FrameworkException(logginPrefix+"Unable to run the web driver due to : ", e);
 		}
 	}
 
+	/**
+	 * @param stream
+	 * @param json
+	 */
 	protected final void printJSON(PrintStream stream, String json) {
 		stream.print(json);
 	}

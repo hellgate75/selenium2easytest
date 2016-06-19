@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.exceptions.NotFoundException;
-import com.selenium2.easy.test.server.xml.XMLTestFramework;
+import com.selenium2.easy.test.server.xml.XMLTestGroup;
 
 public class SeleniumUtilities {
 	static {
@@ -318,16 +318,16 @@ public class SeleniumUtilities {
 		}
 	}
 	
-	public static final XMLTestFramework loadXMLTestFramework(File xmlFilePath) {
+	public static final XMLTestGroup loadXMLTestFramework(File xmlFilePath) {
 	  try {
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(XMLTestFramework.class);
+		JAXBContext jaxbContext = JAXBContext.newInstance(XMLTestGroup.class);
 		Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
 
 		// output pretty printed
 		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-		return (XMLTestFramework) jaxbMarshaller.unmarshal(xmlFilePath);
+		return (XMLTestGroup) jaxbMarshaller.unmarshal(xmlFilePath);
 
       } catch (JAXBException e) {
 	    logger.error("Error loading xml test case framework configuration : " + xmlFilePath, e);
@@ -337,9 +337,9 @@ public class SeleniumUtilities {
 	  return null;
 	}
 
-	public static final boolean loadXMLTestFramework(XMLTestFramework root, File xmlFilePath) {
+	public static final boolean loadXMLTestFramework(XMLTestGroup root, File xmlFilePath) {
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(XMLTestFramework.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(XMLTestGroup.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 			
 			// output pretty printed
