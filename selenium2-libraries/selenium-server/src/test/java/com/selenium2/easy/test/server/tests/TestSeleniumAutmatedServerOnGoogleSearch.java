@@ -12,6 +12,7 @@ public class TestSeleniumAutmatedServerOnGoogleSearch {
 	static {
 		WebDriverSelector.isInUnitTest = true;
 	}
+
 	private static SeleniumAutomatedServer automatedServer = new SeleniumAutomatedServer();
 	private String configFileChrome = "src/test/resources/cromeAutomatedTest.properies";
 	private String configFileIntenetExplore = "src/test/resources/internetExplorerAutomatedTest.properies";

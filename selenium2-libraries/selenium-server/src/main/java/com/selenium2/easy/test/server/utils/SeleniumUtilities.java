@@ -207,6 +207,24 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	public static final String getPageSource(WebDriver driver) throws ActionException {
+		try {
+			return driver.getPageSource();
+		} catch (Throwable e) {
+		    logger.error("Error running 'getPageSource' action  due to", e);
+			throw new ActionException("Unable to apply 'getPageSource' action  due to", e);
+		}
+	}
+	
+	public static final String getPageTitle(WebDriver driver) throws ActionException {
+		try {
+			return driver.getTitle();
+		} catch (Throwable e) {
+		    logger.error("Error running 'getPageSource' action due to", e);
+			throw new ActionException("Unable to apply 'getPageSource' action due to", e);
+		}
+	}
+	
 	public static final String getAttributeFromElement(WebElement elem, String attributeName) throws ActionException {
 		try {
 			return elem.getAttribute(attributeName);

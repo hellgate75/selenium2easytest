@@ -22,10 +22,12 @@ public class TestEngineOnGoogleSearch {
 	static {
 		WebDriverSelector.isInUnitTest = true;
 	}
+
 	private static WebDriver chromeWebDriver = null;
 	private static WebDriver firefoxWebDriver = null;
 	private static WebDriver ieWebDriver = null;
 	private static ChromeDriverService chromeService=null;
+	private static InternetExplorerDriverService ieService=null;
 	private static final boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("win")>=0;
 	private static TestEngine testEngine = null;
 	
@@ -50,7 +52,14 @@ public class TestEngineOnGoogleSearch {
 	public static void initIeWebDriver() throws Exception {
 		
 		if (isWindows) {
-			ieWebDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.IE);
+			ieService = new InternetExplorerDriverService.Builder()
+			.usingDriverExecutable(new File("drivers/IEDriverServer.exe"))
+			.usingAnyFreePort()
+	        .withSilent(true)
+	        .withEngineImplementation(InternetExplorerDriverEngine.AUTODETECT)
+			.build();
+			ieService.start();
+			ieWebDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, ieService.getUrl(),DesiredCapabilities.internetExplorer());
 			testEngine = new TestEngine(ieWebDriver, false);
 			testEngine.addCase(new GoogleSearchTestCase());
 		}
@@ -69,6 +78,8 @@ public class TestEngineOnGoogleSearch {
 			testEngine.run();
 			testEngine.report(System.out);
 			SeleniumUtilities.closeBrowserDriver(ieWebDriver);
+			if (ieService!=null)
+				ieService.stop();
 		}
 		else {
 		}

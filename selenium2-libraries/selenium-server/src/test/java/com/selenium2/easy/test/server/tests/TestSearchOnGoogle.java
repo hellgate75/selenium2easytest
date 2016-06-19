@@ -32,11 +32,13 @@ public class TestSearchOnGoogle {
 	static {
 		WebDriverSelector.isInUnitTest = true;
 	}
+
 	private static WebDriver chromeWebDriver = null;
 	private static WebDriver firefoxWebDriver = null;
 	private static WebDriver ieWebDriver = null;
 	private static final String URL = "http://www.google.com";
 	private static ChromeDriverService chromeService=null;
+	private static InternetExplorerDriverService ieService=null;
 	private static final boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("win")>=0;
 	private static final String googleSearchText = "Selenium2";
 	
@@ -44,7 +46,14 @@ public class TestSearchOnGoogle {
 	public static void init() throws Exception {
 		
 		if (isWindows) {
-			ieWebDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.IE);
+			ieService = new InternetExplorerDriverService.Builder()
+			.usingDriverExecutable(new File("drivers/IEDriverServer.exe"))
+			.usingAnyFreePort()
+	        .withSilent(true)
+	        .withEngineImplementation(InternetExplorerDriverEngine.AUTODETECT)
+			.build();
+			ieService.start();
+			ieWebDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, ieService.getUrl(),DesiredCapabilities.internetExplorer());
 			ieWebDriver.get(URL);
 
 			chromeService = new ChromeDriverService.Builder()
@@ -106,6 +115,8 @@ public class TestSearchOnGoogle {
 		      })
 		    );
 			SeleniumUtilities.closeBrowserDriver(ieWebDriver);
+			if (ieService!=null)
+				ieService.stop();
 		}
 		else {
 		}
