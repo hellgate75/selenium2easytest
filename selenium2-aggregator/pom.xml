@@ -22,7 +22,6 @@
 		<version.slf4j-log4j12>1.7.12</version.slf4j-log4j12>
 		<version.slf4j>2.3</version.slf4j>
 		<version.apachelogging>2.3</version.apachelogging>
-		<version.testng>6.5.2</version.testng>
 		<version.selenium>2.52.0</version.selenium>
 		<version.jaxb>2.2.12</version.jaxb>
 	</properties>
@@ -133,12 +132,6 @@
 				<artifactId>mockito-all</artifactId>
 				<version>${version.mokito}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>${version.testng}</version>
-				<scope>test</scope>
-			</dependency>
 
 			<!-- Selenuim 2 -->
 			<dependency>
@@ -193,9 +186,9 @@
 			</dependency>
 			<!-- JAXB and XML Binding -->
 			<dependency>
-			    <groupId>javax.xml.bind</groupId>
-			    <artifactId>jaxb-api</artifactId>
-			    <version>${version.jaxb}</version>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${version.jaxb}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -312,8 +305,7 @@
 										<artifactId>maven-dependency-plugin</artifactId>
 										<versionRange>[2.1,)</versionRange>
 										<goals>
-											<!-- <goal>resolve-plugins</goal>
-											<goal>unpack</goal> -->
+											<!-- <goal>resolve-plugins</goal> <goal>unpack</goal> -->
 											<goal>manifest</goal>
 											<goal>copy-dependencies</goal>
 										</goals>
@@ -328,7 +320,7 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<!-- This plugin's configuration is used in m2e to prevent errors on
+					<!-- This plugin's configuration is used in m2e to prevent errors on 
 						project import in Eclipse -->
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -355,44 +347,64 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<!-- Javadoc And Jar generation -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>2.10.4</version>
+					<configuration>
+						<outputDirectory>${project.build.directory}/javadocs</outputDirectory>
+						<nohelp>true</nohelp>
+					</configuration>
 					<executions>
-						<!-- Javadoc And Jar generation -->
 						<execution>
 							<id>javadoc</id>
 							<goals>
 								<goal>jar</goal>
 							</goals>
-							<configuration>
-								<outputDirectory>${project.build.directory}/javadocs</outputDirectory>
-								<nohelp>true</nohelp>
-							</configuration>
 						</execution>
-						<!-- UML diagrm generation -->
+					</executions>
+				</plugin>
+				<!-- UML diagrm generation -->
+				<!-- <plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.4</version>
+					<configuration>
+						<outputDirectory>${project.build.directory}/umlgraphs</outputDirectory>
+						<name>UML Models</name>
+						<finalName>{project.artifactId}-models-{project.version}.jar</finalName>
+						<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+						<docletArtifact>
+							<groupId>org.umlgraph</groupId>
+							<artifactId>umlgraph</artifactId>
+							<version>5.6</version>
+						</docletArtifact>
+						<additionalparam>-views -all</additionalparam>
+						<useStandardDocletOptions>true</useStandardDocletOptions>
+						<nohelp>true</nohelp>
+					</configuration>
+					<executions>
 						<execution>
 							<id>models</id>
 							<goals>
 								<goal>javadoc</goal>
 							</goals>
-					          <configuration>
-								<outputDirectory>${project.build.directory}/umlgraphs</outputDirectory>
-								<name>UML Models</name>
-								<finalName>{project.artifactId}-models-{project.version}.jar</finalName>
-								<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
-								<docletArtifact>
-								    <groupId>org.umlgraph</groupId>
-								    <artifactId>umlgraph</artifactId>
-								    <version>5.6</version>
-								</docletArtifact>
-								<additionalparam>-views -all</additionalparam>
-								<useStandardDocletOptions>true</useStandardDocletOptions>
-					          </configuration>
 						</execution>
 					</executions>
-				</plugin>
+					<dependencies>
+						<dependency>
+							<groupId>org.umlgraph</groupId>
+							<artifactId>doclet</artifactId>
+							<version>5.1</version>
+						</dependency>
+						<dependency>
+							<groupId>org.umlgraph</groupId>
+							<artifactId>umlgraph</artifactId>
+							<version>5.6</version>
+						</dependency>
+					</dependencies>
+				</plugin> -->
 			</plugins>
 		</pluginManagement>
 	</build>

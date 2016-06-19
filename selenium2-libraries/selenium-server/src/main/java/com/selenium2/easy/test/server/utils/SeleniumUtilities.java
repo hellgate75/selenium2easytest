@@ -41,7 +41,7 @@ public class SeleniumUtilities {
 		if (System.getProperty("log4j.configurationFile")==null)
 			System.setProperty("log4j.configurationFile", "log4j2.xml");
 	}
-	private static Logger logger = LoggerFactory.getLogger("com.service.restfy.selenium.server");
+	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	private static final SeleniumHelper seleniumHelper = new SeleniumHelper();
 
 	public static enum BROWSER_TYPE {IE, CROME, FIREFOX, OPERA, HTML_UNIT, REMOTE, EVENT_FIRING};

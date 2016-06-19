@@ -61,14 +61,12 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	 */
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
-		this.startTimeCounter(TIMER_TYPE.TEST_ACTION);
 		for(XMLTestCaseAction action: this.testCase.getTestCaseActions()) {
 			XMLTestCaseUtilities.doAction(driver, action);
 		}
 		for(XMLTestAssertion assertion: this.testCase.getTestCaseAssertions()) {
 			XMLTestCaseUtilities.doAssertion(driver, assertion);
 		}
-		this.stopTimeCounter(TIMER_TYPE.TEST_ACTION);
 	}
 
 }

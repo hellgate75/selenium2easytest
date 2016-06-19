@@ -23,6 +23,8 @@ import com.selenium2.easy.test.server.utils.SeleniumUtilities.BROWSER_TYPE;
 public class WebDriverSelector {
 	public static final boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("win")>=0;
 
+	public static boolean isInUnitTest = false;
+	
 	private List<Object> parameters = new ArrayList<Object>();
 	private SELECTOR_TYPE selector = null;
 	private WebDriver driver = null;
@@ -50,14 +52,16 @@ public class WebDriverSelector {
 				switch(selector) {
 					case IE_INTERNAL_SELECTOR:
 						if (isWindows) {
-							URL defaultFile = getClass().getResource("/com/service/restfy/selenium/server/win32bin/IEDriverServer.exe");
+							URL defaultFile = getClass().getResource("/com/selenium2/easy/test/server/win32bin/IEDriverServer.exe");
+							File file = new File(isInUnitTest ? "drivers/IEDriverServer.exe":defaultFile.getFile());
 							ieService = new InternetExplorerDriverService.Builder()
-							.usingDriverExecutable(new File(defaultFile.getFile()))
+							.usingDriverExecutable(file)
 							.usingAnyFreePort()
 					        .withSilent(true)
 					        .withEngineImplementation(InternetExplorerDriverEngine.AUTODETECT)
 							.build();
 							ieService.start();
+							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, ieService.getUrl(),DesiredCapabilities.internetExplorer());
 						}
 						else {
 							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.IE);
@@ -65,9 +69,10 @@ public class WebDriverSelector {
 						break;
 					case CHROME_INTERNAL_SELECTOR:
 						if (isWindows) {
-							URL defaultFile = getClass().getResource("/com/service/restfy/selenium/server/win32bin/chromedriver.exe");
+							URL defaultFile = getClass().getResource("/com/selenium2/easy/test/server/win32bin/chromedriver.exe");
+							File file = new File(isInUnitTest ? "drivers/chromedriver.exe":defaultFile.getFile());
 							chromeService = new ChromeDriverService.Builder()
-					        .usingDriverExecutable(new File(defaultFile.getFile()))
+					        .usingDriverExecutable(file)
 					        .usingAnyFreePort()
 					        .withVerbose(false)
 					        .build();
@@ -80,6 +85,9 @@ public class WebDriverSelector {
 						break;
 					case CHROME_SELECTOR:
 						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.CROME);
+						break;
+					case FIREFOX_SELECTOR:
+						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.FIREFOX);
 						break;
 					case IE_SELECTOR:
 						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.IE);
@@ -120,7 +128,7 @@ public class WebDriverSelector {
 				}
 			} catch (Throwable e) {
 				this.filterEventFire = false;
-				throw new FrameworkException("Unable to create driver for selector : " + this.selector + " sue to : ", e);
+				throw new FrameworkException("Unable to create driver for selector : " + this.selector + " due to : ", e);
 			}
 		}
 	}

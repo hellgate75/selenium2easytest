@@ -44,7 +44,7 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 	 */
 	public static enum TIMER_TYPE {TEST_CASE, SECURITY, RENDERING, TEST_ACTION};
 
-	private static Logger logger = LoggerFactory.getLogger("com.service.restfy.selenium.server");
+	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	
 	/**
 	 * Test Case Name
@@ -271,7 +271,6 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 		 * Set the user name field and password and then submit. If there is another for to fill make 
 		 * the related actions and then continue up to the login is completed.
 		 */
-		this.startTimeCounter(TIMER_TYPE.SECURITY);
 		if (!this.getSecurityInfo().containsKey("action1-name")) {
 			/*
 			 * Base URL connection if required if no action is available in the 
@@ -279,7 +278,6 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 			 */
 			if (this.isConnectionRequired()) {
 				driver.get(this.getConnectionURL());
-				this.stopTimeCounter(TIMER_TYPE.SECURITY);
 				return true;
 			}
 		}
@@ -383,10 +381,8 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 				}
 				getLogger().info("login action " + actionId+" : Completed!!");
 			}
-			this.stopTimeCounter(TIMER_TYPE.SECURITY);
 			return actionId > 0;
 		}
-		this.stopTimeCounter(TIMER_TYPE.SECURITY);
 		return false;
 	}
 

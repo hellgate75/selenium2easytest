@@ -22,7 +22,8 @@ import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.exceptions.NotFoundException;
 
 /**
- * 
+ * Test execution Server implementing the Parallel Processing Factory.
+ * This server provides the single thread and the multi-thread test execution.
  * @author Fabrizio Torelli
  *
  */
@@ -31,7 +32,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		if (System.getProperty("log4j.configurationFile")==null)
 			System.setProperty("log4j.configurationFile", "log4j2.xml");
 	}
-	private static Logger logger = LoggerFactory.getLogger("com.service.restfy.selenium.server");
+	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	private static final String logginPrefix = "Selenium Automated Server : ";
 	
 	private final TestEngine testEngine = new TestEngine();
@@ -217,6 +218,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 				logger.warn("Report JSON Export parameter '" + engineProperties.getProperty(SeleniumServerConstants.reportJSONActive) + " has an invalid boolean format ...");
 			}
 		}
+		logger.info("JUNIT Mode Active : " + WebDriverSelector.isInUnitTest);
 		logger.info("Parallel Active : " + runParallel);
 		if(runParallel) {
 			logger.info("Parallel Instances : " + parallelUsers);

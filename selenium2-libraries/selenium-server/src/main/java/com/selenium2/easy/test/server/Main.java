@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.selenium2.easy.test.server.automated.SeleniumAutomatedServer;
+import com.selenium2.easy.test.server.automated.WebDriverFactory;
+import com.selenium2.easy.test.server.automated.WebDriverSelector;
 
 /**
  * Main Class that provides a command line execution feature
@@ -19,8 +21,9 @@ public class Main {
 	static {
 		if (System.getProperty("log4j.configurationFile")==null)
 			System.setProperty("log4j.configurationFile", "log4j2.xml");
+		WebDriverSelector.isInUnitTest = true;
 	}
-	private static Logger logger = LoggerFactory.getLogger("com.service.restfy.selenium.server");
+	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 
 	/**
 	 * Main class default execution method

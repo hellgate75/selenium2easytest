@@ -6,7 +6,7 @@
     </Console>
   </Appenders>
   <Loggers>
-    <logger name="com.service.restfy.selenium.server" level="INFO"></logger>
+    <logger name="com.selenium2.easy.test.server" level="INFO"></logger>
 	<Root level="DEBUG">
 		<AppenderRef ref="Console"/>
 	</Root>

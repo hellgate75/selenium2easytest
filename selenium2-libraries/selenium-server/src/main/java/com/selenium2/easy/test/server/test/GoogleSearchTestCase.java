@@ -21,7 +21,6 @@ public class GoogleSearchTestCase extends BaseTestCase {
 
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
-		this.startTimeCounter(TIMER_TYPE.TEST_ACTION);
 		assertEquals("The page title should equal Google at the start of the test.", "Google", driver.getTitle());
 		WebElement searchField = SeleniumUtilities.searchByClause(driver, By.name("q"));
 		SeleniumUtilities.setValueToElement(searchField, googleSearchText);
@@ -33,7 +32,6 @@ public class GoogleSearchTestCase extends BaseTestCase {
 	        }
 	      })
 	    );
-		this.stopTimeCounter(TIMER_TYPE.TEST_ACTION);
 	}
 
 }

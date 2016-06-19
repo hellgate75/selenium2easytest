@@ -48,132 +48,154 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>${version.slf4j-log4j12}</version>
+			<version>${version.slf4j-log4j12}</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>${version.slf4j-log4j12}</version>
+			<version>${version.slf4j-log4j12}</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-jdk14</artifactId>
-			<version>${version.slf4j-log4j12}</version>
+			<version>${version.slf4j-log4j12}</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${version.log4j}</version>
+			<version>${version.log4j}</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>${version.apachelogging}</version>
+			<version>${version.apachelogging}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>${version.apachelogging}</version>
+			<version>${version.apachelogging}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${version.apachelogging}</version>
+			<version>${version.apachelogging}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-core</artifactId>
-			<version>${version.hamcrest}</version>
+			<version>${version.hamcrest}</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${version.junit}</version>
+			<version>${version.junit}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit-dep</artifactId>
-			<version>${version.junit}</version>
+			<version>${version.junit}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>${version.mokito}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${version.testng}</version>
-			<scope>test</scope>
+			<version>${version.mokito}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 
 		<!-- Selenuim 2 -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-api</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-support</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-server</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-firefox-driver</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-chrome-driver</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-ie-driver</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-safari-driver</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-htmlunit-driver</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-remote-driver</artifactId>
-			<version>${version.selenium}</version>
+			<version>${version.selenium}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<!-- Reflection -->
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
-			<version>0.9.10</version>
+			<version>0.9.10</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<!-- Reflection -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.10</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>clean install test javadoc:jar</defaultGoal>
+		<!-- Java source directory -->
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<!-- Java resources directory -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.*</include>
+				</includes>
+			</resource>
+		</resources>
+		<!-- Java test directory -->
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<!-- Java test resources directory -->
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>*.*</include>
+				</includes>
+			</testResource>
+		</testResources>
 	</build>
 
 </project>

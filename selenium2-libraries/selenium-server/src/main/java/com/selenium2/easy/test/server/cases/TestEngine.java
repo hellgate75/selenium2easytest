@@ -38,7 +38,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 		if (System.getProperty("log4j.configurationFile")==null)
 			System.setProperty("log4j.configurationFile", "log4j2.xml");
 	}
-	private static Logger logger = LoggerFactory.getLogger("com.service.restfy.selenium.server");
+	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	private static final String REPORT_LINE_SEPARATOR = "------------------------------------------------------------------------------------------------------------------------------------";
 	
 	private WebDriver driver = null;
@@ -300,7 +300,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 	private void executeTestCase(BaseTestCase testCase) throws Throwable {
 		testCase.resetCounters();
 		testCase.startTimeCounter(TIMER_TYPE.TEST_CASE);
-		if(!testCase.isSecureConnection()) {
+		if(testCase.isSecureConnection()) {
 			testCase.startTimeCounter(TIMER_TYPE.SECURITY);
 			if (!testCase.handleSecureConnection(driver)) {
 				testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
