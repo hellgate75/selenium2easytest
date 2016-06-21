@@ -23,8 +23,15 @@ public class XMLTestAssertion {
 	@XmlValue
 	private SearchType matchTpe;
 
+	@XmlAttribute(name="operation", required=false)
+	@XmlValue
+	private AssertionOperationType operationType;
+	
 	@XmlAttribute(name="value", required=false)
 	private String value;
+
+	@XmlAttribute(name="file", required=false)
+	private String textFile;
 	
 	public AssertionsType getType() {
 		return type;
@@ -64,6 +71,22 @@ public class XMLTestAssertion {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String getAssertionTitle() {
+		return assertionTitle;
+	}
+
+	public void setAssertionTitle(String assertionTitle) {
+		this.assertionTitle = assertionTitle;
+	}
+
+	public String getTextFile() {
+		return textFile;
+	}
+
+	public void setTextFile(String textFile) {
+		this.textFile = textFile;
 	}
 
 }

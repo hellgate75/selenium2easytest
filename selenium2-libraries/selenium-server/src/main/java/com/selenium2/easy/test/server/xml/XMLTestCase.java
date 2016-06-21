@@ -4,39 +4,29 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 import com.selenium2.easy.test.server.automated.WebDriverFactory.SELECTOR_TYPE;
 
+@XmlRootElement(name = "case")
 public class XMLTestCase {
 	@XmlAttribute(required=true)
 	private String name;
 	
-	@XmlAttribute(required=false)
-	private boolean monitorStartTime=Boolean.FALSE;
-
-	@XmlAttribute(required=false)
-	private boolean monitorEndTime=Boolean.FALSE;
-
-	@XmlAttribute(required=false)
-	private boolean monitorTestElapseTime=Boolean.FALSE;
+	@XmlAttribute(required=true)
+	private boolean useUrl;
 	
-	@XmlAttribute(required=false)
-	private boolean monitorSecurityAccessTime=Boolean.FALSE;
-	
-	@XmlAttribute(required=false)
-	private String connectionURL;
+	@XmlElement(name="url", type=XMLTestURL.class,required=false)
+	private XMLTestURL connectionURL;
 	
 	@XmlAttribute(required=false)
 	private boolean retrowException=Boolean.FALSE;
 	
 	@XmlAttribute(name="children", required=false)
-	@XmlList
 	private List<XMLTestCase> childrenCases;
-	
-	@XmlAttribute(required=true)
-	private boolean useUrl;
 
 	@XmlAttribute(required=true)
 	private boolean secureAccess;
@@ -49,11 +39,9 @@ public class XMLTestCase {
 	private Map<String, String> securityInfo;
 	
 	@XmlAttribute(name="actions", required=true)
-	@XmlList
 	private List<XMLTestCaseAction> testCaseActions;
 
 	@XmlAttribute(name="assertions", required=true)
-	@XmlList
 	private List<XMLTestAssertion> testCaseAssertions;
 
 	public String getName() {
@@ -64,43 +52,11 @@ public class XMLTestCase {
 		this.name = name;
 	}
 
-	public boolean isMonitorStartTime() {
-		return monitorStartTime;
-	}
-
-	public void setMonitorStartTime(boolean monitorStartTime) {
-		this.monitorStartTime = monitorStartTime;
-	}
-
-	public boolean isMonitorEndTime() {
-		return monitorEndTime;
-	}
-
-	public void setMonitorEndTime(boolean monitorEndTime) {
-		this.monitorEndTime = monitorEndTime;
-	}
-
-	public boolean isMonitorTestElapseTime() {
-		return monitorTestElapseTime;
-	}
-
-	public void setMonitorTestElapseTime(boolean monitorTestElapseTime) {
-		this.monitorTestElapseTime = monitorTestElapseTime;
-	}
-
-	public boolean isMonitorSecurityAccessTime() {
-		return monitorSecurityAccessTime;
-	}
-
-	public void setMonitorSecurityAccessTime(boolean monitorSecurityAccessTime) {
-		this.monitorSecurityAccessTime = monitorSecurityAccessTime;
-	}
-
-	public String getConnectionURL() {
+	public XMLTestURL getConnectionURL() {
 		return connectionURL;
 	}
 
-	public void setConnectionURL(String connectionURL) {
+	public void setConnectionURL(XMLTestURL connectionURL) {
 		this.connectionURL = connectionURL;
 	}
 

@@ -23,11 +23,10 @@ public class XMLTestGroup {
 	@XmlAttribute(name="allowDependencies", required=false)
 	private Boolean allowDependencies = Boolean.FALSE;
 
-	@XmlAttribute(name="cases", required=true)
-	@XmlList
+	@XmlElement(name="cases", type=XMLTestCase.class, required=true)
 	private List<XMLTestCase> testCases = new ArrayList<XMLTestCase>(0);
 	
-	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
+	@XmlAttribute(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	private XMLTakeSnpshoot groupSnapshoot;
 
 	public String getGroupName() {

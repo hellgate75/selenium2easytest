@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -99,7 +100,7 @@ public class SeleniumUtilities {
 		}
 	}
 
-	public static final void submitButtonElement(WebElement elem) throws ActionException {
+	public static final void submitActionElement(WebElement elem) throws ActionException {
 		try {
 			elem.submit();
 		} catch (Throwable e) {
@@ -108,7 +109,7 @@ public class SeleniumUtilities {
 		}
 	}
 	
-	public static final void clickButtonElement(WebElement elem) throws ActionException {
+	public static final void clickActionElement(WebElement elem) throws ActionException {
 		try {
 			elem.click();
 		} catch (Throwable e) {
@@ -168,33 +169,6 @@ public class SeleniumUtilities {
 		} catch (Throwable e) {
 		    logger.error("Error running 'isDisplayed' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
 			throw new ActionException("Unable to apply 'isDisplayed' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
-		}
-	}
-	
-	public static final void submitTheElement(WebElement elem) throws ActionException {
-		try {
-			elem.submit();
-		} catch (Throwable e) {
-		    logger.error("Error running 'isDisplayed' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
-			throw new ActionException("Unable to apply 'isDisplayed' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
-		}
-	}
-	
-	public static final void clearValueInTheElement(WebElement elem) throws ActionException {
-		try {
-			elem.clear();
-		} catch (Throwable e) {
-		    logger.error("Error running 'clear' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
-			throw new ActionException("Unable to apply 'clear' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
-		}
-	}
-	
-	public static final void clickTheElement(WebElement elem) throws ActionException {
-		try {
-			elem.click();
-		} catch (Throwable e) {
-		    logger.error("Error running 'click' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
-			throw new ActionException("Unable to apply 'click' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
 		}
 	}
 	
@@ -312,30 +286,6 @@ public class SeleniumUtilities {
 		}
 	}
 	
-	public static final WebElement searchByClause(WebDriver webDriver, By clause) throws NotFoundException, FrameworkException {
-		try {
-			WebElement elem = webDriver.findElement(clause);
-			if (elem==null)
-				throw new NotFoundException("Unable to locate element by clause='"+clause+"' on the user interface");
-			return elem;
-		} catch (Throwable e) {
-		    logger.error("Error finding element by clause : " + clause, e);
-			throw new FrameworkException("Unable to find element by clause='" + clause + "' exception : ", e);
-		}
-	}
-	
-	public static final List<WebElement> searchAllByClause(WebDriver webDriver, By clause) throws NotFoundException, FrameworkException {
-		try {
-			List<WebElement> elems = webDriver.findElements(clause);
-			if (elems==null || elems.size()==0)
-				throw new NotFoundException("Unable to locate element by clause='"+clause+"' on the user interface");
-			return elems;
-		} catch (Throwable e) {
-		    logger.error("Error finding elements by clause : " + clause, e);
-			throw new FrameworkException("Unable to find element by clause='" + clause + "' exception : ", e);
-		}
-	}
-	
 	public static final XMLTestGroup loadXMLTestFramework(File xmlFilePath) {
 	  try {
 
@@ -374,6 +324,15 @@ public class SeleniumUtilities {
 		return false;
 	}
 	
+	public static final String mapToQueryString(Map<String, String> map) {
+		String retValue = "";
+		if (map!=null) {
+			for(String key : map.keySet()) {
+				retValue += (retValue.length()>0 ? "&" : "") + key + "=" + map.get(key);
+			}
+		}
+		return retValue;
+	}
 	
 	private static class SeleniumHelper {
 		  

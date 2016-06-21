@@ -8,37 +8,35 @@ import javax.xml.bind.annotation.XmlList;
 
 public class XMLTestCaseAction {
 	
-	@XmlAttribute(required=false)
-	private Boolean changeURL=Boolean.FALSE;
-
-	@XmlAttribute(required=false)
-	private String connectionUrl;
+	@XmlAttribute(required=true)
+	private boolean useUrl;
+	
+	@XmlElement(name="url", type=XMLTestURL.class,required=false)
+	private XMLTestURL connectionURL;
 	
 	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	private XMLTakeSnpshoot caseSnapshoot;
 	
 	@XmlAttribute(name="operations", required=true)
-	@XmlList
 	private List<XMLTestOperation> testOperations;
 
 	@XmlAttribute(name="assertions", required=true)
-	@XmlList
 	private List<XMLTestAssertion> testAssertions;
 
-	public Boolean getChangeURL() {
-		return changeURL;
+	public boolean isChangeURL() {
+		return useUrl;
 	}
 
-	public void setChangeURL(Boolean changeURL) {
-		this.changeURL = changeURL;
+	public void setChangeURL(boolean changeURL) {
+		this.useUrl = changeURL;
 	}
 
-	public String getConnectionUrl() {
-		return connectionUrl;
+	public XMLTestURL getConnectionUrl() {
+		return connectionURL;
 	}
 
-	public void setConnectionUrl(String connectionUrl) {
-		this.connectionUrl = connectionUrl;
+	public void setConnectionUrl(XMLTestURL connectionUrl) {
+		this.connectionURL = connectionUrl;
 	}
 
 	public XMLTakeSnpshoot getCaseSnapshoot() {

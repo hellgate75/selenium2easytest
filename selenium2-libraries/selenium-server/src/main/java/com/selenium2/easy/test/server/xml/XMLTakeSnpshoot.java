@@ -2,7 +2,9 @@ package com.selenium2.easy.test.server.xml;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "snapshoot")
 public class XMLTakeSnpshoot {
 	
 	@XmlAttribute(name="directory", required=false)
