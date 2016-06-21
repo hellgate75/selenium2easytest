@@ -222,7 +222,7 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 	 * field name/id and the related to the byName decision's flag
 	 */
 	private static void setWebElementValue(WebDriver driver, boolean byName, String field, String value) throws NotFoundException, FrameworkException, ActionException {
-		WebElement webElement = SeleniumUtilities.searchByClause(driver, byName ? By.name(field):By.id(field));
+		WebElement webElement = SeleniumUtilities.findOneInThePage(driver, byName ? By.name(field):By.id(field));
 		if (webElement!=null) {
 			SeleniumUtilities.setValueToElement(webElement, value);
 		}
@@ -233,9 +233,9 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 	 * field name/id and the related to the byName decision's flag
 	 */
 	private static void submitWebElement(WebDriver driver, boolean byName, String field) throws NotFoundException, FrameworkException, ActionException {
-		WebElement webElement = SeleniumUtilities.searchByClause(driver, byName ? By.name(field):By.id(field));
+		WebElement webElement = SeleniumUtilities.findOneInThePage(driver, byName ? By.name(field):By.id(field));
 		if (webElement!=null) {
-			SeleniumUtilities.submitTheElement(webElement);
+			SeleniumUtilities.submitActionElement(webElement);
 		}
 	}
 

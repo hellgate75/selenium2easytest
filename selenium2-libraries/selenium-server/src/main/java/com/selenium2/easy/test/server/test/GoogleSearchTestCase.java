@@ -22,9 +22,9 @@ public class GoogleSearchTestCase extends BaseTestCase {
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
 		assertEquals("The page title should equal Google at the start of the test.", "Google", driver.getTitle());
-		WebElement searchField = SeleniumUtilities.searchByClause(driver, By.name("q"));
+		WebElement searchField = SeleniumUtilities.findOneInThePage(driver, By.name("q"));
 		SeleniumUtilities.setValueToElement(searchField, googleSearchText);
-		SeleniumUtilities.submitButtonElement(searchField);
+		SeleniumUtilities.submitActionElement(searchField);
 	    assertTrue("The page title should start with the search string after the search.",
 	      (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
 	        public Boolean apply(WebDriver d) {

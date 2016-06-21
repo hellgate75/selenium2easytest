@@ -3,6 +3,9 @@
  */
 package com.selenium2.easy.test.server.cases;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
 
 import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
@@ -27,7 +30,7 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	 * @throws RuntimeException
 	 */
 	public XMLGroupedTestCase(String groupName, XMLTestCase testCase) throws NullPointerException, RuntimeException {
-		super(testCase.getName(), testCase.getConnectionURL(), testCase.isUseUrl(), testCase.isRetrowException());
+		super(testCase.getName(), testCase.getConnectionURL().getFormattedURL(), testCase.isUseUrl(), testCase.isRetrowException());
 		this.groupName = groupName;
 		this.testCase = testCase;
 	}
@@ -61,11 +64,15 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	 */
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
+		Map<String, Object> resultsMap = new HashMap<String, Object>(0);
 		for(XMLTestCaseAction action: this.testCase.getTestCaseActions()) {
-			XMLTestCaseUtilities.doAction(driver, action);
+			Map<String, Object> temporaryMap = XMLTestCaseUtilities.doAction(driver, action);
+			if (temporaryMap.size()>0) {
+				resultsMap.putAll(temporaryMap);
+			}
 		}
 		for(XMLTestAssertion assertion: this.testCase.getTestCaseAssertions()) {
-			XMLTestCaseUtilities.doAssertion(driver, assertion);
+			XMLTestCaseUtilities.doAssertion(driver, assertion, resultsMap);
 		}
 	}
 

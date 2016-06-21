@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -25,7 +24,7 @@ public class XMLTestCase {
 	@XmlAttribute(required=false)
 	private boolean retrowException=Boolean.FALSE;
 	
-	@XmlAttribute(name="children", required=false)
+	@XmlElement(name="children", type=XMLTestCase.class, required=false)
 	private List<XMLTestCase> childrenCases;
 
 	@XmlAttribute(required=true)

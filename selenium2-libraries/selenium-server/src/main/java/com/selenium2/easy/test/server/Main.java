@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.selenium2.easy.test.server.automated.SeleniumAutomatedServer;
-import com.selenium2.easy.test.server.automated.WebDriverFactory;
 import com.selenium2.easy.test.server.automated.WebDriverSelector;
 
 /**

@@ -154,12 +154,30 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	public static final WebElement findOneInThePage(WebDriver driver, By clause) throws ActionException {
+		try {
+			return driver.findElement(clause);
+		} catch (Throwable e) {
+		    logger.error("Error running 'findElement' action on the page", e);
+			throw new ActionException("Unable to apply 'findElement' action on the page due to the exception : ", e);
+		}
+	}
+	
 	public static final List<WebElement> findManyInTheElement(WebElement elem, By clause) throws ActionException {
 		try {
 			return elem.findElements(clause);
 		} catch (Throwable e) {
 		    logger.error("Error running 'findElements' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
 			throw new ActionException("Unable to apply 'findElements' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
+		}
+	}
+	
+	public static final List<WebElement> findManyInThePage(WebDriver driver, By clause) throws ActionException {
+		try {
+			return driver.findElements(clause);
+		} catch (Throwable e) {
+		    logger.error("Error running 'findElements' action on the page", e);
+			throw new ActionException("Unable to apply 'findElements' action on the page due to the exception : ", e);
 		}
 	}
 	

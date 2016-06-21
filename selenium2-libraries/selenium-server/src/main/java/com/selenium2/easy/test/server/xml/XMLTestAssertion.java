@@ -12,6 +12,9 @@ public class XMLTestAssertion {
 
 	@XmlAttribute(name="title", required=true)
 	private String assertionTitle;
+	
+	@XmlAttribute(name="useResult", required=false)
+	private String useResult;
 
 	@XmlElement(name="element", type=XMLWebElement.class, required=true)
 	private XMLWebElement assertionElement;
@@ -87,6 +90,22 @@ public class XMLTestAssertion {
 
 	public void setTextFile(String textFile) {
 		this.textFile = textFile;
+	}
+
+	public String getUseResult() {
+		return useResult;
+	}
+
+	public void setUseResult(String useResult) {
+		this.useResult = useResult;
+	}
+
+	public AssertionOperationType getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(AssertionOperationType operationType) {
+		this.operationType = operationType;
 	}
 
 }

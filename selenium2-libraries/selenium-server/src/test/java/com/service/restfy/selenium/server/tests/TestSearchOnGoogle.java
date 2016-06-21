@@ -81,9 +81,9 @@ public class TestSearchOnGoogle {
 	@Test(timeout=10000)
 	public void run1GoogleTestOnChrome() throws NotFoundException, FrameworkException, ActionException {
 		assertEquals("The page title should equal Google at the start of the test.", "Google", chromeWebDriver.getTitle());
-		WebElement searchField = SeleniumUtilities.searchByClause(chromeWebDriver, By.name("q"));
+		WebElement searchField = SeleniumUtilities.findOneInThePage(chromeWebDriver, By.name("q"));
 		SeleniumUtilities.setValueToElement(searchField, googleSearchText);
-		SeleniumUtilities.submitButtonElement(searchField);
+		SeleniumUtilities.submitActionElement(searchField);
 	    assertTrue("The page title should start with the search string after the search.",
 	      (new WebDriverWait(chromeWebDriver, 10)).until(new ExpectedCondition<Boolean>() {
 	        public Boolean apply(WebDriver d) {
@@ -100,9 +100,9 @@ public class TestSearchOnGoogle {
 	public void run0GoogleTestOnIExplorer() throws NotFoundException, FrameworkException, ActionException {
 		if (isWindows) {
 			assertEquals("The page title should equal Google at the start of the test.", "Google", ieWebDriver.getTitle());
-			WebElement searchField = SeleniumUtilities.searchByClause(ieWebDriver, By.xpath("//input[@name='q']"));
+			WebElement searchField = SeleniumUtilities.findOneInThePage(ieWebDriver, By.xpath("//input[@name='q']"));
 			SeleniumUtilities.setValueToElement(searchField, googleSearchText);
-			SeleniumUtilities.submitButtonElement(searchField);
+			SeleniumUtilities.submitActionElement(searchField);
 		    assertTrue("The page title should start with the search string after the search.",
 		      (new WebDriverWait(ieWebDriver, 10)).until(new ExpectedCondition<Boolean>() {
 		        public Boolean apply(WebDriver d) {
@@ -121,9 +121,9 @@ public class TestSearchOnGoogle {
 	@Test(timeout=10000)
 	public void run2GoogleTestOnFirefox() throws NotFoundException, FrameworkException, ActionException {
 		assertEquals("The page title should equal Google at the start of the test.", "Google", firefoxWebDriver.getTitle());
-		WebElement searchField = SeleniumUtilities.searchByClause(firefoxWebDriver, By.name("q"));
+		WebElement searchField = SeleniumUtilities.findOneInThePage(firefoxWebDriver, By.name("q"));
 		SeleniumUtilities.setValueToElement(searchField, googleSearchText);
-		SeleniumUtilities.submitButtonElement(searchField);
+		SeleniumUtilities.submitActionElement(searchField);
 	    assertTrue("The page title should start with the search string after the search.",
 	      (new WebDriverWait(firefoxWebDriver, 10)).until(new ExpectedCondition<Boolean>() {
 	        public Boolean apply(WebDriver d) {

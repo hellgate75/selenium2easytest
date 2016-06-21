@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlValue;
 
 public class XMLTestOperation {
@@ -21,6 +20,9 @@ public class XMLTestOperation {
 	
 	@XmlAttribute(name="values", required=true)
 	private List<String> valueList;
+
+	@XmlAttribute(name="targetInSource", required=false)
+	private Boolean targetInSource=Boolean.FALSE;
 
 	@XmlElement(name="target", type=XMLWebElement.class, required=false)
 	private XMLWebElement targetElement;
@@ -85,6 +87,14 @@ public class XMLTestOperation {
 
 	public void setOperationList(List<XMLTestOperation> operationList) {
 		this.operationList = operationList;
+	}
+
+	public Boolean getTargetInSource() {
+		return targetInSource;
+	}
+
+	public void setTargetInSource(Boolean targetInSource) {
+		this.targetInSource = targetInSource;
 	}
 
 }

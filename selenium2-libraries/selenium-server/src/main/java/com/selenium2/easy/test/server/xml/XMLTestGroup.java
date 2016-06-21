@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="caseGroup")
@@ -26,7 +25,7 @@ public class XMLTestGroup {
 	@XmlElement(name="cases", type=XMLTestCase.class, required=true)
 	private List<XMLTestCase> testCases = new ArrayList<XMLTestCase>(0);
 	
-	@XmlAttribute(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
+	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	private XMLTakeSnpshoot groupSnapshoot;
 
 	public String getGroupName() {
