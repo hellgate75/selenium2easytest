@@ -33,7 +33,7 @@ public class Main {
 		logger.info("****************************************************************");
 		logger.info("Selenium 2 Automated Test Server Bootstrap in progress");
 		logger.info("****************************************************************");
-		String configFile = "src/test/resources/test.properies";
+		String configFile = "selenium2.properies";
 		for(int i=0; i < args.length; i++) {
 			String arg = args[i];
 			if (arg.equalsIgnoreCase("--configFile")) {

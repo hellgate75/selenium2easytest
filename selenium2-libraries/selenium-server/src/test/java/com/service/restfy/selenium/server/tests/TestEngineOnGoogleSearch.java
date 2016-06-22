@@ -12,7 +12,7 @@ import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.selenium2.easy.test.server.cases.TestEngine;
-import com.selenium2.easy.test.server.test.GoogleSearchTestCase;
+import com.selenium2.easy.test.server.tests.scenarios.GoogleSearchTestCase;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities.BROWSER_TYPE;
 

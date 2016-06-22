@@ -1,7 +1,6 @@
 package com.selenium2.easy.test.server.xml;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlValue;
 
 public class XMLTestAssertion {
@@ -15,16 +14,9 @@ public class XMLTestAssertion {
 	
 	@XmlAttribute(name="useResult", required=false)
 	private String useResult;
-
-	@XmlElement(name="element", type=XMLWebElement.class, required=true)
-	private XMLWebElement assertionElement;
-
-	@XmlElement(name="matchElement", type=XMLWebElement.class, required=false)
-	private XMLWebElement matcherElement;
 	
-	@XmlAttribute(name="match", required=false)
-	@XmlValue
-	private SearchType matchTpe;
+	@XmlAttribute(name="useMatcherResult", required=false)
+	private String useMatcherResult;
 
 	@XmlAttribute(name="operation", required=false)
 	@XmlValue
@@ -42,30 +34,6 @@ public class XMLTestAssertion {
 
 	public void setType(AssertionsType type) {
 		this.type = type;
-	}
-
-	public XMLWebElement getAssertionElement() {
-		return assertionElement;
-	}
-
-	public void setAssertionElement(XMLWebElement assertionElement) {
-		this.assertionElement = assertionElement;
-	}
-
-	public XMLWebElement getMatcherElement() {
-		return matcherElement;
-	}
-
-	public void setMatcherElement(XMLWebElement matcherElement) {
-		this.matcherElement = matcherElement;
-	}
-
-	public SearchType getMatchTpe() {
-		return matchTpe;
-	}
-
-	public void setMatchTpe(SearchType matchTpe) {
-		this.matchTpe = matchTpe;
 	}
 
 	public String getValue() {
@@ -102,6 +70,14 @@ public class XMLTestAssertion {
 
 	public AssertionOperationType getOperationType() {
 		return operationType;
+	}
+
+	public String getUseMatcherResult() {
+		return useMatcherResult;
+	}
+
+	public void setUseMatcherResult(String useMatcherResult) {
+		this.useMatcherResult = useMatcherResult;
 	}
 
 	public void setOperationType(AssertionOperationType operationType) {

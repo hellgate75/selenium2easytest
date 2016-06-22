@@ -1,7 +1,6 @@
 package com.selenium2.easy.test.server.utils;
 
 import java.io.File;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +18,7 @@ import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.xml.OperationType;
 import com.selenium2.easy.test.server.xml.XMLTestAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestCaseAction;
+import com.selenium2.easy.test.server.xml.XMLTestDOMAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestOperation;
 import com.selenium2.easy.test.server.xml.XMLWebElement;
 
@@ -61,6 +61,7 @@ public class XMLTestCaseUtilities {
 		}
 		return returnList;
 	}
+
 	private static List<WebElement> getElementByXML(WebElement parent, XMLWebElement element) {
 		List<WebElement> returnList = new ArrayList<WebElement>(0);
 		if (element!=null && parent!=null) {
@@ -155,6 +156,46 @@ public class XMLTestCaseUtilities {
 	        }
 	    }
 	    
+	    if (str.toUpperCase().trim().startsWith("$R(") && str.trim().endsWith(")")) {
+	    	String value=str.toUpperCase().trim().substring(3, str.trim().length()-1);
+	    	String[] tokens = value.split(",");
+	    	if (tokens.length>=4) {
+	    		try {
+					int x = Integer.parseInt(tokens[0].trim());
+					int y = Integer.parseInt(tokens[1].trim());
+					int w = Integer.parseInt(tokens[2].trim());
+					int h = Integer.parseInt(tokens[3].trim());
+					return new Rectangle(x, y, h, w);
+				} catch (Throwable e) {
+				}
+	    	}
+	    }
+	    if (str.toUpperCase().trim().startsWith("$D(") && str.trim().endsWith(")")) {
+	    	String value=str.toUpperCase().trim().substring(3, str.trim().length()-1);
+	    	String[] tokens = value.split(",");
+	    	if (tokens.length>=2) {
+	    		try {
+					int w = Integer.parseInt(tokens[0].trim());
+					int h = Integer.parseInt(tokens[1].trim());
+					return new Dimension(w, h);
+				} catch (Throwable e) {
+				}
+	    	}
+	    }
+	    if (str.toUpperCase().trim().startsWith("$P(") && str.trim().endsWith(")")) {
+	    	String value=str.toUpperCase().trim().substring(3, str.trim().length()-1);
+	    	String[] tokens = value.split(",");
+	    	if (tokens.length>=2) {
+	    		try {
+					int x = Integer.parseInt(tokens[0].trim());
+					int y = Integer.parseInt(tokens[1].trim());
+					return new Point(x, y);
+				} catch (Throwable e) {
+				}
+	    		
+	    	}
+	    }
+	    
 	    if (str.equals("TRUE") || str.equals("FALSE")) {
 	    	return str.equals("TRUE");
 	    }
@@ -164,9 +205,6 @@ public class XMLTestCaseUtilities {
 	@SuppressWarnings("unchecked")
 	public static final Map<String, Object> doAction(WebDriver driver, XMLTestCaseAction action) throws ActionException {
 		Map<String, Object> results = new HashMap<String, Object>(0);
-		/*
-		 * TODO Implement the XML Test Case Action feature
-		 */
 		if (action.isChangeURL()) {
 			driver.get(action.getConnectionUrl().getFormattedURL());
 		}
@@ -487,12 +525,94 @@ public class XMLTestCaseUtilities {
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static final void doAssertion(WebDriver driver, XMLTestAssertion assertion, Map<String, Object> caseResults) {
 		/*
 		 * TODO Implement the XML Test Assertion feature
 		 */
+		List<WebElement> paramList = null;
+		WebElement paramElement = null;
+		Object paramValue = null;
+		List<? extends Object> paramValues = null;
+		if (assertion.getUseResult()!=null && assertion.getUseResult().trim().length()>0) {
+			Object aValue = caseResults.get(assertion.getUseResult().trim());
+			if (aValue!=null) {
+				if (WebElement.class.isAssignableFrom(aValue.getClass())) {
+					paramElement = (WebElement)aValue;
+				}
+				else if (List.class.isAssignableFrom(aValue.getClass())) {
+					try {
+						paramList = (List<WebElement>) aValue;
+					} catch (Exception e) {
+						paramValues = (List<? extends Object>)aValue;
+					}
+				}
+				else {
+					paramValue = aValue;
+				}
+			}
+		}
+		List<WebElement> paramMatcherList = null;
+		WebElement paramMatcherElement = null;
+		Object paramMatcherValue = null;
+		List<? extends Object> paramMatcherValues = null;
+		if (assertion.getUseMatcherResult()!=null && assertion.getUseMatcherResult().trim().length()>0) {
+			Object aValue = caseResults.get(assertion.getUseMatcherResult().trim());
+			if (aValue!=null) {
+				if (WebElement.class.isAssignableFrom(aValue.getClass())) {
+					paramMatcherElement = (WebElement)aValue;
+				}
+				else if (List.class.isAssignableFrom(aValue.getClass())) {
+					try {
+						paramMatcherList = (List<WebElement>) aValue;
+					} catch (Exception e) {
+						paramMatcherValues = (List<? extends Object>)aValue;
+					}
+				}
+				else {
+					paramMatcherValue = aValue;
+				}
+			}
+		}
+		Object assertionValue=pack(assertion.getValue());
+		
+		switch(assertion.getType()) {
+			case ARRAY_EQUALS:
+				break;
+			case ARRAY_NOT_EQUALS:
+				break;
+			case EQUALS:
+				break;
+			case NOT_EQUALS:
+				break;
+			case FALSE:
+				break;
+			case TRUE:
+				break;
+			case NULL:
+				break;
+			case NOT_NULL:
+				break;
+			case SAME:
+				break;
+			case NOT_SAME:
+				break;
+			case THAT:
+				break;
+			case NOT_THAT:
+				break;
+			default:
+		}
 	}
-	 
+
+	public static final void doAssertion(WebDriver driver, XMLTestDOMAssertion assertion, Map<String, Object> caseResults) {
+		/*
+		 * TODO Implement the XML Test DoM Assertion feature
+		 */
+		List<WebElement> sourceList = getElementByXML(driver, assertion.getAssertionElement());
+		List<WebElement> targetList = getElementByXML(driver, assertion.getMatcherElement());
+	}
+
 	private static class CharAndNumber
 	{
 	    public final char m_symbol;

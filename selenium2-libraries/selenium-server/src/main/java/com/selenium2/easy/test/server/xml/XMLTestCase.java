@@ -37,11 +37,23 @@ public class XMLTestCase {
 	@XmlAttribute(name="security", required=false)
 	private Map<String, String> securityInfo;
 	
-	@XmlAttribute(name="actions", required=true)
+	@XmlAttribute(name="actions", required=false)
 	private List<XMLTestCaseAction> testCaseActions;
 
-	@XmlAttribute(name="assertions", required=true)
+	@XmlAttribute(name="assertions", required=false)
 	private List<XMLTestAssertion> testCaseAssertions;
+
+	@XmlAttribute(name="domAssertions", required=false)
+	private List<XMLTestDOMAssertion> testCaseDOMAssertions;
+
+	public List<XMLTestDOMAssertion> getTestCaseDOMAssertions() {
+		return testCaseDOMAssertions;
+	}
+
+	public void setTestCaseDOMAssertions(
+			List<XMLTestDOMAssertion> testCaseDOMAssertions) {
+		this.testCaseDOMAssertions = testCaseDOMAssertions;
+	}
 
 	public String getName() {
 		return name;

@@ -1,4 +1,4 @@
-package com.selenium2.easy.test.server.test;
+package com.selenium2.easy.test.server.tests.scenarios;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
