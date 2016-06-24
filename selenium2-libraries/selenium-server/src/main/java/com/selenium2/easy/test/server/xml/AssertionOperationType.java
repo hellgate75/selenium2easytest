@@ -4,5 +4,6 @@ import javax.xml.bind.annotation.XmlEnum;
 
 @XmlEnum
 public enum AssertionOperationType {
-	IS_DISPLAYED, IS_ENABLED, IS_SELECTED, TAKE_SCREENSHOT_FROM
+	IS_DISPLAYED, IS_ENABLED, IS_SELECTED, GET_ATTRIBUTE, GET_CSS, GET_LOCATION,
+	GET_PAGE_SOURCE, GET_PAGE_TITLE
 }

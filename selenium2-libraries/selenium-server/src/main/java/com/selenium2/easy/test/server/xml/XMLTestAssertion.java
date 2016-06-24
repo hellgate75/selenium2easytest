@@ -1,5 +1,7 @@
 package com.selenium2.easy.test.server.xml;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -7,7 +9,11 @@ public class XMLTestAssertion {
 
 	@XmlAttribute(name="type", required=false)
 	@XmlValue
-	private AssertionsType type;
+	private AssertionType type;
+
+	@XmlAttribute(name="thatMatcher", required=false)
+	@XmlValue
+	private AssertionThatMatcherType thatMatcherType;
 
 	@XmlAttribute(name="title", required=true)
 	private String assertionTitle;
@@ -21,19 +27,40 @@ public class XMLTestAssertion {
 	@XmlAttribute(name="operation", required=false)
 	@XmlValue
 	private AssertionOperationType operationType;
+
+	@XmlAttribute(name="useValues", required=false)
+	private Boolean useValue = Boolean.FALSE;
+	
+	@XmlAttribute(name="values", required=false)
+	private List<String> values;
 	
 	@XmlAttribute(name="value", required=false)
 	private String value;
 
+	@XmlAttribute(name="useFile", required=false)
+	private Boolean useTextFile = Boolean.FALSE;
+	
 	@XmlAttribute(name="file", required=false)
 	private String textFile;
 	
-	public AssertionsType getType() {
+	public AssertionType getType() {
 		return type;
 	}
 
-	public void setType(AssertionsType type) {
+	public void setType(AssertionType type) {
 		this.type = type;
+	}
+
+	public List<String> getValues() {
+		return values;
+	}
+
+	public void setValues(List<String> values) {
+		this.values = values;
+	}
+
+	public String getAssertionTitle() {
+		return assertionTitle;
 	}
 
 	public String getValue() {
@@ -42,10 +69,6 @@ public class XMLTestAssertion {
 
 	public void setValue(String value) {
 		this.value = value;
-	}
-
-	public String getAssertionTitle() {
-		return assertionTitle;
 	}
 
 	public void setAssertionTitle(String assertionTitle) {
@@ -82,6 +105,30 @@ public class XMLTestAssertion {
 
 	public void setOperationType(AssertionOperationType operationType) {
 		this.operationType = operationType;
+	}
+
+	public Boolean getUseValue() {
+		return useValue;
+	}
+
+	public void setUseValue(Boolean useValue) {
+		this.useValue = useValue;
+	}
+
+	public Boolean getUseTextFile() {
+		return useTextFile;
+	}
+
+	public void setUseTextFile(Boolean useTextFile) {
+		this.useTextFile = useTextFile;
+	}
+
+	public AssertionThatMatcherType getThatMatcherType() {
+		return thatMatcherType;
+	}
+
+	public void setThatMatcherType(AssertionThatMatcherType thatMatcherType) {
+		this.thatMatcherType = thatMatcherType;
 	}
 
 }

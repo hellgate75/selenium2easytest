@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlValue;
 
 import org.openqa.selenium.By;
 
+import com.selenium2.easy.test.server.utils.SeleniumUtilities;
+
 public class XMLWebElement {
 	@XmlAttribute(name="by", required=true)
 	@XmlValue
@@ -43,25 +45,6 @@ public class XMLWebElement {
 	
 	@XmlTransient
 	public By getByClause() {
-		switch(this.by) {
-			case NAME:
-				return By.name(this.searchText);
-			case ID:
-				return By.id(this.searchText);
-			case CLASS_NAME:
-				return By.className(this.searchText);
-			case XPATH:
-				return By.xpath(this.searchText);
-			case TAG:
-				return By.tagName(this.searchText);
-			case EXACT_LINK:
-				return By.linkText(this.searchText);
-			case PARTIAL_LINK:
-				return By.partialLinkText(this.searchText);
-			default:
-				return By.cssSelector(this.searchText);
-			
-		}
-		
+		return SeleniumUtilities.getBy(this.by, this.searchText);
 	}
 }

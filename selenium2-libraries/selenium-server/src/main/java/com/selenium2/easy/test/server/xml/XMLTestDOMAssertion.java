@@ -8,7 +8,14 @@ public class XMLTestDOMAssertion {
 
 	@XmlAttribute(name="type", required=false)
 	@XmlValue
-	private AssertionsType type;
+	private AssertionType type;
+
+	@XmlAttribute(name="thatMatcher", required=false)
+	@XmlValue
+	private AssertionThatMatcherType thatMatcherType;
+
+	@XmlAttribute(name="title", required=true)
+	private String assertionTitle;
 
 	@XmlElement(name="element", type=XMLWebElement.class, required=true)
 	private XMLWebElement assertionElement;
@@ -26,11 +33,11 @@ public class XMLTestDOMAssertion {
 	@XmlAttribute(name="attributeMatcher", required=false)
 	private String attributeMatcher;
 
-	public AssertionsType getType() {
+	public AssertionType getType() {
 		return type;
 	}
 
-	public void setType(AssertionsType type) {
+	public void setType(AssertionType type) {
 		this.type = type;
 	}
 
@@ -73,4 +80,21 @@ public class XMLTestDOMAssertion {
 	public void setAttributeMatcher(String attributeMatcher) {
 		this.attributeMatcher = attributeMatcher;
 	}
+
+	public String getAssertionTitle() {
+		return assertionTitle;
+	}
+
+	public void setAssertionTitle(String assertionTitle) {
+		this.assertionTitle = assertionTitle;
+	}
+
+	public AssertionThatMatcherType getThatMatcherType() {
+		return thatMatcherType;
+	}
+
+	public void setThatMatcherType(AssertionThatMatcherType thatMatcherType) {
+		this.thatMatcherType = thatMatcherType;
+	}
+	
 }

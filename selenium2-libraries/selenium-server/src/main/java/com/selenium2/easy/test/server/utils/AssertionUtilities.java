@@ -1,8 +1,19 @@
 package com.selenium2.easy.test.server.utils;
 
+import static org.hamcrest.CoreMatchers.any;
+import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import org.hamcrest.Matcher;
 import org.junit.Assert;
 import org.junit.internal.ArrayComparisonFailure;
+
+import com.selenium2.easy.test.server.xml.AssertionThatMatcherType;
 
 public class AssertionUtilities {
 
@@ -38,6 +49,14 @@ public class AssertionUtilities {
 		Assert.assertNull(message, actual);
 	}
 
+	public static final <T> void assertNotNull(T actual) throws AssertionError {
+		Assert.assertNotNull(actual);
+	}
+
+	public static final <T> void assertNotNull(String message, T actual) throws AssertionError {
+		Assert.assertNotNull(message, actual);
+	}
+
 	public static final <T> void assertSame(T expected, T actual) throws AssertionError {
 		Assert.assertSame(expected, actual);
 	}
@@ -70,12 +89,46 @@ public class AssertionUtilities {
 		Assert.assertTrue(message, actual);
 	}
 	
-	public static final <T> void assertThat(T actual, Matcher<? super T> matcher) throws AssertionError {
-		Assert.assertThat(actual, matcher);
+	@SuppressWarnings("unchecked")
+	private static <T>  Matcher<? super T> getThatMatcher(String message, AssertionThatMatcherType type, T actual) {
+		switch (type) {
+		case ANY:
+			return any((Class<? super T>)actual.getClass());
+		case ANYTHING:
+			if (actual==null)
+				return anything();
+			else
+				return anything(message);
+		case EQUALS_TO:
+			return equalTo(actual);
+		case INSTANCE_OF:
+			return instanceOf(actual.getClass());
+		case IS:
+			return is(actual);
+		case NOT:
+			return not(actual);
+		case NULL:
+			return nullValue();
+		case NOT_NULL:
+			return notNullValue();
+		default:
+			break;
+		}
+		return null;
+	}
+	
+	public static final <T> void assertThat(AssertionThatMatcherType type, T expected, T actual) throws AssertionError {
+		Matcher<? super T> matcher = getThatMatcher(null, type, actual);
+		if (matcher!=null) {
+			Assert.assertThat(actual, matcher);
+		}
 	}
 
-	public static final <T> void assertThat(String message, T actual, Matcher<? super T> matcher) throws AssertionError {
-		Assert.assertThat(message, actual, matcher);
+	public static final <T> void assertThat(String message, AssertionThatMatcherType type, T expected, T actual) throws AssertionError {
+		Matcher<? super T> matcher =  getThatMatcher(message, type, actual);
+		if (matcher!=null) {
+			Assert.assertThat(message, actual, matcher);
+		}
 	}
 	
 }

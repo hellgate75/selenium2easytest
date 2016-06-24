@@ -1,6 +1,10 @@
 package com.selenium2.easy.test.server.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +17,13 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.selenium2.easy.test.server.exceptions.ActionException;
+import com.selenium2.easy.test.server.xml.AssertionOperationType;
+import com.selenium2.easy.test.server.xml.AssertionThatMatcherType;
+import com.selenium2.easy.test.server.xml.AssertionType;
 import com.selenium2.easy.test.server.xml.OperationType;
 import com.selenium2.easy.test.server.xml.XMLTestAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestCaseAction;
@@ -23,6 +32,7 @@ import com.selenium2.easy.test.server.xml.XMLTestOperation;
 import com.selenium2.easy.test.server.xml.XMLWebElement;
 
 public class XMLTestCaseUtilities {
+	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	
 	private static List<WebElement> getElementByXML(WebDriver driver, XMLWebElement element) {
 		List<WebElement> returnList = new ArrayList<WebElement>(0);
@@ -525,6 +535,147 @@ public class XMLTestCaseUtilities {
 		return results;
 	}
 
+	private static final String loadTextFile(String filePath) {
+		String fileContenct = "";
+		BufferedReader bufferedReader=null;
+		try {
+			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath)) ));
+			while(bufferedReader.ready()) {
+				fileContenct += bufferedReader.readLine();
+			}
+		} catch (IOException e) {
+			logger.error("Unable to read file : " + filePath, e);
+		} catch (Throwable e) {
+			logger.error("Unable to read file : " + filePath, e);
+		}
+		finally {
+			if (bufferedReader!=null) {
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		return fileContenct;
+	}
+	
+	private static final Object extractValue(WebElement element, AssertionOperationType type, Object value) throws ActionException {
+		switch(type) {
+			case IS_DISPLAYED:
+				return SeleniumUtilities.isDisplayedTheElement(element);
+			case IS_ENABLED:
+				return SeleniumUtilities.isEnabledTheElement(element);
+			case IS_SELECTED:
+				return SeleniumUtilities.isSelectedTheElement(element);
+			case GET_ATTRIBUTE:
+				return SeleniumUtilities.getAttributeFromElement(element, (String)value);
+			case GET_CSS:
+				return SeleniumUtilities.getCssValueFromElement(element, (String)value);
+			case GET_LOCATION:
+				return SeleniumUtilities.getLocationFromElement(element);
+			default:
+		}
+		return null;
+	}
+
+	private static final List<Object> extractValues(List<WebElement> elements, AssertionOperationType type, Object value) throws ActionException {
+		if(elements!=null) {
+			List<Object> listOfValues = new ArrayList<Object>(elements.size());
+			for(WebElement element: elements) {
+				listOfValues.add(extractValue(element, type, listOfValues));
+			}
+			return listOfValues;
+		}
+		return null;
+	}
+
+	private static final void assertValues(AssertionType type, String description, AssertionThatMatcherType thatMatherType, Object expected, Object actual) {
+		switch(type) {
+			case ARRAY_EQUALS:
+				if (description!=null) {
+					AssertionUtilities.assertArrayEquals(description, (Object[])expected, (Object[])actual);
+				}
+				else {
+					AssertionUtilities.assertArrayEquals((Object[])expected, (Object[])actual);
+				}
+				break;
+			case EQUALS:
+				if (description!=null) {
+					AssertionUtilities.assertEquals(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertEquals(expected, actual);
+				}
+				break;
+			case NOT_EQUALS:
+				if (description!=null) {
+					AssertionUtilities.assertNotEquals(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertNotEquals(expected, actual);
+				}
+				break;
+			case FALSE:
+				if (description!=null) {
+					AssertionUtilities.assertFalse(description, (Boolean)actual);
+				}
+				else {
+					AssertionUtilities.assertFalse((Boolean)actual);
+				}
+				break;
+			case TRUE:
+				if (description!=null) {
+					AssertionUtilities.assertTrue(description, (Boolean)actual);
+				}
+				else {
+					AssertionUtilities.assertTrue((Boolean)actual);
+				}
+				break;
+			case NULL:
+				if (description!=null) {
+					AssertionUtilities.assertNull(description, actual);
+				}
+				else {
+					AssertionUtilities.assertNull(actual);
+				}
+				break;
+			case NOT_NULL:
+				if (description!=null) {
+					AssertionUtilities.assertNotNull(description, actual);
+				}
+				else {
+					AssertionUtilities.assertNotNull(actual);
+				}
+				break;
+			case SAME:
+				if (description!=null) {
+					AssertionUtilities.assertSame(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertSame(expected, actual);
+				}
+				break;
+			case NOT_SAME:
+				if (description!=null) {
+					AssertionUtilities.assertNotSame(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertNotSame(expected, actual);
+				}
+				break;
+			case THAT:
+				if (description!=null) {
+					AssertionUtilities.assertThat(description, thatMatherType, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertThat(thatMatherType, expected, actual);
+				}
+				break;
+			default:
+	}
+		
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static final void doAssertion(WebDriver driver, XMLTestAssertion assertion, Map<String, Object> caseResults) {
 		/*
@@ -574,35 +725,66 @@ public class XMLTestCaseUtilities {
 				}
 			}
 		}
-		Object assertionValue=pack(assertion.getValue());
-		
-		switch(assertion.getType()) {
-			case ARRAY_EQUALS:
-				break;
-			case ARRAY_NOT_EQUALS:
-				break;
-			case EQUALS:
-				break;
-			case NOT_EQUALS:
-				break;
-			case FALSE:
-				break;
-			case TRUE:
-				break;
-			case NULL:
-				break;
-			case NOT_NULL:
-				break;
-			case SAME:
-				break;
-			case NOT_SAME:
-				break;
-			case THAT:
-				break;
-			case NOT_THAT:
-				break;
-			default:
+		Object assertionValue=assertion.getUseValue() ? pack(assertion.getValue()) : null;
+		String textFile = assertion.getUseTextFile() ? loadTextFile(assertion.getTextFile()) : null;
+		List<Object> assertionValues = null;
+		if (assertion.getUseValue() && assertion.getValues()!=null) {
+			assertionValues = new ArrayList<Object>(0);
+			for(String value: assertion.getValues()) {
+				assertionValues.add(pack(value));
+			}
 		}
+		Object expected = null;
+		if (assertion.getOperationType()!=null) {
+			try {
+				switch (assertion.getOperationType()) {
+					case GET_PAGE_SOURCE:
+						expected = SeleniumUtilities.getPageSource(driver);
+						break;
+					case GET_PAGE_TITLE:
+						expected = SeleniumUtilities.getPageTitle(driver);
+						break;
+					default:
+						if (assertionValues!=null) {
+							expected = assertionValues;
+						}  else if (textFile != null) {
+							expected = textFile;
+						} else {
+							expected = assertionValue;
+						}
+						break;
+				}
+			} catch (ActionException e) {
+				logger.error("Unable aquire assertion expected : " + assertion.getOperationType() , e);
+			}
+		}
+		Object current = null;
+		try {
+			if (paramList != null) {
+				current = extractValues(paramList,
+						assertion.getOperationType(), assertionValue);
+			} else if (paramMatcherList != null) {
+				current = extractValues(paramMatcherList,
+						assertion.getOperationType(), assertionValue);
+			} else if (paramElement != null) {
+				current = extractValue(paramElement,
+						assertion.getOperationType(), assertionValue);
+			} else if (paramMatcherElement != null) {
+				current = extractValue(paramMatcherElement,
+						assertion.getOperationType(), assertionValue);
+			} else if (paramValues != null) {
+				current = paramValues;
+			} else if (paramMatcherValues != null) {
+				current = paramMatcherValues;
+			} else if (paramMatcherValue != null) {
+				current = paramMatcherValue;
+			} else {
+				current = paramValue;
+			}
+		} catch (Exception e) {
+			logger.error("Unable aquire assertion expected : " + assertion.getOperationType() , e);
+		}
+		assertValues(assertion.getType(),assertion.getAssertionTitle(), assertion.getThatMatcherType(),expected, current);
 	}
 
 	public static final void doAssertion(WebDriver driver, XMLTestDOMAssertion assertion, Map<String, Object> caseResults) {
@@ -611,6 +793,41 @@ public class XMLTestCaseUtilities {
 		 */
 		List<WebElement> sourceList = getElementByXML(driver, assertion.getAssertionElement());
 		List<WebElement> targetList = getElementByXML(driver, assertion.getMatcherElement());
+		String sourceValue = assertion.getAttributeSource();
+		String matcherValue = assertion.getAttributeMatcher();
+		if (matcherValue==null) {
+			matcherValue = sourceValue;
+		}
+		List<String> current = new ArrayList<String>(0);
+		List<String> expected = new ArrayList<String>(0);
+		if (sourceList!=null && sourceValue!=null) {
+			for(WebElement element: sourceList) {
+				try {
+					String value = SeleniumUtilities.getAttributeFromElement(
+							element, sourceValue);
+					if (value!=null)
+						current.add(value);
+				} catch (Exception e) {
+				}
+			}
+		}
+		if (targetList!=null && matcherValue!=null) {
+			for(WebElement element: targetList) {
+				try {
+					String value = SeleniumUtilities.getAttributeFromElement(
+							element, matcherValue);
+					if (value!=null)
+						expected.add(value);
+				} catch (Exception e) {
+				}
+			}
+		}
+		for(int i=0;i<current.size();i++) {
+			if (i>=expected.size()) {
+				break;
+			}
+			assertValues(assertion.getType(), assertion.getAssertionTitle(), assertion.getThatMatcherType(), expected.get(i), current.get(i));
+		}
 	}
 
 	private static class CharAndNumber

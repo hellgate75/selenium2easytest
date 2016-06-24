@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.exceptions.NotFoundException;
+import com.selenium2.easy.test.server.xml.SearchType;
 import com.selenium2.easy.test.server.xml.XMLTestGroup;
 
 public class SeleniumUtilities {
@@ -350,6 +351,28 @@ public class SeleniumUtilities {
 			}
 		}
 		return retValue;
+	}
+	
+	public static final By getBy(SearchType type, String searchText) {
+		switch(type) {
+			case NAME:
+				return By.name(searchText);
+			case ID:
+				return By.id(searchText);
+			case CLASS_NAME:
+				return By.className(searchText);
+			case XPATH:
+				return By.xpath(searchText);
+			case TAG:
+				return By.tagName(searchText);
+			case EXACT_LINK:
+				return By.linkText(searchText);
+			case PARTIAL_LINK:
+				return By.partialLinkText(searchText);
+			default:
+				return By.cssSelector(searchText);
+			
+		}
 	}
 	
 	private static class SeleniumHelper {
