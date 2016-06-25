@@ -93,7 +93,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 			throw new FrameworkException(logginPrefix+"Configuration not loaded correctly ...");
 		}
 		try {
-			engineProperties.store(System.out, "No comment");
+			engineProperties.store(System.out, "Selenium2 Engine Configuration");
 		} catch (IOException e2) {
 		}
 		if (!engineProperties.containsKey(SeleniumServerConstants.driverSelector)) {

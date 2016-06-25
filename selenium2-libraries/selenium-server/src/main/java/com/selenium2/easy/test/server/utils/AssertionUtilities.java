@@ -9,6 +9,9 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 import org.hamcrest.Matcher;
 import org.junit.Assert;
 import org.junit.internal.ArrayComparisonFailure;
@@ -25,10 +28,195 @@ public class AssertionUtilities {
 		Assert.assertArrayEquals(message, expected, actual);
 	}
 
+	public static final <T> void assertStartsWith(String message, T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError(message);
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.startsWith(strExpected)) {
+					throw new AssertionError(message);
+				}
+			}
+			else {
+				if (!((String)actual).startsWith(((String)expected))) {
+					throw new AssertionError(message);
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(message, e);
+		}
+	}
+
+	public static final <T> void assertStartsWith(T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError();
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.startsWith(strExpected)) {
+					throw new AssertionError();
+				}
+			}
+			else {
+				if (!((String)actual).startsWith(((String)expected))) {
+					throw new AssertionError();
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(e);
+		}
+	}
+
+	public static final <T> void assertEndsWith(String message, T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError(message);
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.endsWith(strExpected)) {
+					throw new AssertionError(message);
+				}
+			}
+			else {
+				if (!((String)actual).endsWith(((String)expected))) {
+					throw new AssertionError(message);
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(message, e);
+		}
+	}
+
+	public static final <T> void assertEndsWith(T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError();
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.endsWith(strExpected)) {
+					throw new AssertionError();
+				}
+			}
+			else {
+				if (!((String)actual).endsWith(((String)expected))) {
+					throw new AssertionError();
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(e);
+		}
+	}
+
+	public static final <T> void assertStartsIgnoreCaseWith(String message, T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError(message);
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.toLowerCase().startsWith(strExpected.toLowerCase())) {
+					throw new AssertionError(message);
+				}
+			}
+			else {
+				if (!((String)actual).toLowerCase().startsWith(((String)expected).toLowerCase())) {
+					throw new AssertionError(message);
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(message, e);
+		}
+	}
+
+	public static final <T> void assertStartsIgnoreCaseWith(T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError();
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.toLowerCase().startsWith(strExpected.toLowerCase())) {
+					throw new AssertionError();
+				}
+			}
+			else {
+				if (!((String)actual).toLowerCase().startsWith(((String)expected).toLowerCase())) {
+					throw new AssertionError();
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(e);
+		}
+	}
+
+	public static final <T> void assertEndsIgnoreCaseWith(String message, T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError(message);
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.toLowerCase().endsWith(strExpected.toLowerCase())) {
+					throw new AssertionError(message);
+				}
+			}
+			else {
+				if (!((String)actual).toLowerCase().endsWith(((String)expected).toLowerCase())) {
+					throw new AssertionError(message);
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(message, e);
+		}
+	}
+
+	public static final <T> void assertEndsIgnoreCaseWith(T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError();
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (!strActual.toLowerCase().endsWith(strExpected.toLowerCase())) {
+					throw new AssertionError();
+				}
+			}
+			else {
+				if (!((String)actual).toLowerCase().endsWith(((String)expected).toLowerCase())) {
+					throw new AssertionError();
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(e);
+		}
+	}
+
 	public static final <T> void assertEquals(T expected, T actual) throws ArrayComparisonFailure, AssertionError {
 		Assert.assertEquals(expected, actual);
 	}
 
+	
 	public static final <T> void assertEquals(String message, T expected, T actual) throws AssertionError {
 		Assert.assertEquals(message, expected, actual);
 	}

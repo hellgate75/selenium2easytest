@@ -1,52 +1,43 @@
 package com.selenium2.easy.test.server.xml;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement(name = "assertion")
 public class XMLTestAssertion {
 
-	@XmlAttribute(name="type", required=false)
-	@XmlValue
 	private AssertionType type;
 
-	@XmlAttribute(name="thatMatcher", required=false)
-	@XmlValue
 	private AssertionThatMatcherType thatMatcherType;
 
-	@XmlAttribute(name="title", required=true)
 	private String assertionTitle;
+
+	private Long assertionTimeoutInSeconds=0L;
 	
-	@XmlAttribute(name="useResult", required=false)
 	private String useResult;
 	
-	@XmlAttribute(name="useMatcherResult", required=false)
 	private String useMatcherResult;
 
-	@XmlAttribute(name="operation", required=false)
-	@XmlValue
 	private AssertionOperationType operationType;
 
-	@XmlAttribute(name="useValues", required=false)
 	private Boolean useValue = Boolean.FALSE;
 	
-	@XmlAttribute(name="values", required=false)
 	private List<String> values;
-	
-	@XmlAttribute(name="value", required=false)
-	private String value;
 
-	@XmlAttribute(name="useFile", required=false)
 	private Boolean useTextFile = Boolean.FALSE;
 	
-	@XmlAttribute(name="file", required=false)
 	private String textFile;
 	
 	public AssertionType getType() {
 		return type;
 	}
 
+	@XmlAttribute(name="type", required=false)
 	public void setType(AssertionType type) {
 		this.type = type;
 	}
@@ -55,8 +46,14 @@ public class XMLTestAssertion {
 		return values;
 	}
 
+	@XmlElement(name="value", required=false)
 	public void setValues(List<String> values) {
-		this.values = values;
+		if (this.values==null) {
+			this.values = values;
+		}
+		else {
+			values.addAll(values);
+		}
 	}
 
 	public String getAssertionTitle() {
@@ -64,13 +61,18 @@ public class XMLTestAssertion {
 	}
 
 	public String getValue() {
-		return value;
+		return values!=null && values.size()==1 ? values.get(0) : null;
 	}
 
+	@XmlTransient
 	public void setValue(String value) {
-		this.value = value;
+		if (this.values==null) {
+			this.values=new ArrayList<String>(0);
+		}
+		this.values.add(value);
 	}
 
+	@XmlAttribute(name="title", required=true)
 	public void setAssertionTitle(String assertionTitle) {
 		this.assertionTitle = assertionTitle;
 	}
@@ -79,6 +81,7 @@ public class XMLTestAssertion {
 		return textFile;
 	}
 
+	@XmlAttribute(name="file", required=false)
 	public void setTextFile(String textFile) {
 		this.textFile = textFile;
 	}
@@ -87,6 +90,7 @@ public class XMLTestAssertion {
 		return useResult;
 	}
 
+	@XmlAttribute(name="useResult", required=false)
 	public void setUseResult(String useResult) {
 		this.useResult = useResult;
 	}
@@ -99,10 +103,12 @@ public class XMLTestAssertion {
 		return useMatcherResult;
 	}
 
+	@XmlAttribute(name="useMatcherResult", required=false)
 	public void setUseMatcherResult(String useMatcherResult) {
 		this.useMatcherResult = useMatcherResult;
 	}
 
+	@XmlAttribute(name="operation", required=false)
 	public void setOperationType(AssertionOperationType operationType) {
 		this.operationType = operationType;
 	}
@@ -111,6 +117,7 @@ public class XMLTestAssertion {
 		return useValue;
 	}
 
+	@XmlAttribute(name="useValues", required=false)
 	public void setUseValue(Boolean useValue) {
 		this.useValue = useValue;
 	}
@@ -119,6 +126,7 @@ public class XMLTestAssertion {
 		return useTextFile;
 	}
 
+	@XmlAttribute(name="useFile", required=false)
 	public void setUseTextFile(Boolean useTextFile) {
 		this.useTextFile = useTextFile;
 	}
@@ -127,8 +135,18 @@ public class XMLTestAssertion {
 		return thatMatcherType;
 	}
 
+	@XmlAttribute(name="thatMatcher", required=false)
 	public void setThatMatcherType(AssertionThatMatcherType thatMatcherType) {
 		this.thatMatcherType = thatMatcherType;
+	}
+
+	public Long getAssertionTimeoutInSeconds() {
+		return assertionTimeoutInSeconds;
+	}
+
+	@XmlAttribute(name="timeout", required=true)
+	public void setAssertionTimeoutInSeconds(Long assertionTimeoutInSeconds) {
+		this.assertionTimeoutInSeconds = assertionTimeoutInSeconds;
 	}
 
 }

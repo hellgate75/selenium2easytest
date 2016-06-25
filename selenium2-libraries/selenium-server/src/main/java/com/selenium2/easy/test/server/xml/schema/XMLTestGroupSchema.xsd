@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="action" type="xmlTestCaseAction"/>
+
+  <xs:element name="assertion" type="xmlTestAssertion"/>
+
+  <xs:element name="case" type="xmlTestCase"/>
+
+  <xs:element name="caseGroup" type="xmlTestGroup"/>
+
+  <xs:element name="element" type="xmlWebElement"/>
+
+  <xs:element name="operation" type="xmlTestOperation"/>
+
+  <xs:element name="snapshoot" type="xmlTakeSnpshoot"/>
+
+  <xs:element name="url" type="xmlTestURL"/>
+
+  <xs:complexType name="xmlTestDOMAssertion">
+    <xs:sequence minOccurs="0">
+      <xs:element ref="element"/>
+      <xs:element name="matchElement" type="xmlWebElement" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="timeout" type="xs:long" use="required"/>
+    <xs:attribute name="title" type="xs:string" use="required"/>
+    <xs:attribute name="attributeMatcher" type="xs:string" use="optional"/>
+    <xs:attribute name="attributeSource" type="xs:string" use="optional"/>
+    <xs:attribute name="matchElement" type="searchType" use="optional"/>
+    <xs:attribute name="thatMatcher" type="assertionThatMatcherType" use="optional"/>
+    <xs:attribute name="type" type="assertionType" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlWebElement">
+    <xs:sequence/>
+    <xs:attribute name="by" type="searchType" use="required"/>
+    <xs:attribute name="multiple" type="xs:boolean" use="optional"/>
+    <xs:attribute name="query" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTestOperation">
+    <xs:sequence minOccurs="0">
+      <xs:element name="source" type="xmlWebElement" minOccurs="0"/>
+      <xs:element name="target" type="xmlWebElement" minOccurs="0"/>
+      <xs:element name="value" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="operationType"/>
+    <xs:attribute name="resultAs" type="xs:string"/>
+    <xs:attribute name="targetInSource" type="xs:boolean"/>
+    <xs:attribute name="useResult" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTestCaseAction">
+    <xs:sequence minOccurs="0">
+      <xs:element ref="snapshoot" minOccurs="0"/>
+      <xs:element ref="url" minOccurs="0"/>
+      <xs:element ref="assertion" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element ref="operation" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="useURL" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTakeSnpshoot">
+    <xs:sequence minOccurs="0">
+      <xs:element ref="element" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="extension" type="xs:string" use="optional"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="directory" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTestURL">
+    <xs:sequence minOccurs="0">
+      <xs:element name="hostQueryString" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence minOccurs="0">
+            <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="key" minOccurs="0" type="xs:string"/>
+                  <xs:element name="value" minOccurs="0" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="hostname" type="xs:string" use="required"/>
+    <xs:attribute name="password" type="xs:string" use="optional"/>
+    <xs:attribute name="path" type="xs:string" use="optional"/>
+    <xs:attribute name="port" type="xs:string" use="optional"/>
+    <xs:attribute name="user" type="xs:string" use="optional"/>
+    <xs:attribute name="protocol" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTestAssertion">
+    <xs:sequence minOccurs="0">
+      <xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="timeout" type="xs:long" use="required"/>
+    <xs:attribute name="title" type="xs:string" use="required"/>
+    <xs:attribute name="operation" type="assertionOperationType" use="optional"/>
+    <xs:attribute name="file" type="xs:string" use="optional"/>
+    <xs:attribute name="thatMatcher" type="assertionThatMatcherType" use="optional"/>
+    <xs:attribute name="type" type="assertionType" use="optional"/>
+    <xs:attribute name="useMatcherResult" type="xs:string" use="optional"/>
+    <xs:attribute name="useResult" type="xs:string" use="optional"/>
+    <xs:attribute name="useFile" type="xs:boolean" use="optional"/>
+    <xs:attribute name="useValues" type="xs:boolean" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTestCase">
+    <xs:sequence minOccurs="0">
+      <xs:element name="childCase" type="xmlTestCase" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="url" minOccurs="0"/>
+      <xs:element name="securityInfo" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence minOccurs="0">
+            <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="key" minOccurs="0" type="xs:string"/>
+                  <xs:element name="value" minOccurs="0" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element ref="action" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="assertion" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="domAssertion" type="xmlTestDOMAssertion" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="inheritEnvironment" type="xs:boolean" use="optional"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="retrowException" type="xs:boolean" use="optional"/>
+    <xs:attribute name="secureAccess" type="xs:boolean" use="optional"/>
+    <xs:attribute name="useUrl" type="xs:boolean" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="xmlTestGroup">
+    <xs:sequence minOccurs="0">
+      <xs:element ref="snapshoot" minOccurs="0"/>
+      <xs:element ref="case" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="allowDependencies" type="xs:boolean" use="optional"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="version" type="xs:string" use="required"/>
+    <xs:attribute name="implmentation" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:simpleType name="searchType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NAME"/>
+      <xs:enumeration value="CLASS_NAME"/>
+      <xs:enumeration value="CSS_SELECTOR"/>
+      <xs:enumeration value="ID"/>
+      <xs:enumeration value="EXACT_LINK"/>
+      <xs:enumeration value="PARTIAL_LINK"/>
+      <xs:enumeration value="TAG"/>
+      <xs:enumeration value="XPATH"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="assertionThatMatcherType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ANY"/>
+      <xs:enumeration value="ANYTHING"/>
+      <xs:enumeration value="EQUALS_TO"/>
+      <xs:enumeration value="INSTANCE_OF"/>
+      <xs:enumeration value="IS"/>
+      <xs:enumeration value="NOT"/>
+      <xs:enumeration value="NOT_NULL"/>
+      <xs:enumeration value="NULL"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="assertionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EQUALS"/>
+      <xs:enumeration value="NOT_EQUALS"/>
+      <xs:enumeration value="TRUE"/>
+      <xs:enumeration value="FALSE"/>
+      <xs:enumeration value="ARRAY_EQUALS"/>
+      <xs:enumeration value="NULL"/>
+      <xs:enumeration value="NOT_NULL"/>
+      <xs:enumeration value="SAME"/>
+      <xs:enumeration value="NOT_SAME"/>
+      <xs:enumeration value="THAT"/>
+      <xs:enumeration value="STARTS_WITH"/>
+      <xs:enumeration value="STARTS_WITH_IGNORE_CASE"/>
+      <xs:enumeration value="ENDS_WITH"/>
+      <xs:enumeration value="ENDS_WITH_IGNORE_CASE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="operationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CLEAR_VALUE"/>
+      <xs:enumeration value="CLICK_ACTION"/>
+      <xs:enumeration value="FIND_ONE"/>
+      <xs:enumeration value="FIND_MANY"/>
+      <xs:enumeration value="FIND_WITHIN"/>
+      <xs:enumeration value="GET_ATTRIBUTE"/>
+      <xs:enumeration value="GET_CSS"/>
+      <xs:enumeration value="GET_LOCATION"/>
+      <xs:enumeration value="GET_PAGE_SOURCE"/>
+      <xs:enumeration value="GET_PAGE_TITLE"/>
+      <xs:enumeration value="GET_RECT"/>
+      <xs:enumeration value="GET_SIZE"/>
+      <xs:enumeration value="GET_TAG"/>
+      <xs:enumeration value="IS_DISPLAYED"/>
+      <xs:enumeration value="IS_ENABLED"/>
+      <xs:enumeration value="IS_SELECTED"/>
+      <xs:enumeration value="SET_VALUE"/>
+      <xs:enumeration value="SUBMIT_ACTION"/>
+      <xs:enumeration value="TAKE_SCREENSHOT_FROM"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="assertionOperationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IS_DISPLAYED"/>
+      <xs:enumeration value="IS_ENABLED"/>
+      <xs:enumeration value="IS_SELECTED"/>
+      <xs:enumeration value="GET_ATTRIBUTE"/>
+      <xs:enumeration value="GET_CSS"/>
+      <xs:enumeration value="GET_LOCATION"/>
+      <xs:enumeration value="GET_PAGE_SOURCE"/>
+      <xs:enumeration value="GET_PAGE_TITLE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

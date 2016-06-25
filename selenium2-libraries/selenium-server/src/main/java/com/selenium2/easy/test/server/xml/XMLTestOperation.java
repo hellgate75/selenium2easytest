@@ -4,39 +4,30 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "operation")
 public class XMLTestOperation {
 
-	@XmlAttribute(name="type", required=false)
-	@XmlValue
 	private OperationType operationType;
 	
-	@XmlAttribute(name="resultAs", required=false)
 	private String resultAs;
 	
-	@XmlAttribute(name="useResult", required=false)
 	private String useResult;
 	
-	@XmlAttribute(name="values", required=true)
 	private List<String> valueList;
 
-	@XmlAttribute(name="targetInSource", required=false)
 	private Boolean targetInSource=Boolean.FALSE;
 
-	@XmlElement(name="target", type=XMLWebElement.class, required=false)
 	private XMLWebElement targetElement;
 
-	@XmlElement(name="source", type=XMLWebElement.class, required=false)
 	private XMLWebElement sourceElement;
-
-	@XmlAttribute(name="operations", required=true)
-	private List<XMLTestOperation> operationList;
 
 	public OperationType getOperationType() {
 		return operationType;
 	}
 
+	@XmlAttribute(name="type", required=false)
 	public void setOperationType(OperationType operationType) {
 		this.operationType = operationType;
 	}
@@ -45,6 +36,7 @@ public class XMLTestOperation {
 		return resultAs;
 	}
 
+	@XmlAttribute(name="resultAs", required=false)
 	public void setResultAs(String resultAs) {
 		this.resultAs = resultAs;
 	}
@@ -53,6 +45,7 @@ public class XMLTestOperation {
 		return useResult;
 	}
 
+	@XmlAttribute(name="useResult", required=false)
 	public void setUseResult(String useResult) {
 		this.useResult = useResult;
 	}
@@ -61,6 +54,7 @@ public class XMLTestOperation {
 		return valueList;
 	}
 
+	@XmlElement(name="value", required=true)
 	public void setValueList(List<String> valueList) {
 		this.valueList = valueList;
 	}
@@ -69,6 +63,7 @@ public class XMLTestOperation {
 		return targetElement;
 	}
 
+	@XmlElement(name="target", type=XMLWebElement.class, required=false)
 	public void setTargetElement(XMLWebElement targetElement) {
 		this.targetElement = targetElement;
 	}
@@ -77,22 +72,16 @@ public class XMLTestOperation {
 		return sourceElement;
 	}
 
+	@XmlElement(name="source", type=XMLWebElement.class, required=false)
 	public void setSourceElement(XMLWebElement sourceElement) {
 		this.sourceElement = sourceElement;
-	}
-
-	public List<XMLTestOperation> getOperationList() {
-		return operationList;
-	}
-
-	public void setOperationList(List<XMLTestOperation> operationList) {
-		this.operationList = operationList;
 	}
 
 	public Boolean getTargetInSource() {
 		return targetInSource;
 	}
 
+	@XmlAttribute(name="targetInSource", required=false)
 	public void setTargetInSource(Boolean targetInSource) {
 		this.targetInSource = targetInSource;
 	}

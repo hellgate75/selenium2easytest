@@ -10,32 +10,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="caseGroup")
 public class XMLTestGroup {
 
-	@XmlAttribute(name="name", required=true)
 	private String groupName;
 
-	@XmlAttribute(name="version", required=true)
 	private String groupVersion;
 
-	@XmlAttribute(name="testClass", required=false)
 	private String implementationClassFullName;
 
-	@XmlAttribute(name="allowDependencies", required=false)
 	private Boolean allowDependencies = Boolean.FALSE;
 
-	@XmlElement(name="cases", type=XMLTestCase.class, required=true)
 	private List<XMLTestCase> testCases = new ArrayList<XMLTestCase>(0);
 	
-	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	private XMLTakeSnpshoot groupSnapshoot;
 
 	public String getGroupName() {
 		return groupName;
 	}
 
+	@XmlAttribute(name="name", required=true)
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
 
+	@XmlAttribute(name="version", required=true)
 	public String getGroupVersion() {
 		return groupVersion;
 	}
@@ -48,6 +44,7 @@ public class XMLTestGroup {
 		return implementationClassFullName;
 	}
 
+	@XmlAttribute(name="implmentation", required=false)
 	public void setImplementationClassFullName(String implementationClassFullName) {
 		this.implementationClassFullName = implementationClassFullName;
 	}
@@ -56,6 +53,7 @@ public class XMLTestGroup {
 		return allowDependencies;
 	}
 
+	@XmlAttribute(name="allowDependencies", required=false)
 	public void setAllowDependencies(Boolean allowDependencies) {
 		this.allowDependencies = allowDependencies;
 	}
@@ -64,6 +62,7 @@ public class XMLTestGroup {
 		return testCases;
 	}
 
+	@XmlElement(name="case", type=XMLTestCase.class, required=true)
 	public void setTestCases(List<XMLTestCase> testCases) {
 		this.testCases = testCases;
 	}
@@ -72,8 +71,10 @@ public class XMLTestGroup {
 		return groupSnapshoot;
 	}
 
+	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	public void setGroupSnapshoot(XMLTakeSnpshoot groupSnapshoot) {
 		this.groupSnapshoot = groupSnapshoot;
 	}
-	
+
+
 }

@@ -7,22 +7,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "snapshoot")
 public class XMLTakeSnpshoot {
 	
-	@XmlAttribute(name="directory", required=false)
 	private String folder=".";
 
-	@XmlAttribute(name="name", required=true)
 	private String fileName;
 
-	@XmlAttribute(name="extension", required=false)
 	private String fileExtension="png";
 
-	@XmlElement(name="element", type=XMLWebElement.class, required=false)
 	private XMLWebElement snapshootElement;
 
 	public String getFolder() {
 		return folder;
 	}
 
+	@XmlAttribute(name="directory", required=false)
 	public void setFolder(String folder) {
 		this.folder = folder;
 	}
@@ -31,6 +28,7 @@ public class XMLTakeSnpshoot {
 		return fileName;
 	}
 
+	@XmlAttribute(name="name", required=true)
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -39,10 +37,12 @@ public class XMLTakeSnpshoot {
 		return fileExtension;
 	}
 
+	@XmlAttribute(name="extension", required=false)
 	public void setFileExtension(String fileExtension) {
 		this.fileExtension = fileExtension;
 	}
 
+	@XmlElement(name="element", type=XMLWebElement.class, required=false)
 	public XMLWebElement getSnapshootElement() {
 		return snapshootElement;
 	}

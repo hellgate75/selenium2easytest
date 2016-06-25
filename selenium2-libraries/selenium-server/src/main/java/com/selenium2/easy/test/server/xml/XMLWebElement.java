@@ -1,28 +1,26 @@
 package com.selenium2.easy.test.server.xml;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlValue;
 
 import org.openqa.selenium.By;
 
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 
+@XmlRootElement(name = "element")
 public class XMLWebElement {
-	@XmlAttribute(name="by", required=true)
-	@XmlValue
 	private SearchType by;
 
-	@XmlAttribute(name="query", required=true)
 	private String searchText;
 	
-	@XmlAttribute(name="multiple", required=false)
 	private Boolean multipleMatches = Boolean.FALSE;
 
 	public SearchType getBy() {
 		return by;
 	}
 
+	@XmlAttribute(name="by", required=true)
 	public void setBy(SearchType by) {
 		this.by = by;
 	}
@@ -31,6 +29,7 @@ public class XMLWebElement {
 		return searchText;
 	}
 
+	@XmlAttribute(name="query", required=true)
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
 	}
@@ -39,6 +38,7 @@ public class XMLWebElement {
 		return multipleMatches;
 	}
 
+	@XmlAttribute(name="multiple", required=false)
 	public void setMultipleMatches(Boolean multipleMatches) {
 		this.multipleMatches = multipleMatches;
 	}

@@ -6,50 +6,36 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
-
-import com.selenium2.easy.test.server.automated.WebDriverFactory.SELECTOR_TYPE;
 
 @XmlRootElement(name = "case")
 public class XMLTestCase {
-	@XmlAttribute(required=true)
 	private String name;
 	
-	@XmlAttribute(required=true)
-	private boolean useUrl;
+	private  Boolean useUrl = Boolean.FALSE;
 	
-	@XmlElement(name="url", type=XMLTestURL.class,required=false)
 	private XMLTestURL connectionURL;
 	
-	@XmlAttribute(required=false)
-	private boolean retrowException=Boolean.FALSE;
+	private Boolean retrowException=Boolean.FALSE;
 	
-	@XmlElement(name="children", type=XMLTestCase.class, required=false)
 	private List<XMLTestCase> childrenCases;
 
-	@XmlAttribute(required=true)
-	private boolean secureAccess;
+	private Boolean secureAccess = Boolean.FALSE;
 
-	@XmlAttribute(required=false)
-	@XmlValue
-	private SELECTOR_TYPE webDriverSelector;
+	private Boolean inheritEnvironment = Boolean.FALSE;
 
-	@XmlAttribute(name="security", required=false)
 	private Map<String, String> securityInfo;
 	
-	@XmlAttribute(name="actions", required=false)
 	private List<XMLTestCaseAction> testCaseActions;
 
-	@XmlAttribute(name="assertions", required=false)
 	private List<XMLTestAssertion> testCaseAssertions;
 
-	@XmlAttribute(name="domAssertions", required=false)
 	private List<XMLTestDOMAssertion> testCaseDOMAssertions;
 
 	public List<XMLTestDOMAssertion> getTestCaseDOMAssertions() {
 		return testCaseDOMAssertions;
 	}
 
+	@XmlElement(name="domAssertion", required=false)
 	public void setTestCaseDOMAssertions(
 			List<XMLTestDOMAssertion> testCaseDOMAssertions) {
 		this.testCaseDOMAssertions = testCaseDOMAssertions;
@@ -59,6 +45,7 @@ public class XMLTestCase {
 		return name;
 	}
 
+	@XmlAttribute(required=true)
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -67,6 +54,7 @@ public class XMLTestCase {
 		return connectionURL;
 	}
 
+	@XmlElement(name="url", type=XMLTestURL.class,required=false)
 	public void setConnectionURL(XMLTestURL connectionURL) {
 		this.connectionURL = connectionURL;
 	}
@@ -75,38 +63,34 @@ public class XMLTestCase {
 		return childrenCases;
 	}
 
+	@XmlElement(name="childCase", type=XMLTestCase.class, required=false)
 	public void setChildrenCases(List<XMLTestCase> childrenCases) {
 		this.childrenCases = childrenCases;
 	}
 
-	public boolean isUseUrl() {
+	public Boolean getUseUrl() {
 		return useUrl;
 	}
 
-	public void setUseUrl(boolean useUrl) {
+	@XmlAttribute(required=false)
+	public void setUseUrl(Boolean useUrl) {
 		this.useUrl = useUrl;
 	}
 
-	public boolean isSecureAccess() {
+	public Boolean getSecureAccess() {
 		return secureAccess;
 	}
 
-	public void setSecureAccess(boolean secureAccess) {
+	@XmlAttribute(required=true)
+	public void setSecureAccess(Boolean secureAccess) {
 		this.secureAccess = secureAccess;
-	}
-
-	public SELECTOR_TYPE getWebDriverSelector() {
-		return webDriverSelector;
-	}
-
-	public void setWebDriverSelector(SELECTOR_TYPE webDriverSelector) {
-		this.webDriverSelector = webDriverSelector;
 	}
 
 	public Map<String, String> getSecurityInfo() {
 		return securityInfo;
 	}
 
+	@XmlElement(name="security", required=false)
 	public void setSecurityInfo(Map<String, String> securityInfo) {
 		this.securityInfo = securityInfo;
 	}
@@ -115,15 +99,17 @@ public class XMLTestCase {
 		return testCaseActions;
 	}
 
+	@XmlElement(name="action", required=false)
 	public void setTestCaseActions(List<XMLTestCaseAction> testCaseActions) {
 		this.testCaseActions = testCaseActions;
 	}
 
-	public boolean isRetrowException() {
+	public Boolean getRetrowException() {
 		return retrowException;
 	}
 
-	public void setRetrowException(boolean retrowException) {
+	@XmlAttribute(required=false)
+	public void setRetrowException(Boolean retrowException) {
 		this.retrowException = retrowException;
 	}
 
@@ -131,8 +117,18 @@ public class XMLTestCase {
 		return testCaseAssertions;
 	}
 
+	@XmlElement(name="assertion", required=false)
 	public void setTestCaseAssertions(List<XMLTestAssertion> testCaseAssertions) {
 		this.testCaseAssertions = testCaseAssertions;
+	}
+
+	public Boolean getInheritEnvironment() {
+		return inheritEnvironment;
+	}
+
+	@XmlAttribute(required=false)
+	public void setInheritEnvironment(Boolean inheritEnvironment) {
+		this.inheritEnvironment = inheritEnvironment;
 	}
 	
 }

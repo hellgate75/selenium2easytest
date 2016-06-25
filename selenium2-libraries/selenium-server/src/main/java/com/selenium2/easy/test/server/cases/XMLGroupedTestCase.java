@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
+import com.selenium2.easy.test.server.exceptions.ActionException;
+import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
 import com.selenium2.easy.test.server.xml.XMLTestAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
@@ -31,7 +33,7 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	 * @throws RuntimeException
 	 */
 	public XMLGroupedTestCase(String groupName, XMLTestCase testCase) throws NullPointerException, RuntimeException {
-		super(testCase.getName(), testCase.getConnectionURL().getFormattedURL(), testCase.isUseUrl(), testCase.isRetrowException());
+		super(testCase.getName(), testCase.getConnectionURL()!=null ? testCase.getConnectionURL().getFormattedURL() : null, testCase.getUseUrl(), testCase.getRetrowException());
 		this.groupName = groupName;
 		this.testCase = testCase;
 	}
@@ -49,7 +51,7 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	 */
 	@Override
 	public boolean isSecureConnection() {
-		return testCase.isSecureAccess();
+		return testCase.getSecureAccess();
 	}
 
 	/* (non-Javadoc)
@@ -60,30 +62,53 @@ public class XMLGroupedTestCase extends BaseTestCase {
 		return new XMLGroupedTestCase(this.groupName, this.testCase);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.TestCase#automatedTest(org.openqa.selenium.WebDriver)
-	 */
-	@Override
-	public void automatedTest(WebDriver driver) throws Throwable {
+	private static synchronized Map<String, Object> executeCase(WebDriver driver, XMLTestCase testCase, Map<String, Object> previousReultsMap) throws ActionException {
 		Map<String, Object> resultsMap = new HashMap<String, Object>(0);
-		if (this.testCase.getTestCaseActions()!=null) {
-			for(XMLTestCaseAction action: this.testCase.getTestCaseActions()) {
+		if (testCase.getTestCaseActions()!=null) {
+			for(XMLTestCaseAction action: testCase.getTestCaseActions()) {
 				Map<String, Object> temporaryMap = XMLTestCaseUtilities.doAction(driver, action);
 				if (temporaryMap.size()>0) {
 					resultsMap.putAll(temporaryMap);
 				}
 			}
 		}
-		if (this.testCase.getTestCaseAssertions()!=null) {
-			for(XMLTestAssertion assertion: this.testCase.getTestCaseAssertions()) {
+		if (testCase.getInheritEnvironment())
+			previousReultsMap.putAll(resultsMap);
+		if (testCase.getTestCaseAssertions()!=null) {
+			for(XMLTestAssertion assertion: testCase.getTestCaseAssertions()) {
+				long timeout = assertion.getAssertionTimeoutInSeconds();
+				if (timeout>0) {
+					SeleniumUtilities.waitForLoad(driver, timeout);
+				}
 				XMLTestCaseUtilities.doAssertion(driver, assertion, resultsMap);
 			}
 		}
-		if (this.testCase.getTestCaseDOMAssertions()!=null) {
-			for(XMLTestDOMAssertion assertion: this.testCase.getTestCaseDOMAssertions()) {
+		if (testCase.getTestCaseDOMAssertions()!=null) {
+			for(XMLTestDOMAssertion assertion: testCase.getTestCaseDOMAssertions()) {
+				long timeout = assertion.getAssertionTimeoutInSeconds();
+				if (timeout>0) {
+					SeleniumUtilities.waitForLoad(driver, timeout);
+				}
 				XMLTestCaseUtilities.doAssertion(driver, assertion, resultsMap);
 			}
 		}
+		if (testCase.getChildrenCases()!=null) {
+			for(XMLTestCase childCase: testCase.getChildrenCases()) {
+				resultsMap = executeCase(driver, childCase, resultsMap);
+			}
+		}
+		if (!testCase.getInheritEnvironment())
+			previousReultsMap.putAll(resultsMap);
+		return previousReultsMap;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.cases.TestCase#automatedTest(org.openqa.selenium.WebDriver)
+	 */
+	@Override
+	public void automatedTest(WebDriver driver) throws Throwable {
+		Map<String, Object> resultsMap = new HashMap<String, Object>(0);
+		executeCase(driver, this.testCase, resultsMap);
 	}
 
 }

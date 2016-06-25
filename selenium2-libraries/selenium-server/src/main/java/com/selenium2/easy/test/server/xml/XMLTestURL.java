@@ -3,37 +3,34 @@ package com.selenium2.easy.test.server.xml;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 
+@XmlRootElement(name = "url")
 public class XMLTestURL {
 
-	@XmlAttribute(name="protocol", required=false)
-	private String protocol = "http;";
+	private String protocol = "http";
 
-	@XmlAttribute(name="hostname", required=true)
 	private String hostName;
 
-	@XmlAttribute(name="port", required=false)
 	private String hostPort;
 
-	@XmlAttribute(name="user", required=false)
 	private String hostUser;
 
-	@XmlAttribute(name="password", required=false)
 	private String hostPassword;
 
-	@XmlAttribute(name="path", required=false)
 	private String hostPath;
 
-	@XmlAttribute(name="query", required=false)
 	private Map<String, String> hostQueryString;
 
 	public String getProtocol() {
 		return protocol;
 	}
 
+	@XmlAttribute(name="protocol", required=false)
 	public void setProtocol(String protocol) {
 		this.protocol = protocol;
 	}
@@ -42,6 +39,7 @@ public class XMLTestURL {
 		return hostName;
 	}
 
+	@XmlAttribute(name="hostname", required=true)
 	public void setHostName(String hostName) {
 		this.hostName = hostName;
 	}
@@ -50,6 +48,7 @@ public class XMLTestURL {
 		return hostPort;
 	}
 
+	@XmlAttribute(name="port", required=false)
 	public void setHostPort(String hostPort) {
 		this.hostPort = hostPort;
 	}
@@ -58,6 +57,7 @@ public class XMLTestURL {
 		return hostUser;
 	}
 
+	@XmlAttribute(name="user", required=false)
 	public void setHostUser(String hostUser) {
 		this.hostUser = hostUser;
 	}
@@ -66,6 +66,7 @@ public class XMLTestURL {
 		return hostPassword;
 	}
 
+	@XmlAttribute(name="password", required=false)
 	public void setHostPassword(String hostPassword) {
 		this.hostPassword = hostPassword;
 	}
@@ -74,6 +75,7 @@ public class XMLTestURL {
 		return hostPath;
 	}
 
+	@XmlAttribute(name="path", required=false)
 	public void setHostPath(String hostPath) {
 		this.hostPath = hostPath;
 	}
@@ -82,6 +84,7 @@ public class XMLTestURL {
 		return hostQueryString;
 	}
 
+	@XmlElement(name="query", required=false)
 	public void setHostQueryString(Map<String, String> hostQueryString) {
 		this.hostQueryString = hostQueryString;
 	}

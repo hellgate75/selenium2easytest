@@ -4,36 +4,35 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "action")
 public class XMLTestCaseAction {
 	
-	@XmlAttribute(required=true)
-	private boolean useUrl;
+	private Boolean useURL = Boolean.FALSE;
 	
-	@XmlElement(name="url", type=XMLTestURL.class,required=false)
 	private XMLTestURL connectionURL;
 	
-	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	private XMLTakeSnpshoot caseSnapshoot;
 	
-	@XmlAttribute(name="operations", required=true)
 	private List<XMLTestOperation> testOperations;
 
-	@XmlAttribute(name="assertions", required=true)
 	private List<XMLTestAssertion> testAssertions;
 
-	public boolean isChangeURL() {
-		return useUrl;
+	public Boolean getUseURL() {
+		return useURL;
 	}
 
-	public void setChangeURL(boolean changeURL) {
-		this.useUrl = changeURL;
+	@XmlAttribute(required=true)
+	public void setUseURL(Boolean changeURL) {
+		this.useURL = changeURL;
 	}
 
 	public XMLTestURL getConnectionUrl() {
 		return connectionURL;
 	}
 
+	@XmlElement(name="url", type=XMLTestURL.class,required=false)
 	public void setConnectionUrl(XMLTestURL connectionUrl) {
 		this.connectionURL = connectionUrl;
 	}
@@ -42,6 +41,7 @@ public class XMLTestCaseAction {
 		return caseSnapshoot;
 	}
 
+	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	public void setCaseSnapshoot(XMLTakeSnpshoot caseSnapshoot) {
 		this.caseSnapshoot = caseSnapshoot;
 	}
@@ -50,6 +50,7 @@ public class XMLTestCaseAction {
 		return testOperations;
 	}
 
+	@XmlElement(name="operation", required=true)
 	public void setTestOperations(List<XMLTestOperation> testOperations) {
 		this.testOperations = testOperations;
 	}
@@ -58,6 +59,7 @@ public class XMLTestCaseAction {
 		return testAssertions;
 	}
 
+	@XmlElement(name="assertion", required=true)
 	public void setTestAssertions(List<XMLTestAssertion> testAssertions) {
 		this.testAssertions = testAssertions;
 	}

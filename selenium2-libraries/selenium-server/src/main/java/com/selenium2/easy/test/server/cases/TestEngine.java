@@ -146,13 +146,13 @@ public class TestEngine implements Callable<UserCaseResult>{
 	public void addCasesByXMLDirectory(String directory) throws FrameworkException {
 		try {
 			FilenameFilter filter = new PatternFilenameFilter(".*\\.xml");
-			String[] xmlFiles = new File(directory).list(filter);
-			for(String xmlFile: xmlFiles) {
-				XMLTestGroup testGroup = SeleniumUtilities.loadXMLTestFramework(new File(xmlFile));
+			File[] xmlFiles = new File(directory).listFiles(filter);
+			for(File xmlFile: xmlFiles) {
+				XMLTestGroup testGroup = SeleniumUtilities.loadXMLTestFramework(xmlFile);
 				for(XMLTestCase testCase: testGroup.getTestCases()) {
 					try {
 						if (testGroup.getImplementationClassFullName()==null) {
-							BaseTestCase xmlTestCase = new XMLGroupedTestCase(testGroup.getGroupName(), testCase);
+							BaseTestCase xmlTestCase = new XMLGroupedTestCase(testGroup.getGroupName() + (testGroup.getGroupVersion()!=null ? "@" + testGroup.getGroupVersion(): ""), testCase);
 							if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
 								caseList.add(xmlTestCase);
 							}

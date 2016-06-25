@@ -2,41 +2,32 @@ package com.selenium2.easy.test.server.xml;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlValue;
 
 public class XMLTestDOMAssertion {
 
-	@XmlAttribute(name="type", required=false)
-	@XmlValue
 	private AssertionType type;
 
-	@XmlAttribute(name="thatMatcher", required=false)
-	@XmlValue
 	private AssertionThatMatcherType thatMatcherType;
 
-	@XmlAttribute(name="title", required=true)
 	private String assertionTitle;
 
-	@XmlElement(name="element", type=XMLWebElement.class, required=true)
+	private Long assertionTimeoutInSeconds=0L;
+
 	private XMLWebElement assertionElement;
 
-	@XmlElement(name="matchElement", type=XMLWebElement.class, required=false)
 	private XMLWebElement matcherElement;
 	
-	@XmlAttribute(name="matchElement", required=false)
-	@XmlValue
 	private SearchType matchType;
 
-	@XmlAttribute(name="attributeSource", required=false)
 	private String attributeSource;
 
-	@XmlAttribute(name="attributeMatcher", required=false)
 	private String attributeMatcher;
 
 	public AssertionType getType() {
 		return type;
 	}
 
+	@XmlAttribute(name="type", required=false)
 	public void setType(AssertionType type) {
 		this.type = type;
 	}
@@ -45,6 +36,7 @@ public class XMLTestDOMAssertion {
 		return assertionElement;
 	}
 
+	@XmlElement(name="element", type=XMLWebElement.class, required=true)
 	public void setAssertionElement(XMLWebElement assertionElement) {
 		this.assertionElement = assertionElement;
 	}
@@ -53,6 +45,7 @@ public class XMLTestDOMAssertion {
 		return matcherElement;
 	}
 
+	@XmlElement(name="matchElement", type=XMLWebElement.class, required=false)
 	public void setMatcherElement(XMLWebElement matcherElement) {
 		this.matcherElement = matcherElement;
 	}
@@ -61,6 +54,7 @@ public class XMLTestDOMAssertion {
 		return matchType;
 	}
 
+	@XmlAttribute(name="matchElement", required=false)
 	public void setMatchType(SearchType matchType) {
 		this.matchType = matchType;
 	}
@@ -69,6 +63,7 @@ public class XMLTestDOMAssertion {
 		return attributeSource;
 	}
 
+	@XmlAttribute(name="attributeSource", required=false)
 	public void setAttributeSource(String attributeSource) {
 		this.attributeSource = attributeSource;
 	}
@@ -77,6 +72,7 @@ public class XMLTestDOMAssertion {
 		return attributeMatcher;
 	}
 
+	@XmlAttribute(name="attributeMatcher", required=false)
 	public void setAttributeMatcher(String attributeMatcher) {
 		this.attributeMatcher = attributeMatcher;
 	}
@@ -85,6 +81,7 @@ public class XMLTestDOMAssertion {
 		return assertionTitle;
 	}
 
+	@XmlAttribute(name="title", required=true)
 	public void setAssertionTitle(String assertionTitle) {
 		this.assertionTitle = assertionTitle;
 	}
@@ -93,8 +90,18 @@ public class XMLTestDOMAssertion {
 		return thatMatcherType;
 	}
 
+	@XmlAttribute(name="thatMatcher", required=false)
 	public void setThatMatcherType(AssertionThatMatcherType thatMatcherType) {
 		this.thatMatcherType = thatMatcherType;
 	}
-	
+
+	public Long getAssertionTimeoutInSeconds() {
+		return assertionTimeoutInSeconds;
+	}
+
+	@XmlAttribute(name="timeout", required=true)
+	public void setAssertionTimeoutInSeconds(Long assertionTimeoutInSeconds) {
+		this.assertionTimeoutInSeconds = assertionTimeoutInSeconds;
+	}
+
 }

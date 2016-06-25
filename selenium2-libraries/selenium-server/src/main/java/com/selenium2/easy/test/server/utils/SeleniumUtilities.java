@@ -10,11 +10,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -29,6 +31,8 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -312,8 +316,10 @@ public class SeleniumUtilities {
 		Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
 
 		// output pretty printed
-		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
+		//jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		SchemaFactory sf = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		URL schema = SeleniumUtilities.class.getResource("/com/selenium2/easy/test/server/xml/schema/XMLTestGroupSchema.xsd");
+		jaxbMarshaller.setSchema(sf.newSchema(new File(schema.getFile())));
 		return (XMLTestGroup) jaxbMarshaller.unmarshal(xmlFilePath);
 
       } catch (JAXBException e) {
@@ -324,7 +330,7 @@ public class SeleniumUtilities {
 	  return null;
 	}
 
-	public static final boolean loadXMLTestFramework(XMLTestGroup root, File xmlFilePath) {
+	public static final boolean saveXMLTestFramework(XMLTestGroup root, File xmlFilePath) {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(XMLTestGroup.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -374,7 +380,14 @@ public class SeleniumUtilities {
 			
 		}
 	}
-	
+	public static final void waitForLoad(WebDriver driver, long timeout) {
+	    new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
+	        public Boolean apply(WebDriver wd) {
+		          return ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete");
+		        }
+		      }
+	    );
+	}
 	private static class SeleniumHelper {
 		  
 	    public void saveScreenshot(String screenshotFileName,  WebDriver driver) throws IOException {

@@ -215,313 +215,315 @@ public class XMLTestCaseUtilities {
 	@SuppressWarnings("unchecked")
 	public static final Map<String, Object> doAction(WebDriver driver, XMLTestCaseAction action) throws ActionException {
 		Map<String, Object> results = new HashMap<String, Object>(0);
-		if (action.isChangeURL()) {
+		if (action.getUseURL()) {
 			driver.get(action.getConnectionUrl().getFormattedURL());
 		}
 		/*
 		 * Before we run the operations, collect the results and that we run the assertions.
 		 */
-		for(XMLTestOperation operation: action.getTestOperations()) {
-			OperationType type = operation.getOperationType();
-			List<WebElement> source = getElementByXML(driver, operation.getSourceElement());
-			List<WebElement> target = operation.getTargetInSource() ? getElementByXML(source, operation.getSourceElement()) : getElementByXML(driver, operation.getTargetElement());
-			List<WebElement> paramList = null;
-			WebElement paramElement = null;
-			Object paramValue = null;
-			List<? extends Object> paramValues = null;
-			if (operation.getUseResult()!=null && operation.getUseResult().trim().length()>0) {
-				Object aValue = results.get(operation.getUseResult().trim());
-				if (aValue!=null) {
-					if (WebElement.class.isAssignableFrom(aValue.getClass())) {
-						paramElement = (WebElement)aValue;
-					}
-					else if (List.class.isAssignableFrom(aValue.getClass())) {
-						try {
-							paramList = (List<WebElement>) aValue;
-						} catch (Exception e) {
-							paramValues = (List<? extends Object>)aValue;
+		if (action.getTestOperations()!=null) {
+			for(XMLTestOperation operation: action.getTestOperations()) {
+				OperationType type = operation.getOperationType();
+				List<WebElement> source = getElementByXML(driver, operation.getSourceElement());
+				List<WebElement> target = operation.getTargetInSource() ? getElementByXML(source, operation.getSourceElement()) : getElementByXML(driver, operation.getTargetElement());
+				List<WebElement> paramList = new ArrayList<WebElement>(0);
+				WebElement paramElement = null;
+				Object paramValue = null;
+				List<? extends Object> paramValues = null;
+				if (operation.getUseResult()!=null && operation.getUseResult().trim().length()>0) {
+					Object aValue = results.get(operation.getUseResult().trim());
+					if (aValue!=null) {
+						if (WebElement.class.isAssignableFrom(aValue.getClass())) {
+							paramElement = (WebElement)aValue;
 						}
-					}
-					else {
-						paramValue = aValue;
-					}
-				}
-			}
-			List<Object> operationValues = new ArrayList<Object>(0);
-			if (operation.getValueList()!=null) {
-				for(String aValue:operation.getValueList()) {
-					if (aValue==null)
-						aValue="";
-					operationValues.add(pack(aValue));
-				}
-			}
-			
-			switch(type) {
-				case CLEAR_VALUE:
-					for(WebElement element: source) {
-						SeleniumUtilities.clearValueToElement(element);
-					}
-					for(WebElement element: target) {
-						SeleniumUtilities.clearValueToElement(element);
-					}
-					break;
-				case FIND_MANY:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && source.size()>0) {
-						results.put(operation.getResultAs().trim(), source);
-					}
-					break;
-				case FIND_WITHIN:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && target.size()>0) {
-						results.put(operation.getResultAs().trim(), target);
-					}
-					break;
-				case FIND_ONE:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && source.size()>0) {
-						results.put(operation.getResultAs().trim(), source.get(0));
-					}
-					break;
-				case CLICK_ACTION:
-					for(WebElement element: source) {
-						SeleniumUtilities.clickActionElement(element);
-					}
-					for(WebElement element: target) {
-						SeleniumUtilities.clickActionElement(element);
-					}
-					for(WebElement element: paramList) {
-						SeleniumUtilities.clickActionElement(element);
-					}
-					if(paramElement!=null) {
-						SeleniumUtilities.clickActionElement(paramElement);
-					}
-					break;
-				case GET_ATTRIBUTE:
-					
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<String> valueList = new ArrayList<String>(0);
-						if (paramValue!=null) {
-							for(WebElement element: source) {
-								String attribute = SeleniumUtilities.getAttributeFromElement(element, (String)paramValue);
-								if (attribute!=null) {
-									valueList.add(attribute);
-								}
+						else if (List.class.isAssignableFrom(aValue.getClass())) {
+							try {
+								paramList = (List<WebElement>) aValue;
+							} catch (Exception e) {
+								paramValues = (List<? extends Object>)aValue;
 							}
 						}
-						if (paramValues!=null && paramValues.size()>0) {
-							for(Object aValue: paramValues) {
+						else {
+							paramValue = aValue;
+						}
+					}
+				}
+				List<Object> operationValues = new ArrayList<Object>(0);
+				if (operation.getValueList()!=null) {
+					for(String aValue:operation.getValueList()) {
+						if (aValue==null)
+							aValue="";
+						operationValues.add(pack(aValue));
+					}
+				}
+				
+				switch(type) {
+					case CLEAR_VALUE:
+						for(WebElement element: source) {
+							SeleniumUtilities.clearValueToElement(element);
+						}
+						for(WebElement element: target) {
+							SeleniumUtilities.clearValueToElement(element);
+						}
+						break;
+					case FIND_MANY:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && source.size()>0) {
+							results.put(operation.getResultAs().trim(), source);
+						}
+						break;
+					case FIND_WITHIN:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && target.size()>0) {
+							results.put(operation.getResultAs().trim(), target);
+						}
+						break;
+					case FIND_ONE:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && source.size()>0) {
+							results.put(operation.getResultAs().trim(), source.get(0));
+						}
+						break;
+					case CLICK_ACTION:
+						for(WebElement element: source) {
+							SeleniumUtilities.clickActionElement(element);
+						}
+						for(WebElement element: target) {
+							SeleniumUtilities.clickActionElement(element);
+						}
+						for(WebElement element: paramList) {
+							SeleniumUtilities.clickActionElement(element);
+						}
+						if(paramElement!=null) {
+							SeleniumUtilities.clickActionElement(paramElement);
+						}
+						break;
+					case GET_ATTRIBUTE:
+						
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<String> valueList = new ArrayList<String>(0);
+							if (paramValue!=null) {
 								for(WebElement element: source) {
-									String attribute = SeleniumUtilities.getAttributeFromElement(element, (String)aValue);
+									String attribute = SeleniumUtilities.getAttributeFromElement(element, (String)paramValue);
 									if (attribute!=null) {
 										valueList.add(attribute);
 									}
 								}
 							}
-						}
-						if (operationValues!=null && operationValues.size()>0) {
-							for(Object aValue: operationValues) {
-								for(WebElement element: source) {
-									String attribute = SeleniumUtilities.getAttributeFromElement(element, (String)aValue);
-									if (attribute!=null) {
-										valueList.add(attribute);
+							if (paramValues!=null && paramValues.size()>0) {
+								for(Object aValue: paramValues) {
+									for(WebElement element: source) {
+										String attribute = SeleniumUtilities.getAttributeFromElement(element, (String)aValue);
+										if (attribute!=null) {
+											valueList.add(attribute);
+										}
 									}
 								}
 							}
-						}
-						
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
-						}
-						
-					}
-					break;
-				case GET_CSS:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<String> valueList = new ArrayList<String>(0);
-						if (paramValue!=null) {
-							for(WebElement element: source) {
-								String css = SeleniumUtilities.getCssValueFromElement(element, (String)paramValue);
-								if (css!=null) {
-									valueList.add(css);
+							if (operationValues!=null && operationValues.size()>0) {
+								for(Object aValue: operationValues) {
+									for(WebElement element: source) {
+										String attribute = SeleniumUtilities.getAttributeFromElement(element, (String)aValue);
+										if (attribute!=null) {
+											valueList.add(attribute);
+										}
+									}
 								}
 							}
+							
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+							
 						}
-						if (paramValues!=null && paramValues.size()>0) {
-							for(Object aValue: paramValues) {
+						break;
+					case GET_CSS:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<String> valueList = new ArrayList<String>(0);
+							if (paramValue!=null) {
 								for(WebElement element: source) {
-									String css = SeleniumUtilities.getCssValueFromElement(element, (String)aValue);
+									String css = SeleniumUtilities.getCssValueFromElement(element, (String)paramValue);
 									if (css!=null) {
 										valueList.add(css);
 									}
 								}
 							}
-						}
-						if (operationValues!=null && operationValues.size()>0) {
-							for(Object aValue: operationValues) {
-								for(WebElement element: source) {
-									String css = SeleniumUtilities.getCssValueFromElement(element, (String)aValue);
-									if (css!=null) {
-										valueList.add(css);
+							if (paramValues!=null && paramValues.size()>0) {
+								for(Object aValue: paramValues) {
+									for(WebElement element: source) {
+										String css = SeleniumUtilities.getCssValueFromElement(element, (String)aValue);
+										if (css!=null) {
+											valueList.add(css);
+										}
 									}
 								}
 							}
-						}
-						
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
-						}
-						
-					}
-					break;
-				case GET_LOCATION:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<Object> valueList = new ArrayList<Object>(0);
-							for(WebElement element: source) {
-								Point location = SeleniumUtilities.getLocationFromElement(element);
-								if (location!=null) {
-									valueList.add(location);
+							if (operationValues!=null && operationValues.size()>0) {
+								for(Object aValue: operationValues) {
+									for(WebElement element: source) {
+										String css = SeleniumUtilities.getCssValueFromElement(element, (String)aValue);
+										if (css!=null) {
+											valueList.add(css);
+										}
+									}
 								}
 							}
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
+							
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+							
 						}
-						
-					}
-					break;
-				case GET_PAGE_SOURCE:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						results.put(operation.getResultAs().trim(), SeleniumUtilities.getPageSource(driver));
-					}
-					break;
-				case GET_PAGE_TITLE:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						results.put(operation.getResultAs().trim(), SeleniumUtilities.getPageTitle(driver));
-					}
-					break;
-				case GET_RECT:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<Object> valueList = new ArrayList<Object>(0);
+						break;
+					case GET_LOCATION:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<Object> valueList = new ArrayList<Object>(0);
+								for(WebElement element: source) {
+									Point location = SeleniumUtilities.getLocationFromElement(element);
+									if (location!=null) {
+										valueList.add(location);
+									}
+								}
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+							
+						}
+						break;
+					case GET_PAGE_SOURCE:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							results.put(operation.getResultAs().trim(), SeleniumUtilities.getPageSource(driver));
+						}
+						break;
+					case GET_PAGE_TITLE:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							results.put(operation.getResultAs().trim(), SeleniumUtilities.getPageTitle(driver));
+						}
+						break;
+					case GET_RECT:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<Object> valueList = new ArrayList<Object>(0);
+								for(WebElement element: source) {
+									Rectangle rect = SeleniumUtilities.getRectFromElement(element);
+									if (rect!=null) {
+										valueList.add(rect);
+									}
+								}
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+						}
+						break;
+					case GET_SIZE:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<Object> valueList = new ArrayList<Object>(0);
+								for(WebElement element: source) {
+									Dimension size = SeleniumUtilities.getSizeFromElement(element);
+									if (size!=null) {
+										valueList.add(size);
+									}
+								}
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+						}
+						break;
+					case GET_TAG:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<String> valueList = new ArrayList<String>(0);
 							for(WebElement element: source) {
-								Rectangle rect = SeleniumUtilities.getRectFromElement(element);
-								if (rect!=null) {
-									valueList.add(rect);
+								String tag = SeleniumUtilities.getTagNameFromElement(element);
+								if (tag!=null) {
+									valueList.add(tag);
 								}
 							}
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+							
 						}
-					}
-					break;
-				case GET_SIZE:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<Object> valueList = new ArrayList<Object>(0);
+						break;
+					case IS_DISPLAYED:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<Boolean> valueList = new ArrayList<Boolean>(0);
 							for(WebElement element: source) {
-								Dimension size = SeleniumUtilities.getSizeFromElement(element);
-								if (size!=null) {
-									valueList.add(size);
-								}
+									valueList.add(SeleniumUtilities.isDisplayedTheElement(element));
 							}
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+							
 						}
-					}
-					break;
-				case GET_TAG:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<String> valueList = new ArrayList<String>(0);
-						for(WebElement element: source) {
-							String tag = SeleniumUtilities.getTagNameFromElement(element);
-							if (tag!=null) {
-								valueList.add(tag);
+						break;
+					case IS_ENABLED:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<Boolean> valueList = new ArrayList<Boolean>(0);
+							for(WebElement element: source) {
+									valueList.add(SeleniumUtilities.isEnabledTheElement(element));
+							}
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+							
+						}
+						break;
+					case IS_SELECTED:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
+							List<Boolean> valueList = new ArrayList<Boolean>(0);
+							for(WebElement element: source) {
+									valueList.add(SeleniumUtilities.isSelectedTheElement(element));
+							}
+							if (valueList.size()>0) {
+								results.put(operation.getResultAs().trim(), valueList);
+							}
+							
+						}
+						break;
+					case SET_VALUE:
+						if (operationValues.size()>0) {
+							for(WebElement element: source) {
+								SeleniumUtilities.setValueToElement(element, (String)operationValues.get(operationValues.size()-1));
+							}
+							for(WebElement element: target) {
+								SeleniumUtilities.setValueToElement(element, (String)operationValues.get(operationValues.size()-1));
+							}
+							for(WebElement element: paramList) {
+								SeleniumUtilities.setValueToElement(element, (String)operationValues.get(operationValues.size()-1));
+							}
+							if(paramElement!=null) {
+								SeleniumUtilities.setValueToElement(paramElement, (String)operationValues.get(operationValues.size()-1));
 							}
 						}
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
-						}
-						
-					}
-					break;
-				case IS_DISPLAYED:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<Boolean> valueList = new ArrayList<Boolean>(0);
+						break;
+					case SUBMIT_ACTION:
 						for(WebElement element: source) {
-								valueList.add(SeleniumUtilities.isDisplayedTheElement(element));
-						}
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
-						}
-						
-					}
-					break;
-				case IS_ENABLED:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<Boolean> valueList = new ArrayList<Boolean>(0);
-						for(WebElement element: source) {
-								valueList.add(SeleniumUtilities.isEnabledTheElement(element));
-						}
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
-						}
-						
-					}
-					break;
-				case IS_SELECTED:
-					if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0) {
-						List<Boolean> valueList = new ArrayList<Boolean>(0);
-						for(WebElement element: source) {
-								valueList.add(SeleniumUtilities.isSelectedTheElement(element));
-						}
-						if (valueList.size()>0) {
-							results.put(operation.getResultAs().trim(), valueList);
-						}
-						
-					}
-					break;
-				case SET_VALUE:
-					if (operationValues.size()>0) {
-						for(WebElement element: source) {
-							SeleniumUtilities.setValueToElement(element, (String)operationValues.get(operationValues.size()-1));
+							SeleniumUtilities.submitActionElement(element);
 						}
 						for(WebElement element: target) {
-							SeleniumUtilities.setValueToElement(element, (String)operationValues.get(operationValues.size()-1));
+							SeleniumUtilities.submitActionElement(element);
 						}
 						for(WebElement element: paramList) {
-							SeleniumUtilities.setValueToElement(element, (String)operationValues.get(operationValues.size()-1));
+							SeleniumUtilities.submitActionElement(element);
 						}
 						if(paramElement!=null) {
-							SeleniumUtilities.setValueToElement(paramElement, (String)operationValues.get(operationValues.size()-1));
+							SeleniumUtilities.submitActionElement(paramElement);
 						}
-					}
-					break;
-				case SUBMIT_ACTION:
-					for(WebElement element: source) {
-						SeleniumUtilities.submitActionElement(element);
-					}
-					for(WebElement element: target) {
-						SeleniumUtilities.submitActionElement(element);
-					}
-					for(WebElement element: paramList) {
-						SeleniumUtilities.submitActionElement(element);
-					}
-					if(paramElement!=null) {
-						SeleniumUtilities.submitActionElement(paramElement);
-					}
-					break;
-				case TAKE_SCREENSHOT_FROM:
-					if (operationValues.size()>0) {
-						for(WebElement element: source) {
-							SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
+						break;
+					case TAKE_SCREENSHOT_FROM:
+						if (operationValues.size()>0) {
+							for(WebElement element: source) {
+								SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
+							}
+							for(WebElement element: target) {
+								SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
+							}
+							for(WebElement element: paramList) {
+								SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
+							}
+							if(paramElement!=null) {
+								SeleniumUtilities.takeAScreenshotFromTheElement(paramElement, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
+							}
 						}
-						for(WebElement element: target) {
-							SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
-						}
-						for(WebElement element: paramList) {
-							SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
-						}
-						if(paramElement!=null) {
-							SeleniumUtilities.takeAScreenshotFromTheElement(paramElement, OutputType.FILE).renameTo(new File(operationValues.get(0).toString()));
-						}
-					}
-					break;
-				default:
+						break;
+					default:
+				}
 			}
 		}
 		/* 
@@ -529,8 +531,14 @@ public class XMLTestCaseUtilities {
 		 * enclosed to the locally scoped results related to the specific action
 		 * response of the execution of the operations.
 		 * */
-		for(XMLTestAssertion assertion: action.getTestAssertions()) {
-			doAssertion(driver, assertion, results);
+		if (action.getTestAssertions()!=null) {
+			for(XMLTestAssertion assertion: action.getTestAssertions()) {
+				long timeout = assertion.getAssertionTimeoutInSeconds();
+				if (timeout>0) {
+					SeleniumUtilities.waitForLoad(driver, timeout);
+				}
+				doAssertion(driver, assertion, results);
+			}
 		}
 		return results;
 	}
@@ -591,6 +599,38 @@ public class XMLTestCaseUtilities {
 
 	private static final void assertValues(AssertionType type, String description, AssertionThatMatcherType thatMatherType, Object expected, Object actual) {
 		switch(type) {
+			case STARTS_WITH:
+				if (description!=null) {
+					AssertionUtilities.assertStartsWith(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertStartsWith(expected, actual);
+				}
+			break;
+			case STARTS_WITH_IGNORE_CASE:
+				if (description!=null) {
+					AssertionUtilities.assertStartsIgnoreCaseWith(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertStartsIgnoreCaseWith(expected, actual);
+				}
+			break;
+			case ENDS_WITH:
+				if (description!=null) {
+					AssertionUtilities.assertEndsWith(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertEndsWith(expected, actual);
+				}
+			break;
+			case ENDS_WITH_IGNORE_CASE:
+				if (description!=null) {
+					AssertionUtilities.assertEndsIgnoreCaseWith(description, (Object[])expected, (Object[])actual);
+				}
+				else {
+					AssertionUtilities.assertEndsIgnoreCaseWith((Object[])expected, (Object[])actual);
+				}
+			break;
 			case ARRAY_EQUALS:
 				if (description!=null) {
 					AssertionUtilities.assertArrayEquals(description, (Object[])expected, (Object[])actual);
@@ -681,7 +721,7 @@ public class XMLTestCaseUtilities {
 		/*
 		 * TODO Implement the XML Test Assertion feature
 		 */
-		List<WebElement> paramList = null;
+		List<WebElement> paramList =  new ArrayList<WebElement>(0);
 		WebElement paramElement = null;
 		Object paramValue = null;
 		List<? extends Object> paramValues = null;
@@ -703,7 +743,7 @@ public class XMLTestCaseUtilities {
 				}
 			}
 		}
-		List<WebElement> paramMatcherList = null;
+		List<WebElement> paramMatcherList = new ArrayList<WebElement>(0);
 		WebElement paramMatcherElement = null;
 		Object paramMatcherValue = null;
 		List<? extends Object> paramMatcherValues = null;
@@ -760,10 +800,10 @@ public class XMLTestCaseUtilities {
 		}
 		Object current = null;
 		try {
-			if (paramList != null) {
+			if (paramList.size()>0) {
 				current = extractValues(paramList,
 						assertion.getOperationType(), assertionValue);
-			} else if (paramMatcherList != null) {
+			} else if (paramMatcherList.size()>0) {
 				current = extractValues(paramMatcherList,
 						assertion.getOperationType(), assertionValue);
 			} else if (paramElement != null) {
@@ -784,7 +824,7 @@ public class XMLTestCaseUtilities {
 		} catch (Exception e) {
 			logger.error("Unable aquire assertion expected : " + assertion.getOperationType() , e);
 		}
-		assertValues(assertion.getType(),assertion.getAssertionTitle(), assertion.getThatMatcherType(),expected, current);
+		assertValues(assertion.getType(), assertion.getAssertionTitle(), assertion.getThatMatcherType(),expected, current);
 	}
 
 	public static final void doAssertion(WebDriver driver, XMLTestDOMAssertion assertion, Map<String, Object> caseResults) {

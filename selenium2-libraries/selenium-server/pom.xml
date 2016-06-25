@@ -165,12 +165,6 @@
 			<artifactId>reflections</artifactId>
 			<version>0.9.10</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
-		<!-- Reflection -->
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.10</version><!--$NO-MVN-MAN-VER$-->
-		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>clean install test javadoc:jar shade:shade</defaultGoal>
@@ -188,7 +182,7 @@
 		<!-- Java test directory -->
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<!-- Java test resources directory -->
-		<testResources>
+<!-- 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
 				<includes>
@@ -196,7 +190,7 @@
 				</includes>
 			</testResource>
 		</testResources>
-<!-- 		<pluginManagement>
+ --><!-- 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
