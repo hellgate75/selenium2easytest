@@ -48,6 +48,8 @@ public class XMLTestAssertion {
 	
 	private String textFile;
 	
+	private XMLTakeSnpshoot assertionSnapshoot;
+	
 	/**
 	 * Retrieves the Assertion type to use evaluating the expressions (see: {@link AssertionType})
 	 * @return The {@link AssertionType} to use
@@ -66,8 +68,7 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * Retrieves the list of values to use for the Assertion if needed.
-	 * <br/>
+	 * Retrieves the list of values to be used for the Assertion if needed.
 	 * <br/>
 	 * <br/> There are some special values case and syntax sensible such as:
 	 * <br/> <b>Dimension -> $D(w,h)</b>      - Where w is the width and h is the height of the Dimension
@@ -84,7 +85,17 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @param values
+	 * Sets the list of values to be used for the Assertion if needed.
+	 * <br/>
+	 * <br/> There are some special values case and syntax sensible such as:
+	 * <br/> <b>Dimension -> $D(w,h)</b>      - Where w is the width and h is the height of the Dimension
+	 * - <b>Can be used to match an expression with a size got from a WebElement</b>
+	 * <br/> <b>Location  -> $P(x,y)</b>      - Where x and y are the screen coordinates of the Point
+	 * - <b>Can be used to match an expression with the location got from a WebElement</b>
+	 * <br/> <b>Rectangle -> $R(x,y,w,h)</b>  - Where x and y are the screen coordinates of the Top right vertex Point and w is the width and h is the height of the Dimension of the Rectangle
+	 * - <b>Can be used to match an expression with the size got from a WebElement</b>
+	 * <br/>
+	 * @param values The list of String values
 	 */
 	@XmlElement(name="value", required=false)
 	public void setValues(List<String> values) {
@@ -97,21 +108,51 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @return
+	 * Retrieves the assertion description in case of failure
+	 * @return the description of the assertion
 	 */
 	public String getAssertionTitle() {
 		return assertionTitle;
 	}
 
 	/**
-	 * @return
+	 * Retrieves the assertion description in case of failure
+	 * @param assertionTitle the description of the assertion
+	 */
+	@XmlAttribute(name="title", required=true)
+	public void setAssertionTitle(String assertionTitle) {
+		this.assertionTitle = assertionTitle;
+	}
+
+	/**
+	 * Retrieves the value string to be used for the Assertion if needed.
+	 * <br/>
+	 * <br/> There are some special values case and syntax sensible such as:
+	 * <br/> <b>Dimension -> $D(w,h)</b>      - Where w is the width and h is the height of the Dimension
+	 * - <b>Can be used to match an expression with a size got from a WebElement</b>
+	 * <br/> <b>Location  -> $P(x,y)</b>      - Where x and y are the screen coordinates of the Point
+	 * - <b>Can be used to match an expression with the location got from a WebElement</b>
+	 * <br/> <b>Rectangle -> $R(x,y,w,h)</b>  - Where x and y are the screen coordinates of the Top right vertex Point and w is the width and h is the height of the Dimension of the Rectangle
+	 * - <b>Can be used to match an expression with the size got from a WebElement</b>
+	 * <br/>
+	 * @return The string value
 	 */
 	public String getValue() {
 		return values!=null && values.size()==1 ? values.get(0) : null;
 	}
 
 	/**
-	 * @param value
+	 * Sets the value string to be used for the Assertion if needed.
+	 * <br/>
+	 * <br/> There are some special values case and syntax sensible such as:
+	 * <br/> <b>Dimension -> $D(w,h)</b>      - Where w is the width and h is the height of the Dimension
+	 * - <b>Can be used to match an expression with a size got from a WebElement</b>
+	 * <br/> <b>Location  -> $P(x,y)</b>      - Where x and y are the screen coordinates of the Point
+	 * - <b>Can be used to match an expression with the location got from a WebElement</b>
+	 * <br/> <b>Rectangle -> $R(x,y,w,h)</b>  - Where x and y are the screen coordinates of the Top right vertex Point and w is the width and h is the height of the Dimension of the Rectangle
+	 * - <b>Can be used to match an expression with the size got from a WebElement</b>
+	 * <br/>
+	 * @param value The string value
 	 */
 	@XmlTransient
 	public void setValue(String value) {
@@ -122,22 +163,16 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @param assertionTitle
-	 */
-	@XmlAttribute(name="title", required=true)
-	public void setAssertionTitle(String assertionTitle) {
-		this.assertionTitle = assertionTitle;
-	}
-
-	/**
-	 * @return
+	 * Retrieves the text file full path to be used as value in the assertion
+	 * @return The file path
 	 */
 	public String getTextFile() {
 		return textFile;
 	}
 
 	/**
-	 * @param textFile
+	 * Sets the text file full path to be used as value in the assertion
+	 * @param textFile The file path
 	 */
 	@XmlAttribute(name="file", required=false)
 	public void setTextFile(String textFile) {
@@ -145,14 +180,16 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @return
+	 * Retrieves The result variable name to be used as value
+	 * @return The variable name
 	 */
 	public String getUseResult() {
 		return useResult;
 	}
 
 	/**
-	 * @param useResult
+	 * Sets the result variable name to be used as value
+	 * @param useResult The variable name
 	 */
 	@XmlAttribute(name="useResult", required=false)
 	public void setUseResult(String useResult) {
@@ -160,29 +197,16 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @return
+	 * Retrieves the operation type to be used during the assertion execution ({@link AssertionOperationType})
+	 * @return useResult The {@link AssertionOperationType} used by the {@link TestEngine}
 	 */
 	public AssertionOperationType getOperationType() {
 		return operationType;
 	}
 
 	/**
-	 * @return
-	 */
-	public String getUseMatcherResult() {
-		return useMatcherResult;
-	}
-
-	/**
-	 * @param useMatcherResult
-	 */
-	@XmlAttribute(name="useMatcherResult", required=false)
-	public void setUseMatcherResult(String useMatcherResult) {
-		this.useMatcherResult = useMatcherResult;
-	}
-
-	/**
-	 * @param operationType
+	 * Sets the operation type to be used during the assertion execution ({@link AssertionOperationType})
+	 * @param operationType useResult The {@link AssertionOperationType} used by the {@link TestEngine}
 	 */
 	@XmlAttribute(name="operation", required=false)
 	public void setOperationType(AssertionOperationType operationType) {
@@ -190,14 +214,33 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @return
+	 * Retrieves the environment result variable as matcher of the assertion
+	 * @return The variable name
+	 */
+	public String getUseMatcherResult() {
+		return useMatcherResult;
+	}
+
+	/**
+	 * Sets the environment result variable as matcher of the assertion
+	 * @param useMatcherResult The variable name
+	 */
+	@XmlAttribute(name="useMatcherResult", required=false)
+	public void setUseMatcherResult(String useMatcherResult) {
+		this.useMatcherResult = useMatcherResult;
+	}
+
+	/**
+	 * Retrieves the flag to allow to use the values
+	 * @return Flag to allow the use of values
 	 */
 	public Boolean getUseValue() {
 		return useValue;
 	}
 
 	/**
-	 * @param useValue
+	 * Sets the flag to allow to use the values
+	 * @param useValue Flag to allow the use of values
 	 */
 	@XmlAttribute(name="useValues", required=false)
 	public void setUseValue(Boolean useValue) {
@@ -205,29 +248,33 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @return
+	 * Retrieves the flag that allow to use the text file full path to use as matcher value
+	 * @return Flag that allow to use the text file path
 	 */
 	public Boolean getUseTextFile() {
 		return useTextFile;
 	}
 
 	/**
-	 * @param useTextFile
+	 * Sets the flag that allow to use the text file full path to use as matcher value
+	 * @param useTextFile flag that allow to use the text file path
 	 */
 	@XmlAttribute(name="useFile", required=false)
 	public void setUseTextFile(Boolean useTextFile) {
 		this.useTextFile = useTextFile;
 	}
 
-	/**
-	 * @return
+	/** 
+	 * Retrieves the matcher type for the 'That' assertion if needed (see: {@link AssertionThatMatcherType})
+	 * @return The {@link AssertionThatMatcherType} that clause specific matcher
 	 */
 	public AssertionThatMatcherType getThatMatcherType() {
 		return thatMatcherType;
 	}
 
 	/**
-	 * @param thatMatcherType
+	 * Sets the matcher type for the 'That' assertion if needed (see: {@link AssertionThatMatcherType})
+	 * @param thatMatcherType The {@link AssertionThatMatcherType} that clause specific matcher
 	 */
 	@XmlAttribute(name="thatMatcher", required=false)
 	public void setThatMatcherType(AssertionThatMatcherType thatMatcherType) {
@@ -235,18 +282,37 @@ public class XMLTestAssertion {
 	}
 
 	/**
-	 * @return
+	 * Retrieves the timeout for waiting the page ready after a reload
+	 * @return The timeout value in seconds
 	 */
 	public Long getAssertionTimeoutInSeconds() {
 		return assertionTimeoutInSeconds;
 	}
 
 	/**
-	 * @param assertionTimeoutInSeconds
+	 * Sets the timeout for waiting the page ready after a reload
+	 * @param assertionTimeoutInSeconds The timeout value in seconds
 	 */
 	@XmlAttribute(name="timeout", required=true)
 	public void setAssertionTimeoutInSeconds(Long assertionTimeoutInSeconds) {
 		this.assertionTimeoutInSeconds = assertionTimeoutInSeconds;
+	}
+
+	/**
+	 * Retrieves the Take Snapshot Selenium2 based event used by the Test Case after the Assertion execution (see: {@link XMLTakeSnpshoot})
+	 * @return The {@link XMLTakeSnpshoot}
+	 */
+	public XMLTakeSnpshoot getAssertionSnapshoot() {
+		return assertionSnapshoot;
+	}
+
+	/**
+	 * Sets the Take Snapshot Selenium2 based event used by the Test Case after the Assertion execution (see: {@link XMLTakeSnpshoot})
+	 * @param actionSnapshoot The {@link XMLTakeSnpshoot}
+	 */
+	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
+	public void setAssertionSnapshoot(XMLTakeSnpshoot assertionSnapshoot) {
+		this.assertionSnapshoot = assertionSnapshoot;
 	}
 
 }

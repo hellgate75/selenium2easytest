@@ -25,6 +25,7 @@ import com.selenium2.easy.test.server.xml.AssertionOperationType;
 import com.selenium2.easy.test.server.xml.AssertionThatMatcherType;
 import com.selenium2.easy.test.server.xml.AssertionType;
 import com.selenium2.easy.test.server.xml.OperationType;
+import com.selenium2.easy.test.server.xml.XMLTakeSnpshoot;
 import com.selenium2.easy.test.server.xml.XMLTestAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestCaseAction;
 import com.selenium2.easy.test.server.xml.XMLTestDOMAssertion;
@@ -559,6 +560,15 @@ public class XMLTestCaseUtilities {
 				doAssertion(driver, assertion, results);
 			}
 		}
+		XMLTakeSnpshoot takeSnapShot = action.getCaseSnapshoot();
+		if (takeSnapShot!=null) {
+			long counter=0L;
+			List<WebElement> snapshootElements = getElementByXML(driver, takeSnapShot.getSnapshootElement());
+			for(WebElement element: snapshootElements) {
+				SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(takeSnapShot.getFolder() + File.separator + takeSnapShot.getFileName() + "_" + counter + "." + takeSnapShot.getFileExtension()));
+				counter++;
+			}
+		}
 		return results;
 	}
 
@@ -747,8 +757,7 @@ public class XMLTestCaseUtilities {
 				}
 				break;
 			default:
-	}
-		
+		}
 	}
 	
 	/**
@@ -757,9 +766,10 @@ public class XMLTestCaseUtilities {
 	 * @param driver The {@link WebDriver} used to execute the assertion
 	 * @param assertion {@link XMLTestAssertion} to have been executed
 	 * @param caseResults The map of the environment variables to have been used during the assertion execution
+	 * @throws ActionException When occurs any exception during the Assertion executing
 	 */
 	@SuppressWarnings("unchecked")
-	public static final void doAssertion(WebDriver driver, XMLTestAssertion assertion, Map<String, Object> caseResults) {
+	public static final void doAssertion(WebDriver driver, XMLTestAssertion assertion, Map<String, Object> caseResults) throws ActionException {
 		/*
 		 * TODO Implement the XML Test Assertion feature
 		 */
@@ -867,6 +877,15 @@ public class XMLTestCaseUtilities {
 			logger.error("Unable aquire assertion expected : " + assertion.getOperationType() , e);
 		}
 		assertValues(assertion.getType(), assertion.getAssertionTitle(), assertion.getThatMatcherType(),expected, current);
+		XMLTakeSnpshoot takeSnapShot = assertion.getAssertionSnapshoot();
+		if (takeSnapShot!=null) {
+			long counter=0L;
+			List<WebElement> snapshootElements = getElementByXML(driver, takeSnapShot.getSnapshootElement());
+			for(WebElement element: snapshootElements) {
+				SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(takeSnapShot.getFolder() + File.separator + takeSnapShot.getFileName() + "_" + counter + "." + takeSnapShot.getFileExtension()));
+				counter++;
+			}
+		}
 	}
 
 	/**
@@ -874,8 +893,9 @@ public class XMLTestCaseUtilities {
 	 * @param driver The {@link WebDriver} used to execute the assertion
 	 * @param assertion {@link XMLTestDOMAssertion} to have been executed
 	 * @param caseResults The map of the environment variables to have been used during the assertion execution
+	 * @throws ActionException When occurs any exception during the Assertion executing
 	 */
-	public static final void doAssertion(WebDriver driver, XMLTestDOMAssertion assertion, Map<String, Object> caseResults) {
+	public static final void doAssertion(WebDriver driver, XMLTestDOMAssertion assertion, Map<String, Object> caseResults) throws ActionException {
 		/*
 		 * TODO Implement the XML Test DoM Assertion feature
 		 */
@@ -915,6 +935,15 @@ public class XMLTestCaseUtilities {
 				break;
 			}
 			assertValues(assertion.getType(), assertion.getAssertionTitle(), assertion.getThatMatcherType(), expected.get(i), current.get(i));
+		}
+		XMLTakeSnpshoot takeSnapShot = assertion.getAssertionSnapshoot();
+		if (takeSnapShot!=null) {
+			long counter=0L;
+			List<WebElement> snapshootElements = getElementByXML(driver, takeSnapShot.getSnapshootElement());
+			for(WebElement element: snapshootElements) {
+				SeleniumUtilities.takeAScreenshotFromTheElement(element, OutputType.FILE).renameTo(new File(takeSnapShot.getFolder() + File.separator + takeSnapShot.getFileName() + "_" + counter + "." + takeSnapShot.getFileExtension()));
+				counter++;
+			}
 		}
 	}
 

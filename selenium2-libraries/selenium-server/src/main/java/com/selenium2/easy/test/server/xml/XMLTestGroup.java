@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.selenium2.easy.test.server.cases.TestEngine;
+import com.selenium2.easy.test.server.cases.XMLGroupedTestCase;
 
 /**
  * JAXB Class wrapper for the TestCase container and the main features used in the framework.
@@ -35,59 +36,106 @@ public class XMLTestGroup {
 	
 	private XMLTakeSnpshoot groupSnapshoot;
 
+	/**
+	 * Retrieves the group name value
+	 * @return The group name value
+	 */
 	public String getGroupName() {
 		return groupName;
 	}
 
+	/**
+	 * Sets the group name value
+	 * @param groupName The group name value
+	 */
 	@XmlAttribute(name="name", required=true)
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
 
+	/**
+	 * Retrieves the group version value
+	 * @return The group version value
+	 */
 	@XmlAttribute(name="version", required=true)
 	public String getGroupVersion() {
 		return groupVersion;
 	}
 
+	/**
+	 * Sets the group version value
+	 * @param groupVersion The group version value
+	 */
 	public void setGroupVersion(String groupVersion) {
 		this.groupVersion = groupVersion;
 	}
 
+	/**
+	 * Retrieves the Test Case full java path name derived (extending or inheriting) by the {@link XMLGroupedTestCase}
+	 * @return The full java path name of the case class
+	 */
 	public String getImplementationClassFullName() {
 		return implementationClassFullName;
 	}
 
+	/**
+	 * Sets the Test Case full java path name derived (extending or inheriting) by the {@link XMLGroupedTestCase}
+	 * @param implementationClassFullName The full java path name of the case class
+	 */
 	@XmlAttribute(name="implmentation", required=false)
 	public void setImplementationClassFullName(String implementationClassFullName) {
 		this.implementationClassFullName = implementationClassFullName;
 	}
 
+	/**
+	 * Retrieves the flag that allow the use of framework dependencies (Not used because actually this is not a plug-in project)
+	 * @return The flag that allow the use of framework dependencies
+	 */
 	public Boolean getAllowDependencies() {
 		return allowDependencies;
 	}
 
+	/**
+	 * Sets the flag that allow the use of framework dependencies (Not used because actually this is not a plug-in project)
+	 * @param allowDependencies The flag that allow the use of framework dependencies
+	 */
 	@XmlAttribute(name="allowDependencies", required=false)
 	public void setAllowDependencies(Boolean allowDependencies) {
 		this.allowDependencies = allowDependencies;
 	}
 
+	/**
+	 * Retrieves the list of Test Cases to execute (see: {@link XMLTestCase})
+	 * @return The {@link XMLTestCase}
+	 */
 	public List<XMLTestCase> getTestCases() {
 		return testCases;
 	}
 
+	/**
+	 * Sets the list of Test Cases to execute (see: {@link XMLTestCase})
+	 * @param testCases The {@link XMLTestCase}
+	 */
 	@XmlElement(name="case", type=XMLTestCase.class, required=true)
 	public void setTestCases(List<XMLTestCase> testCases) {
 		this.testCases = testCases;
 	}
 
+	/**
+	 * Retrieves the Take Snapshot Selenium2 based event used by the Test Group after the whole Test Cases execution (see: {@link XMLTakeSnpshoot})
+	 * @return The {@link XMLTakeSnpshoot}
+	 */
 	public XMLTakeSnpshoot getGroupSnapshoot() {
+		//TODO: Implements the TestEngine Snapshot execution code taking as example the XMLTestCaseUtilities public methods
 		return groupSnapshoot;
 	}
 
+	/**
+	 * Sets the Take Snapshot Selenium2 based event used by the Test Group after the whole Test Cases execution (see: {@link XMLTakeSnpshoot})
+	 * @param groupSnapshoot The {@link XMLTakeSnpshoot}
+	 */
 	@XmlElement(name="snapshoot", type=XMLTakeSnpshoot.class, required=false)
 	public void setGroupSnapshoot(XMLTakeSnpshoot groupSnapshoot) {
 		this.groupSnapshoot = groupSnapshoot;
 	}
-
-
 }

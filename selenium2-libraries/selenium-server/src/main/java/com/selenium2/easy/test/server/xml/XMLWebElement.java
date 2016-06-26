@@ -27,33 +27,63 @@ public class XMLWebElement {
 	
 	private Boolean multipleMatches = Boolean.FALSE;
 
+	/**
+	 * Retrieves SearchType selector used to identify the attribute or type of search to run on the UI  (see: {@link SearchType})
+	 * @return The {@link SearchType}
+	 */
 	public SearchType getBy() {
 		return by;
 	}
 
+	/**
+	 * Sets SearchType selector used to identify the attribute or type of search to run on the UI  (see: {@link SearchType})
+	 * @param by The {@link SearchType}
+	 */
 	@XmlAttribute(name="by", required=true)
 	public void setBy(SearchType by) {
 		this.by = by;
 	}
 
+	/**
+	 * Retrieves the search text used to find one or more Web Elements
+	 * @return The search text
+	 */
 	public String getSearchText() {
 		return searchText;
 	}
 
+	/**
+	 * Retrieves the search text used to find one or more Web Elements
+	 * @param searchText The search text
+	 */
 	@XmlAttribute(name="query", required=true)
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
 	}
 
+	/**
+	 * Retrieves the flag of match multiple elements. Not used because the match is defined in the search criteria
+	 * @return The flag of match multiple elements
+	 */
+	@Deprecated
 	public Boolean getMultipleMatches() {
 		return multipleMatches;
 	}
 
+	/**
+	 * Sets the flag of match multiple elements. Not used because the match is defined in the search criteria
+	 * @param multipleMatches The flag of match multiple elements
+	 */
+	@Deprecated
 	@XmlAttribute(name="multiple", required=false)
 	public void setMultipleMatches(Boolean multipleMatches) {
 		this.multipleMatches = multipleMatches;
 	}
 	
+	/**
+	 * Retrieves the parsed By clause used to match the element (see: {@link By})
+	 * @return The parsed By clause
+	 */
 	@XmlTransient
 	public By getByClause() {
 		return SeleniumUtilities.getBy(this.by, this.searchText);
