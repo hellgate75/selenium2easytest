@@ -6,9 +6,20 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.openqa.selenium.By;
 
+import com.selenium2.easy.test.server.cases.TestEngine;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 
-@XmlRootElement(name = "element")
+/**
+ * JAXB Class wrapper for the XMLWebElement representing the search criteria to extract one or more 
+ * WebElement by the UI and provide these to the TestEngine.
+ * <br/>It is used by different JAXB wrappers in the TestEngine during the TestCase execution.
+ * 
+ * @see TestEngine
+ * @see SearchType
+ * 
+ * @author Fabrizio Torelli
+ * 
+ */@XmlRootElement(name = "element")
 public class XMLWebElement {
 	private SearchType by;
 

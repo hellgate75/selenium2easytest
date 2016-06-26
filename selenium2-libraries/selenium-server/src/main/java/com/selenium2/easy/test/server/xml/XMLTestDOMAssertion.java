@@ -3,6 +3,22 @@ package com.selenium2.easy.test.server.xml;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.selenium2.easy.test.server.cases.TestEngine;
+
+/**
+ * JAXB Class wrapper for the XMLTestDOMAssertion and it provides the assertion (for DOM Elements) to the {@link XMLTestCase} used by the {@link TestEngine}.
+ * <br/>It is used by a TestCase in the TestEngine during the TestCase execution.
+ * 
+ * @see TestEngine
+ * @see XMLTestURL
+ * @see XMLTestCase
+ * @see XMLTakeSnpshoot
+ * @see XMLTestAssertion
+ * @see XMLTestOperation
+ * 
+ * @author Fabrizio Torelli
+ * 
+ */
 public class XMLTestDOMAssertion {
 
 	private AssertionType type;

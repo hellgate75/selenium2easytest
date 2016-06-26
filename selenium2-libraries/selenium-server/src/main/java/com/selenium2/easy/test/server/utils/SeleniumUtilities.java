@@ -77,7 +77,35 @@ public class SeleniumUtilities {
 	 * @author Fabrizio Torelli
 	 *
 	 */
-	public static enum BROWSER_TYPE {IE, CROME, FIREFOX, OPERA, HTML_UNIT, REMOTE, EVENT_FIRING};
+	public static enum BROWSER_TYPE {
+		/**
+		 * The Internet Explorer browser descriptor
+		 */
+		IE, 
+		/**
+		 * The Google Chrome browser descriptor
+		 */
+		CROME, 
+		/**
+		 * The Mozilla Firefox browser descriptor
+		 */
+		FIREFOX, 
+		/**
+		 * The Opera browser descriptor
+		 */
+		OPERA, 
+		/**
+		 * The HTML Unit browser descriptor
+		 */
+		HTML_UNIT, 
+		/**
+		 * The Remote browser descriptor
+		 */
+		REMOTE, 
+		/**
+		 * The Event firing sub browser descriptor
+		 */
+		EVENT_FIRING};
 	
 	
 	/**

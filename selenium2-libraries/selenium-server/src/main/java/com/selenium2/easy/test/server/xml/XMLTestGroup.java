@@ -7,6 +7,19 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.selenium2.easy.test.server.cases.TestEngine;
+
+/**
+ * JAXB Class wrapper for the TestCase container and the main features used in the framework.
+ * <br/>It is used to define a Test Suite, grouping more test cases.
+ * 
+ * @see TestEngine
+ * @see XMLTestURL
+ * @see XMLTakeSnpshoot
+ * 
+ * @author Fabrizio Torelli
+ * 
+ */
 @XmlRootElement(name="caseGroup")
 public class XMLTestGroup {
 

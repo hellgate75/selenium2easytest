@@ -16,7 +16,7 @@ public class WebDriverFactory {
 	 * <br/><b>IE_SELECTOR</b> - The generic Internet Explore WebDriver selector
 	 * <br/><b>REMOTE_SELECTOR</b> - The generic Remote WebDriver selector
 	 * <br/><b>IE_INTERNAL_SELECTOR</b> - The Windows 32-bit provided Internet Explore WebDriver selector (included by RemoteService)
-	 * <br/><b>FIREFOX_SELECTOR</b> - the generic Mozilla Firefox WebDriver selector
+	 * <br/><b>FIREFOX_SELECTOR</b> - The generic Mozilla Firefox WebDriver selector
 	 * <br/><b>CHROME_SELECTOR</b> - The generic Google Chrome WebDriver selector
 	 * <br/><b>CHROME_INTERNAL_SELECTOR</b> - The Windows 32-bit provided Google Chrome WebDriver selector (included by RemoteService)
 	 * <br/><b>OPERA_SELECTOR</b> - The generic Opera WebDriver selector
@@ -26,8 +26,43 @@ public class WebDriverFactory {
 	 * @author Fabrizio Torelli
 	 *
 	 */
-	public static enum SELECTOR_TYPE {IE_SELECTOR, REMOTE_SELECTOR, IE_INTERNAL_SELECTOR, FIREFOX_SELECTOR, CHROME_SELECTOR, CHROME_INTERNAL_SELECTOR,
-									  OPERA_SELECTOR, HTML_UNIT_SELECTOR, EVENT_FIRING_SELECTOR}; 
+	public static enum SELECTOR_TYPE {
+		/**
+		 * The generic Internet Explore WebDriver selector
+		 */
+		IE_SELECTOR, 
+		/**
+		 * The generic Remote WebDriver selector
+		 */
+		REMOTE_SELECTOR, 
+		/**
+		 * The Windows 32-bit provided Internet Explore WebDriver selector (included by RemoteService)
+		 */
+		IE_INTERNAL_SELECTOR, 
+		/**
+		 * The generic Mozilla Firefox WebDriver selector
+		 */
+		FIREFOX_SELECTOR, 
+		/**
+		 * The generic Google Chrome WebDriver selector
+		 */
+		CHROME_SELECTOR, 
+		/**
+		 * The Windows 32-bit provided Google Chrome WebDriver selector (included by RemoteService)
+		 */
+		CHROME_INTERNAL_SELECTOR,
+		/**
+		 * The generic Opera WebDriver selector
+		 */
+		OPERA_SELECTOR, 
+		/**
+		 * The Unit Test WebDriver selector
+		 */
+		HTML_UNIT_SELECTOR, 
+		/**
+		 * The Event firing WebDriver selector to be associated to a Browser's relevant one
+		 */
+		EVENT_FIRING_SELECTOR}; 
 	
 	private WebDriverFactory() {
 		super();

@@ -167,6 +167,64 @@ public class AssertionUtilities {
 			throw new AssertionError(e);
 		}
 	}
+	/**
+	 * Assert the string representing the current element contains the string representing the expected one, with a specific assertion answer message
+	 * @param message Message to report in the AssertionException when it has been thrown
+	 * @param expected The expected template's class element
+	 * @param actual The current template's class element
+	 * @throws AssertionError When the template's objects to assert do not match the assertion
+	 */
+	public static final <T> void assertContains(String message, T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError(message);
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (strActual.indexOf(strExpected)<0) {
+					throw new AssertionError(message);
+				}
+			}
+			else {
+				if (((String)actual).indexOf(((String)expected))<0) {
+					throw new AssertionError(message);
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(message, e);
+		}
+	}
+
+	/**
+	 * Assert the string representing the current element contains the string representing the expected one, without any specific assertion answer message
+	 * @param expected The expected template's class element
+	 * @param actual The current template's class element
+	 * @throws AssertionError When the template's objects to assert do not match the assertion
+	 */
+	public static final <T> void assertContains(T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError();
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (strActual.indexOf(strExpected)<0) {
+					throw new AssertionError();
+				}
+			}
+			else {
+				if (((String)actual).indexOf(((String)expected))<0) {
+					throw new AssertionError();
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(e);
+		}
+	}
 
 	/**
 	 * Assert the string representing the current element starts, ignoring the text case, with string representing the expected one, with a specific assertion answer message
@@ -277,6 +335,65 @@ public class AssertionUtilities {
 			}
 			else {
 				if (!((String)actual).toLowerCase().endsWith(((String)expected).toLowerCase())) {
+					throw new AssertionError();
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(e);
+		}
+	}
+
+	/**
+	 * Assert the string representing the current element contains, ignoring the text case, the string representing the expected one, with a specific assertion answer message
+	 * @param message Message to report in the AssertionException when it has been thrown
+	 * @param expected The expected template's class element
+	 * @param actual The current template's class element
+	 * @throws AssertionError When the template's objects to assert do not match the assertion
+	 */
+	public static final <T> void assertContainsIgnoreCase(String message, T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError(message);
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (strActual.toLowerCase().indexOf(strExpected.toLowerCase())<0) {
+					throw new AssertionError(message);
+				}
+			}
+			else {
+				if (((String)actual).toLowerCase().indexOf(((String)expected).toLowerCase())<0) {
+					throw new AssertionError(message);
+				}
+				
+			}
+		} catch (Throwable e) {
+			throw new AssertionError(message, e);
+		}
+	}
+
+	/**
+	 * Assert the string representing the current element contains, ignoring the text case, the string representing the expected one, without any specific assertion answer message
+	 * @param expected The expected template's class element
+	 * @param actual The current template's class element
+	 * @throws AssertionError When the template's objects to assert do not match the assertion
+	 */
+	public static final <T> void assertContainsIgnoreCase(T expected, T actual) throws AssertionError {
+		try {
+			if (actual==null || expected==null) {
+				throw new AssertionError();
+			}
+			else if (actual!=null && ArrayList.class.isAssignableFrom(actual.getClass())) {
+				String strExpected = ArrayList.class.isAssignableFrom(expected.getClass()) ? (String)((List)expected).getItem(0):(String)expected;
+				String strActual = (String)((List)actual).getItem(0);
+				if (strActual.toLowerCase().indexOf(strExpected.toLowerCase())<0) {
+					throw new AssertionError();
+				}
+			}
+			else {
+				if (((String)actual).toLowerCase().indexOf(((String)expected).toLowerCase())<0) {
 					throw new AssertionError();
 				}
 				

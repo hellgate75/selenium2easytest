@@ -19,6 +19,36 @@ import javax.xml.bind.annotation.XmlEnum;
  */
 @XmlEnum
 public enum AssertionThatMatcherType {
-	ANY, ANYTHING, EQUALS_TO,
-	INSTANCE_OF, IS, NOT, NOT_NULL, NULL
+	/**
+	 * Matches Any element in the list comparing two lists of objects
+	 */
+	ANY,
+	/**
+	 * Matches Any attribute comparing two objects
+	 */
+	ANYTHING, 
+	/**
+	 * Matches All the attributes comparing two objects
+	 */
+	EQUALS_TO,
+	/**
+	 * Matches the instances of two objects
+	 */
+	INSTANCE_OF, 
+	/**
+	 * Matches if an object is part another object
+	 */
+	IS, 
+	/**
+	 * Matches if an object is not part another object
+	 */
+	NOT, 
+	/**
+	 * Matches if an object is not null
+	 */
+	NOT_NULL, 
+	/**
+	 * Matches if an object not null
+	 */
+	NULL
 }

@@ -7,8 +7,21 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.selenium2.easy.test.server.cases.TestEngine;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 
+/**
+ * JAXB Class wrapper for the XMLTestURL and it provides the Information about the URL to change to the {@link XMLTestGroup}, the {@link XMLTestCase} and to the {@link XMLTestCaseAction} used by the {@link TestEngine}.
+ * <br/>It is used by different JAXB wrappers in the TestEngine during the TestCase execution.
+ * 
+ * @see TestEngine
+ * @see XMLTestGroup
+ * @see XMLTestCase
+ * @see XMLTestCaseAction
+ * 
+ * @author Fabrizio Torelli
+ * 
+ */
 @XmlRootElement(name = "url")
 public class XMLTestURL {
 

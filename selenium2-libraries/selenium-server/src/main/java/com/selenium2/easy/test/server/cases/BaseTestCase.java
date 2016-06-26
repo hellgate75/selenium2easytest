@@ -35,7 +35,7 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 	 * <br/>Allowed metric types:
 	 * <br/>
 	 * <ul>
-	 * <li><b>TEST_CASE</b> For the timing metrics of the entire test case lasting time (internal use only)</li>
+	 * <li><b>TEST_CASE</b> - For the timing metrics of the entire test case lasting time (internal use only)</li>
 	 * <li><b>SECURITY</b> For the timing metrics of the security access lasting time (internal use only)</li>
 	 * <li><b>RENDERING</b> For the timing metrics of the rendering lasting time (internal use only)</li>
 	 * <li><b>TEST_ACTION</b> For the timing metrics of the testing actions lasting time (internal use only)</li>
@@ -43,7 +43,23 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 	 * @author Fabrizio Torelli
 	 *
 	 */
-	public static enum TIMER_TYPE {TEST_CASE, SECURITY, RENDERING, TEST_ACTION};
+	public static enum TIMER_TYPE {
+	/**
+	 * For the timing metrics of the entire test case lasting time (internal use only)
+	 */
+	TEST_CASE, 
+	/**
+	 * For the timing metrics of the security access lasting time (internal use only)
+	 */
+	SECURITY, 
+	/**
+	 * For the timing metrics of the rendering lasting time (internal use only)
+	 */
+	RENDERING, 
+	/**
+	 * For the timing metrics of the testing actions lasting time (internal use only)
+	 */
+	TEST_ACTION};
 
 	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	

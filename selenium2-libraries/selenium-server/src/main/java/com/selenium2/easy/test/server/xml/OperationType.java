@@ -32,7 +32,84 @@ import javax.xml.bind.annotation.XmlEnum;
  */
 @XmlEnum
 public enum OperationType {
-	CLEAR_VALUE, CLICK_ACTION, FIND_ONE, FIND_MANY, FIND_ONE_WITHIN, FIND_MANY_WITHIN, GET_ATTRIBUTE, GET_CSS, GET_LOCATION,
-	GET_PAGE_SOURCE, GET_PAGE_TITLE, GET_RECT, GET_SIZE, GET_TAG, IS_DISPLAYED, IS_ENABLED, IS_SELECTED,
-	SET_VALUE, SUBMIT_ACTION, TAKE_SCREENSHOT_FROM
+	/**
+	 * The operation used to clear the value of a WebElement
+	 */
+	CLEAR_VALUE, 
+	/**
+	 * The operation used to click a WebElement
+	 */
+	CLICK_ACTION, 
+	/**
+	 * The operation used to retrieve one WebElement in the page
+	 */
+	FIND_ONE, 
+	/**
+	 * The operation used to retrieve one or more WebElements in the page
+	 */
+	FIND_MANY, 
+	/**
+	 * The operation used to retrieve one WebElement within another WebElemnt
+	 */
+	FIND_ONE_WITHIN, 
+	/**
+	 * The operation used to retrieve one or more WebElements within another WebElemnt
+	 */
+	FIND_MANY_WITHIN, 
+	/**
+	 * The operation used to retrieve and save an environment variable with an attribute of a WebElement
+	 */
+	GET_ATTRIBUTE, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the CSS classes of a WebElement
+	 */
+	GET_CSS, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the location of a WebElement
+	 */
+	GET_LOCATION,
+	/**
+	 * The operation used to retrieve the page source code
+	 */
+	GET_PAGE_SOURCE, 
+	/**
+	 * The operation used to retrieve the page title
+	 */
+	GET_PAGE_TITLE, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the rectangle containing a WebElement
+	 */
+	GET_RECT, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the size of a WebElement
+	 */
+	GET_SIZE, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the HTML TAG of a WebElement
+	 */
+	GET_TAG, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the UI display status of a WebElement
+	 */
+	IS_DISPLAYED, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the enabled/disabled status of a WebElement
+	 */
+	IS_ENABLED, 
+	/**
+	 * The operation used to retrieve and save an environment variable with the selection status of a WebElement
+	 */
+	IS_SELECTED,
+	/**
+	 * The operation used to set the value of a WebElement
+	 */
+	SET_VALUE, 
+	/**
+	 * The operation used to submit a WebElement
+	 */
+	SUBMIT_ACTION, 
+	/**
+	 * The operation used to take a screenshot of a WebElement
+	 */
+	TAKE_SCREENSHOT_FROM
 }

@@ -6,6 +6,22 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.selenium2.easy.test.server.cases.TestEngine;
+
+/**
+ * JAXB Class wrapper for the TestCaseAction and it provides the test operations and assertion to the {@link XMLTestCase} used by the {@link TestEngine}.
+ * <br/>It is used by a TestCase in the TestEngine during the TestCase execution.
+ * 
+ * @see TestEngine
+ * @see XMLTestURL
+ * @see XMLTestCase
+ * @see XMLTakeSnpshoot
+ * @see XMLTestAssertion
+ * @see XMLTestOperation
+ * 
+ * @author Fabrizio Torelli
+ * 
+ */
 @XmlRootElement(name = "action")
 public class XMLTestCaseAction {
 	

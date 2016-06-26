@@ -650,6 +650,22 @@ public class XMLTestCaseUtilities {
 					AssertionUtilities.assertEndsIgnoreCaseWith((Object[])expected, (Object[])actual);
 				}
 			break;
+			case CONTAINS:
+				if (description!=null) {
+					AssertionUtilities.assertContains(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertContains(expected, actual);
+				}
+			break;
+			case CONTAINS_IGNORE_CASE:
+				if (description!=null) {
+					AssertionUtilities.assertContainsIgnoreCase(description, expected, actual);
+				}
+				else {
+					AssertionUtilities.assertContainsIgnoreCase(expected, actual);
+				}
+			break;
 			case ARRAY_EQUALS:
 				if (description!=null) {
 					AssertionUtilities.assertArrayEquals(description, (Object[])expected, (Object[])actual);

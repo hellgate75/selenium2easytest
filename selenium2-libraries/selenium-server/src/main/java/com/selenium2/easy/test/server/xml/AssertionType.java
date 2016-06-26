@@ -20,12 +20,76 @@ import javax.xml.bind.annotation.XmlEnum;
  * <br/><b>STARTS_WITH_IGNORE_CASE</b> - Matches if the an object representative string starts with, ignoring the case, another object representative string
  * <br/><b>ENDS_WITH</b> - Matches if the an object representative string ends with another object representative string
  * <br/><b>ENDS_WITH_IGNORE_CASE</b> - Matches if the an object representative string ends with, ignoring the case, another object representative string
+ * <br/><b>CONTAINS</b> - Matches if the an object representative string contains another object representative string
+ * <br/><b>CONTAINS_IGNORE_CASE</b> - Matches if the an object representative string contains, ignoring the case, another object representative string
+ * <br/>
  * @author Fabrizio Torelli
  *
  */
 @XmlEnum
 public enum AssertionType {
-	EQUALS, NOT_EQUALS, TRUE, FALSE, ARRAY_EQUALS, NULL, 
-	NOT_NULL, SAME, NOT_SAME, THAT, STARTS_WITH, STARTS_WITH_IGNORE_CASE, 
-	ENDS_WITH, ENDS_WITH_IGNORE_CASE
+	/**
+	 * Matches All the attributes comparing two objects
+	 */
+	EQUALS, 
+	/**
+	 * Matches None attribute comparing two objects
+	 */
+	NOT_EQUALS, 
+	/**
+	 * Matches the truth assertion of an object expression
+	 */
+	TRUE, 
+	/**
+	 * Matches the false assertion of an object expression
+	 */
+	FALSE, 
+	/**
+	 * Matches Any element in the list comparing two lists of objects
+	 */
+	ARRAY_EQUALS, 
+	/**
+	 * Matches if an object not null
+	 */
+	NULL, 
+	/**
+	 * Matches if an object is not null
+	 */
+	NOT_NULL, 
+	/**
+	 * Matches Any element in the list comparing two lists of objects
+	 */
+	SAME, 
+	/**
+	 * Matches None element in the list comparing two lists of objects
+	 */
+	NOT_SAME, 
+	/**
+	 * Matches that an object 'is that' of another object, see: {@link AssertionThatMatcherType}
+	 */
+	THAT, 
+	/**
+	 * Matches if the an object representative string starts with another object representative string
+	 */
+	STARTS_WITH, 
+	/**
+	 * Matches if the an object representative string starts with, ignoring the case, another object representative string
+	 */
+	STARTS_WITH_IGNORE_CASE, 
+	/**
+	 * Matches if the an object representative string ends with another object representative string
+	 */
+	ENDS_WITH, 
+	/**
+	 * Matches if the an object representative string ends with, ignoring the case, another object representative string
+	 */
+	ENDS_WITH_IGNORE_CASE,
+	/**
+	 * Matches if the an object representative string contains another object representative string
+	 */
+	CONTAINS,
+	/**
+	 * Matches if the an object representative string contains, ignoring the case, another object representative string
+	 */
+	CONTAINS_IGNORE_CASE
 }

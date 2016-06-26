@@ -20,5 +20,36 @@ import javax.xml.bind.annotation.XmlEnum;
  */
 @XmlEnum
 public enum SearchType {
-	NAME, CLASS_NAME, CSS_SELECTOR, ID, EXACT_LINK, PARTIAL_LINK, TAG, XPATH
+	/**
+	 * The search criteria related to the name of one or more WebElements
+	 */
+	NAME, 
+	/**
+	 * The search criteria related to the CSS class name of one or more WebElements
+	 */
+	CLASS_NAME, 
+	/**
+	 * The search criteria related to the CSS expression contained in the CSS class names of one or more WebElements
+	 */
+	CSS_SELECTOR, 
+	/**
+	 * The search criteria related to the Identifier of a WebElement
+	 */
+	ID, 
+	/**
+	 * The search criteria related to the HTML exact selector matching one or more WebElements
+	 */
+	EXACT_LINK, 
+	/**
+	 * The search criteria related to the HTML exact selector matching also partially one or more WebElements
+	 */
+	PARTIAL_LINK, 
+	/**
+	 * The search criteria related to the TAG name of one or more WebElements 
+	 */
+	TAG, 
+	/**
+	 * The search criteria related an XPATH selector for one or more WebElements
+	 */
+	XPATH
 }
