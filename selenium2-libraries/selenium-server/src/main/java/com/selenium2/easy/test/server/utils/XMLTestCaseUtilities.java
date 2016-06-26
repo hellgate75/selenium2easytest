@@ -31,6 +31,12 @@ import com.selenium2.easy.test.server.xml.XMLTestDOMAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestOperation;
 import com.selenium2.easy.test.server.xml.XMLWebElement;
 
+/**
+ * Class providing the base features for the XMLTestCase execution such as the operation 
+ * and assertions execution methods.
+ * @author Fabrizio Torelli
+ *
+ */
 public class XMLTestCaseUtilities {
 	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	
@@ -212,6 +218,14 @@ public class XMLTestCaseUtilities {
 	    return str;
 	}
 
+	/**
+	 * The methods provides an XMLTestCase action's operations execution and the relevant operation's
+	 * assertions execution.
+	 * @param driver The {@link WebDriver} used to execute the action operations and operation's assertions
+	 * @param action The {@link XMLTestCaseAction} to have been executed
+	 * @return The map of the environment variables discovered or created during in the operations.
+	 * @throws ActionException When any exception occurs during the {@link WebDriver} and located {@link WebElement} operation
+	 */
 	@SuppressWarnings("unchecked")
 	public static final Map<String, Object> doAction(WebDriver driver, XMLTestCaseAction action) throws ActionException {
 		Map<String, Object> results = new HashMap<String, Object>(0);
@@ -271,7 +285,12 @@ public class XMLTestCaseUtilities {
 							results.put(operation.getResultAs().trim(), source);
 						}
 						break;
-					case FIND_WITHIN:
+					case FIND_ONE_WITHIN:
+						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && target.size()>0) {
+							results.put(operation.getResultAs().trim(), target.get(0));
+						}
+						break;
+					case FIND_MANY_WITHIN:
 						if (operation.getResultAs()!=null && operation.getResultAs().trim().length()>0 && target.size()>0) {
 							results.put(operation.getResultAs().trim(), target);
 						}
@@ -716,6 +735,13 @@ public class XMLTestCaseUtilities {
 		
 	}
 	
+	/**
+	 * The methods provides an XMLTestCase assertion execution. This kind of assertion compare WebElement values, attributes or previous
+	 * discovered environment variables' content.
+	 * @param driver The {@link WebDriver} used to execute the assertion
+	 * @param assertion {@link XMLTestAssertion} to have been executed
+	 * @param caseResults The map of the environment variables to have been used during the assertion execution
+	 */
 	@SuppressWarnings("unchecked")
 	public static final void doAssertion(WebDriver driver, XMLTestAssertion assertion, Map<String, Object> caseResults) {
 		/*
@@ -827,6 +853,12 @@ public class XMLTestCaseUtilities {
 		assertValues(assertion.getType(), assertion.getAssertionTitle(), assertion.getThatMatcherType(),expected, current);
 	}
 
+	/**
+	 * The methods provides an XMLTestCase DOM assertion execution. This kind of assertion compare two or more WebElement attributes.
+	 * @param driver The {@link WebDriver} used to execute the assertion
+	 * @param assertion {@link XMLTestDOMAssertion} to have been executed
+	 * @param caseResults The map of the environment variables to have been used during the assertion execution
+	 */
 	public static final void doAssertion(WebDriver driver, XMLTestDOMAssertion assertion, Map<String, Object> caseResults) {
 		/*
 		 * TODO Implement the XML Test DoM Assertion feature

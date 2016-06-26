@@ -18,6 +18,7 @@ import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 /**
  * Base implementation of the Test Case.
  * @author Fabrizio Torelli
+ * @see TestCase
  *
  */
 public abstract class BaseTestCase extends TestCase implements Cloneable {

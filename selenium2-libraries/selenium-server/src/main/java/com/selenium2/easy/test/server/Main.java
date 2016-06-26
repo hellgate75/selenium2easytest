@@ -14,7 +14,7 @@ import com.selenium2.easy.test.server.automated.WebDriverSelector;
  * <br><li><b>--configFile <file></b> It recover the information of the custom position of the configuration file </li>
  * </ul>
  * @author Fabrizio Torelli
- *
+ * @see SeleniumAutomatedServer
  */
 public class Main {
 	static {

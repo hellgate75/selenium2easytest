@@ -25,7 +25,9 @@ import com.selenium2.easy.test.server.exceptions.NotFoundException;
  * Test execution Server implementing the Parallel Processing Factory.
  * This server provides the single thread and the multi-thread test execution.
  * @author Fabrizio Torelli
- *
+ * @see WebDriverSelector
+ * @see WebDriverFactory.SELECTOR_TYPE
+ * @see TestEngine
  */
 public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	static {
@@ -43,16 +45,17 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	
 
 	/**
-	 * 
+	 * Public constructor
 	 */
 	public SeleniumAutomatedServer() {
 		super();
 	}
 
 	/**
-	 * @param filePath
-	 * @throws NotFoundException
-	 * @throws FrameworkException
+	 * File properties configuration reader.
+	 * @param filePath The full path of the configuration file
+	 * @throws NotFoundException When the file cannot be found in the file system
+	 * @throws FrameworkException When an IOException or other load exception occurs
 	 */
 	public void readConfig(String filePath) throws NotFoundException, FrameworkException{
 		engineProperties.clear();
@@ -68,9 +71,10 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	}
 
 	/**
-	 * @param filePath
-	 * @throws NotFoundException
-	 * @throws FrameworkException
+	 * File XML formatted configuration reader.
+	 * @param filePath The full path of the configuration file
+	 * @throws NotFoundException When the file cannot be found in the file system
+	 * @throws FrameworkException When an IOException or other load exception occurs
 	 */
 	public void readConfigXml(String filePath) throws NotFoundException, FrameworkException{
 		engineProperties.clear();
@@ -86,7 +90,8 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	}
 	
 	/**
-	 * @throws FrameworkException
+	 * Starts the test cases load, definition and execution. 
+	 * @throws FrameworkException When a framework exception occurs
 	 */
 	public void startTests() throws FrameworkException {
 		if (engineProperties.size()==0) {
@@ -320,8 +325,9 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	}
 
 	/**
-	 * @param stream
-	 * @param json
+	 * This method allow to write a JSON string to a specific stream. Actually it is related to the standard output or a file
+	 * @param stream Stream to print the JSON text
+	 * @param json JSON text formatted string
 	 */
 	protected final void printJSON(PrintStream stream, String json) {
 		stream.print(json);

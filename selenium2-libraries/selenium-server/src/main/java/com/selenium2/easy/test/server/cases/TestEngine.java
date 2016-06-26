@@ -33,6 +33,14 @@ import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
 import com.selenium2.easy.test.server.xml.XMLTestGroup;
 
+/**
+ * Test Engine responsible for the single and multiple thread test case's execution
+ * @author Fabrizio Torelli
+ * @see WebDriver
+ * @see BaseTestCase
+ * @see UserCaseResult
+ *
+ */
 public class TestEngine implements Callable<UserCaseResult>{
 	static {
 		if (System.getProperty("log4j.configurationFile")==null)
@@ -58,63 +66,116 @@ public class TestEngine implements Callable<UserCaseResult>{
 	private long parallelEnd = 0L;
 	private WebDriverParallelFactory factory = null;
 
+	/**
+	 * Public constructor
+	 */
 	public TestEngine() {
 		super();
 	}
 
+	/**
+	 * Public constructor accepting a Selenium2 WebDriver
+	 * @param driver WebDriver to use along the test cases execution
+	 */
 	public TestEngine(WebDriver driver) {
 		super();
 		this.driver=driver;
 	}
 	
+	/**
+	 * Public constructor accepting a Selenium2 WebDriver and the logger trace flag
+	 * @param driver WebDriver to use along the test cases execution
+	 * @param traceRunOnLogger enabled/disabled state for the logging trace
+	 */
 	public TestEngine(WebDriver driver, boolean traceRunOnLogger) {
 		super();
 		this.driver = driver;
 		this.traceRunOnLogger = traceRunOnLogger;
 	}
 
+	/**
+	 * Add a case to the Synchronous Engine executor
+	 * @param testCase Test Case to execute
+	 */
 	public void addCase(BaseTestCase testCase) {
 		if (testCase!=null && !caseList.contains(testCase)) {
 			caseList.add(testCase);
 		}
 	}
 
+	/**
+	 * Retrieve the information in order to enable/disable state of the logger trace
+	 * @return enabled/disabled state for the logging trace 
+	 */
 	public boolean isTraceRunOnLogger() {
 		return traceRunOnLogger;
 	}
 
+	/**
+	 * Set the enabled/disabled state for the logging trace
+	 * @param traceRunOnLogger enabled/disabled state for the logging trace
+	 */
 	public void setTraceRunOnLogger(boolean traceRunOnLogger) {
 		this.traceRunOnLogger = traceRunOnLogger;
 	}
 
+	/**
+	 * Retrieve the current WebDrive used for the test cases execution
+	 * @return The WebDrive used for the test cases execution
+	 */
 	public WebDriver getWebDriver() {
 		return driver;
 	}
 
+	/**
+	 * Set the current WebDrive used for the test cases execution
+	 * @param driver The WebDrive used for the test cases execution
+	 */
 	public void setWebDriver(WebDriver driver) {
 		this.driver = driver;
 	}
 
+	/**
+	 * Clear the list of stored test cases to execute
+	 */
 	public void clearCaseList() {
 		caseList.clear();
 	}
 	
+	/**
+	 * Retrieve the number of test cases in the list
+	 * @return Number of test cases
+	 */
 	public int getCaseNumber() {
 		return caseList.size();
 	}
 	
+	/**
+	 * Log trace with information level
+	 * @param message message to log
+	 */
 	protected final void info(String message) {
 		if (this.traceRunOnLogger) {
 			logger.info(message);
 		}
 	}
 	
+	/**
+	 * Log trace with error level
+	 * @param message message to log
+	 * @param exception Error to report
+	 */
 	protected final void error(String message, Throwable exception) {
 		if (this.traceRunOnLogger) {
 			logger.error(message, exception);
 		}
 	}
 
+	/**
+	 * Lookup and add a test case using the canonical class name
+	 * @param className Full class name including the package to load
+	 * @throws FrameworkException When any error occurs during the class lookup or instance.
+	 */
 	public void addCaseByClassName(String className) throws FrameworkException {
 		try {
 			BaseTestCase testCase = (BaseTestCase)(Class.forName(className).newInstance());
@@ -127,6 +188,11 @@ public class TestEngine implements Callable<UserCaseResult>{
 		}
 	}
 
+	/**
+	 * Lookup and add all the test cases contained in a specific package
+	 * @param packageName Package name containing the test classes
+	 * @throws FrameworkException When any error occurs during the package lookup or class instance.
+	 */
 	public void addCaseByPackageName(String packageName) throws FrameworkException {
 		try {
 			Reflections reflections = new Reflections(packageName);
@@ -143,6 +209,11 @@ public class TestEngine implements Callable<UserCaseResult>{
 		}
 	}
 	
+	/**
+	 * Lookup and add all the test cases contained in the XML files stored in a specific directory
+	 * @param directory Full Directory path used to discover the XML files
+	 * @throws FrameworkException When any error occurs during the directory file discovery, load or any class instance.
+	 */
 	public void addCasesByXMLDirectory(String directory) throws FrameworkException {
 		try {
 			FilenameFilter filter = new PatternFilenameFilter(".*\\.xml");
@@ -177,6 +248,9 @@ public class TestEngine implements Callable<UserCaseResult>{
 		}
 	}
 	
+	/**
+	 * Reset the TestEngine execution variable status except for the test cases
+	 */
 	public void clearTestEngineStatus() {
 		this.caseExecuted = 0;
 		this.caseFailed = 0;
@@ -225,6 +299,9 @@ public class TestEngine implements Callable<UserCaseResult>{
 		return ++parallelCounter;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.util.concurrent.Callable#call()
+	 */
 	@Override
 	public UserCaseResult call() throws Exception {
 		int ticket = nextParallelCounter();
@@ -272,6 +349,13 @@ public class TestEngine implements Callable<UserCaseResult>{
 		return userResult;
 	}
 
+	/**
+	 * Parallel execution used for the multi-user and multi-thread asynchronous execution
+	 * @param factory Factory used to retrieve the test cases' execution WebDriver
+	 * @param numberOfUsers Number of parallel executions
+	 * @param limitOfUsers limit of parallel alive threads (it is related to the integration test characteristics)
+	 * @throws Throwable When any exception occurs during the parallel test cases execution
+	 */
 	public void parallel(WebDriverParallelFactory factory, int numberOfUsers, int limitOfUsers) throws Throwable {
 		this.parallelCounter = 0;
 		this.parallelProcesses = numberOfUsers;
@@ -323,6 +407,9 @@ public class TestEngine implements Callable<UserCaseResult>{
 		caseResponseStatus.put(testCase.getCaseUID(), true);		
 	}
 	
+	/** (non-Javadoc) 
+	 * @throws Throwable
+	 */
 	public void run() throws Throwable {
 		this.clearTestEngineStatus();
 		startTime = System.currentTimeMillis();
@@ -346,14 +433,26 @@ public class TestEngine implements Callable<UserCaseResult>{
 		endTime = System.currentTimeMillis();
 	}
 
+	/**
+	 * Retrieve the number of test cases executed during the test process
+	 * @return Number of executed test cases
+	 */
 	public int getCaseExecuted() {
 		return caseExecuted;
 	}
 
+	/**
+	 * Retrieve the number of successful test cases executed during the test process
+	 * @return Number of successful test cases
+	 */
 	public int getCaseSecceded() {
 		return caseExecuted-caseFailed;
 	}
 	
+	/**
+	 * Prints the exeution report in a specified PrintStream
+	 * @param ps Stream used to print the report
+	 */
 	public void report(PrintStream ps) {
 		if(parallelResults==null) {
 			if (caseExecuted==0)
@@ -409,10 +508,18 @@ public class TestEngine implements Callable<UserCaseResult>{
 		}
 	}
 
+	/**
+	 * Retrieve the number of failed test cases executed during the test process
+	 * @return Failed test cases
+	 */
 	public int getCaseFailed() {
 		return caseFailed;
 	}
 
+	/**
+	 * Prepare a JSON format summary report for the test cases execution
+	 * @return JSON format report string
+	 */
 	public String jsonReport() {
 		if(parallelResults==null) {
 			if (caseExecuted==0)

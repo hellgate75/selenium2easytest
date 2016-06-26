@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import  org.junit.Assert;
+
 import com.selenium2.easy.test.server.automated.SeleniumServerConstants;
 import com.selenium2.easy.test.server.automated.WebDriverFactory.SELECTOR_TYPE;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
@@ -25,9 +27,16 @@ import com.selenium2.easy.test.server.xml.XMLTestOperation;
 import com.selenium2.easy.test.server.xml.XMLTestURL;
 import com.selenium2.easy.test.server.xml.XMLWebElement;
 
+/**
+ * @author Fabrizio Torelli
+ *
+ */
 public class GenerateSampleXMLCaseGroup {
 	private static final String googleSearchText = "Selenium2";
 
+	/**
+	 * Clear the Test Group Source Directory
+	 */
 	public static synchronized final void clearTestGroupDirectory() {
 		File directory = new File("src/test/resources/easytest");
 		if (directory.exists()) {
@@ -39,6 +48,9 @@ public class GenerateSampleXMLCaseGroup {
 			directory.delete();
 		}
 	}
+	/**
+	 * Clear the Test Group Report Directory
+	 */
 	public static synchronized final void clearReportDirectory() {
 		File directory = new File("target/reports/easytest");
 		if (directory.exists()) {
@@ -51,6 +63,11 @@ public class GenerateSampleXMLCaseGroup {
 		}
 	}
 	
+	/**
+	 * Create the Test UNIT TEST's Case Group XML File and the relevant 
+	 * configuration test suite files for Mozilla Firefox, Google Chrome 
+	 * and (in Windows OSs) Internet Explorer
+	 */
 	public static synchronized final void createDefaultTestGroup() {
 		XMLTestGroup group = new XMLTestGroup();
 		group.setGroupName("Google Sample Test");
@@ -198,16 +215,23 @@ public class GenerateSampleXMLCaseGroup {
 		}
 }
 	
+	/**
+	 * The main test for the creation of Unit test related TestGroup files and related local test
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		//Create Default Test Group for the Google Selenium2 lookup
 		createDefaultTestGroup();
 		//Try to read and verify the xml file
 		XMLTestGroup loadedGroup = SeleniumUtilities.loadXMLTestFramework(new File("src/test/resources/easytest/GoogleSeleniumTestCaseGroup.xml"));
-		System.out.println("Group nme : " + loadedGroup.getGroupName());
+		Assert.assertNotNull(loadedGroup);
+		Assert.assertNotNull(loadedGroup.getTestCases());
+		Assert.assertEquals(2, loadedGroup.getTestCases().size());
+		System.out.println("UNIT TEST Group Cases summary");
+		System.out.println("-----------------------------");
+		System.out.println("Group name : " + loadedGroup.getGroupName());
 		System.out.println("Group version : " + loadedGroup.getGroupVersion());
-		System.out.println("Group has cases : " + (loadedGroup.getTestCases()!=null));
-		if (loadedGroup.getTestCases()!=null)
-			System.out.println("Group has # of cases : " + loadedGroup.getTestCases().size());
+		System.out.println("Group has # of cases : " + loadedGroup.getTestCases().size());
 	}
 
 }

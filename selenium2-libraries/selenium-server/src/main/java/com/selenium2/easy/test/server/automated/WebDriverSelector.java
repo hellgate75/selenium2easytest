@@ -20,9 +20,25 @@ import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities.BROWSER_TYPE;
 
+/**
+ * Selenium2 WebDriver Selector class. This class is used to generate the WebDrive instance.
+ * This selector is designed to work with multiple instances of selector, however in this release
+ * it is handled only one instance.
+ * @author Fabrizio Torelli
+ * @see WebDriverFactory.SELECTOR_TYPE
+ * @see WebDriver
+ * @see ChromeDriverService
+ * @see DriverService
+ */
 public class WebDriverSelector {
+	/**
+	 * Windows environment selector
+	 */
 	public static final boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("win")>=0;
 
+	/**
+	 * Limitation Flag for unit test instances
+	 */
 	public static boolean isInUnitTest = false;
 	
 	private List<Object> parameters = new ArrayList<Object>();
@@ -34,6 +50,11 @@ public class WebDriverSelector {
 	private DriverService customService=null;
 	private boolean filterEventFire = false;
 	
+	/**
+	 * Protected class that create the WebDriverSelector instance
+	 * @param selector Selector type enumeration
+	 * @param parameters Parameters used to create the WebDriver instance
+	 */
 	protected WebDriverSelector(SELECTOR_TYPE selector, Object... parameters) {
 		super();
 		this.selector = selector;
@@ -41,6 +62,10 @@ public class WebDriverSelector {
 			this.parameters.addAll(Arrays.asList(parameters));
 	}
 	
+	/**
+	 * Initialize the WebDriver and create Services or what-else is needed to the WebDriver
+	 * @throws FrameworkException When an exception occurs during the WebDriver creation
+	 */
 	public void initDriver() throws FrameworkException {
 		List<Object> parameters = this.parameters;
 		SELECTOR_TYPE selector = this.selector;
@@ -133,6 +158,11 @@ public class WebDriverSelector {
 		}
 	}
 	
+	/**
+	 * Initializes the WebDriver (if needed) and returns the active and running WebDriver
+	 * @return WebDriver instance
+	 * @throws FrameworkException When any initialization exception occurs
+	 */
 	public WebDriver getWebDriver() throws FrameworkException {
 		this.initDriver();
 		if(this.eventFiringDriver!=null)
@@ -140,6 +170,10 @@ public class WebDriverSelector {
 		return this.driver;
 	}
 	
+	/**
+	 * Stops and clean the WebDriver. After the execution of the close it is needed to 
+	 * re-initialize the WebDriver
+	 */
 	public void stopWebDriver() {
 		if(this.driver!=null)
 			SeleniumUtilities.closeBrowserDriver(this.driver);

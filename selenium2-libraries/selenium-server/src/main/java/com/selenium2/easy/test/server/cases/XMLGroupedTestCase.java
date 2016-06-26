@@ -19,7 +19,7 @@ import com.selenium2.easy.test.server.xml.XMLTestDOMAssertion;
 /**
  * XML Configuration Test Case Execution Artifact.
  * @author Fabrizio Torelli
- *
+ * @see BaseTestCase
  */
 public class XMLGroupedTestCase extends BaseTestCase {
 	private String groupName;

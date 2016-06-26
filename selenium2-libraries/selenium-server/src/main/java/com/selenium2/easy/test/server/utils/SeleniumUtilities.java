@@ -17,6 +17,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -42,6 +43,17 @@ import com.selenium2.easy.test.server.exceptions.NotFoundException;
 import com.selenium2.easy.test.server.xml.SearchType;
 import com.selenium2.easy.test.server.xml.XMLTestGroup;
 
+/**
+ * Selenium2 operations helper class that provides Selenium2 static operations and framework friendly
+ * features such as the load or save of the JAXB XML configuration or the mapping of a query string, 
+ * and so on ...
+ * @author Fabrizio Torelli
+ * @see BROWSER_TYPE
+ * @see SeleniumHelper
+ * @see WebDriver
+ * @see WebElement
+ * @see XMLTestGroup
+ */
 public class SeleniumUtilities {
 	static {
 		if (System.getProperty("log4j.configurationFile")==null)
@@ -50,15 +62,46 @@ public class SeleniumUtilities {
 	private static Logger logger = LoggerFactory.getLogger("com.selenium2.easy.test.server");
 	private static final SeleniumHelper seleniumHelper = new SeleniumHelper();
 
+	/**
+	 * Enumeration that describes the different kinds of Browser types available in the framework
+	 * <br/>
+	 * The members are :
+	 * <br/><b>IE</b> - The Internet Explorer browser descriptor
+	 * <br/><b>CROME</b> - The Google Chrome browser descriptor
+	 * <br/><b>FIREFOX</b> - The Mozilla Firefox browser descriptor
+	 * <br/><b>OPERA</b> - The Opera browser descriptor
+	 * <br/><b>HTML_UNIT</b> - The HTML Unit browser descriptor
+	 * <br/><b>REMOTE</b> - The Remote browser descriptor
+	 * <br/><b>EVENT_FIRING</b> - The Event firing sub browser descriptor 
+	 * <br/>
+	 * @author Fabrizio Torelli
+	 *
+	 */
 	public static enum BROWSER_TYPE {IE, CROME, FIREFOX, OPERA, HTML_UNIT, REMOTE, EVENT_FIRING};
 	
 	
+	/**
+	 * This method retrieves a WebDriver according to the {@link BROWSER_TYPE} enumeration without using any
+	 * further WebDriver configuration parameter
+	 * @param type Is the {@link BROWSER_TYPE} selector of the {@link WebDriver}.
+	 * @return The {@link WebDriver} discovered or null
+	 */
 	public static final WebDriver getBrowserDriver(BROWSER_TYPE type) {
 		if (type!=BROWSER_TYPE.REMOTE && type!=BROWSER_TYPE.EVENT_FIRING)
 			return getBrowserDriver(type, null, null, null, null);
 		return null;
 	}
 	
+	/**
+	 * This method retrieves a WebDriver according to the {@link BROWSER_TYPE} enumeration using some
+	 * further WebDriver configuration parameters
+	 * @param type Is the {@link BROWSER_TYPE} selector of the {@link WebDriver}.
+	 * @param firingDriver Related triggering {@link WebDriver}, whom is responsible be the behalf with the User Interface
+	 * @param exec The {@link CommandExecutor} used in some different kind of {@link WebDriver}s.
+	 * @param remoteURL The remote URL to be opened by the {@link WebDriver} after the creation of the driver
+	 * @param capabilities Capabilities full path class to be used with the REMOTE {@link WebDriver} (and it configures the driver for the execution platform).
+	 * @return The {@link WebDriver} discovered or null
+	 */
 	public static final WebDriver getBrowserDriver(BROWSER_TYPE type, WebDriver firingDriver, CommandExecutor exec, URL remoteURL, Capabilities capabilities) {
 		WebDriver webDriver = null;
 		switch(type) {
@@ -89,6 +132,11 @@ public class SeleniumUtilities {
 		return webDriver;
 	}
 
+	/**
+	 * This method close and finalize a {@link WebDriver}. After the use of this feature the 
+	 * {@link WebDriver} must be recreated or reinitialized.
+	 * @param webDriver {@link WebDriver} to close and finalize
+	 */
 	public static final void closeBrowserDriver(WebDriver webDriver) {
 		if (webDriver!=null) {
 			webDriver.close();
@@ -96,6 +144,12 @@ public class SeleniumUtilities {
 		}
 	}
 
+	/**
+	 * This method creates an image full screen's screenshot and save it in a specified file
+	 * @param webDriver {@link WebDriver} used to take the screenshot.
+	 * @param screenshotFileName The full path's filename to save the screenshot in
+	 * @throws FrameworkException When any exception occurs during the {@link WebDriver} operation
+	 */
 	public static final void saveScreenShot(WebDriver webDriver, String screenshotFileName) throws FrameworkException{
 		try {
 			seleniumHelper.saveScreenshot(screenshotFileName, webDriver);
@@ -105,6 +159,11 @@ public class SeleniumUtilities {
 		}
 	}
 
+	/**
+	 * This method submits a specified WebElement if it has the submit operation available
+	 * @param elem {@link WebElement} referrer of the action
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final void submitActionElement(WebElement elem) throws ActionException {
 		try {
 			elem.submit();
@@ -114,6 +173,11 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method clicks a specified WebElement if it has the click operation available
+	 * @param elem {@link WebElement} referrer of the action
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final void clickActionElement(WebElement elem) throws ActionException {
 		try {
 			elem.click();
@@ -123,6 +187,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method sets a specified value in the WebElement if it has related attribute
+	 * @param elem {@link WebElement} referrer of the action
+	 * @param value String value used in the operation
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final void setValueToElement(WebElement elem, String value) throws ActionException {
 		try {
 			elem.sendKeys(value);
@@ -132,6 +202,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieves the selection property of a specified WebElement
+	 * @param elem {@link WebElement} referrer of the action
+	 * @return The requested status
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final boolean isSelectedTheElement(WebElement elem) throws ActionException {
 		try {
 			return elem.isSelected();
@@ -141,6 +217,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieves the enabled/disable property of a specified WebElement
+	 * @param elem {@link WebElement} referrer of the action
+	 * @return The requested status
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final boolean isEnabledTheElement(WebElement elem) throws ActionException {
 		try {
 			return elem.isEnabled();
@@ -150,42 +232,97 @@ public class SeleniumUtilities {
 		}
 	}
 	
-	public static final WebElement findOneInTheElement(WebElement elem, By clause) throws ActionException {
+	/**
+	 * This method retrieves on the UI one WebElement according to the search clause in the 
+	 * hierarchy of a specified element
+	 * @param elem {@link WebElement} referrer of the action
+	 * @param by The {@link By} clause to find out the element
+	 * @return The found {@link WebElement}
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 * @throws NotFoundException When the search criteria do not match any element
+	 */
+	public static final WebElement findOneInTheElement(WebElement elem, By clause) throws ActionException, NotFoundException {
 		try {
 			return elem.findElement(clause);
+			 
+		} catch (NoSuchElementException e) {
+		    logger.error("Error running 'findElement' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
+			throw new NotFoundException("Unable to apply 'findElement' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
 		} catch (Throwable e) {
 		    logger.error("Error running 'findElement' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
 			throw new ActionException("Unable to apply 'findElement' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
 		}
 	}
 	
-	public static final WebElement findOneInThePage(WebDriver driver, By clause) throws ActionException {
+	/**
+	 * This method retrieves on the UI one WebElement according to the search clause in the
+	 * current page
+	 * @param webDriver {@link WebDriver} used to search the element
+	 * @param by The {@link By} clause to find out the element
+	 * @return The found {@link WebElement} or null
+	 * @throws ActionException When any exception occurs during the {@link WebDriver} operation
+	 * @throws NotFoundException When the search criteria do not match any element
+	 */
+	public static final WebElement findOneInThePage(WebDriver driver, By clause) throws ActionException, NotFoundException {
 		try {
 			return driver.findElement(clause);
+		} catch (NoSuchElementException e) {
+		    logger.error("Error running 'findElement' action on the page", e);
+			throw new NotFoundException("Unable to apply 'findElement' action on the page due to the exception : ", e);
 		} catch (Throwable e) {
 		    logger.error("Error running 'findElement' action on the page", e);
 			throw new ActionException("Unable to apply 'findElement' action on the page due to the exception : ", e);
 		}
 	}
 	
-	public static final List<WebElement> findManyInTheElement(WebElement elem, By clause) throws ActionException {
+	/**
+	 * This method retrieves on the UI one or more WebElements according to the search clause in the 
+	 * hierarchy of a specified element
+	 * @param elem {@link WebElement} referrer of the action
+	 * @param by The {@link By} clause to find out the elements
+	 * @return The found {@link WebElement} list or an empty one
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 * @throws NotFoundException When the search criteria do not match any element
+	 */
+	public static final List<WebElement> findManyInTheElement(WebElement elem, By clause) throws ActionException, NotFoundException {
 		try {
 			return elem.findElements(clause);
+		} catch (NoSuchElementException e) {
+		    logger.error("Error running 'findElements' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
+			throw new NotFoundException("Unable to apply 'findElements' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
 		} catch (Throwable e) {
 		    logger.error("Error running 'findElements' action on the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
 			throw new ActionException("Unable to apply 'findElements' action to element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
 		}
 	}
 	
-	public static final List<WebElement> findManyInThePage(WebDriver driver, By clause) throws ActionException {
+	/**
+	 * This method retrieves on the UI one or more WebElements according to the search clause in the
+	 * current page
+	 * @param webDriver {@link WebDriver} used to search the elements
+	 * @param by The {@link By} clause to find out the elements
+	 * @return The found {@link WebElement} list or an empty one
+	 * @throws ActionException When any exception occurs during the {@link WebDriver} operation
+	 * @throws NotFoundException When the search criteria do not match any element
+	 */
+	public static final List<WebElement> findManyInThePage(WebDriver driver, By clause) throws ActionException, NotFoundException {
 		try {
 			return driver.findElements(clause);
+		} catch (NoSuchElementException e) {
+		    logger.error("Error running 'findElements' action on the page", e);
+			throw new NotFoundException("Unable to apply 'findElements' action on the page due to the exception : ", e);
 		} catch (Throwable e) {
 		    logger.error("Error running 'findElements' action on the page", e);
 			throw new ActionException("Unable to apply 'findElements' action on the page due to the exception : ", e);
 		}
 	}
 	
+	/**
+<	 * This method retrieves the status if a specified WebElement is shown on the UI
+	 * @param elem {@link WebElement} referrer of the action
+	 * @return The requested status
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final boolean isDisplayedTheElement(WebElement elem) throws ActionException {
 		try {
 			return elem.isDisplayed();
@@ -195,6 +332,13 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method creates an image WebElement relative screenshot returns an output object to be saved
+	 * in a further time
+	 * @param elem {@link WebElement} referrer of the action
+	 * @param type The type of output requested for the screenshot
+	 * @throws FrameworkException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final <T> T takeAScreenshotFromTheElement(WebElement elem, OutputType<T> type) throws ActionException {
 		try {
 			return elem.getScreenshotAs(type);
@@ -204,6 +348,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieves page source code
+	 * @param webDriver {@link WebDriver} used to retrieve the page source code
+	 * @return The page source code string
+	 * @throws ActionException When any exception occurs during the {@link WebDriver} operation
+	 */
 	public static final String getPageSource(WebDriver driver) throws ActionException {
 		try {
 			return driver.getPageSource();
@@ -213,6 +363,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieves page title
+	 * @param webDriver {@link WebDriver} used to retrieve the page title
+	 * @return The title string
+	 * @throws ActionException When any exception occurs during the {@link WebDriver} operation
+	 */
 	public static final String getPageTitle(WebDriver driver) throws ActionException {
 		try {
 			return driver.getTitle();
@@ -222,6 +378,13 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieve the value of an attribute related to a specified WebElement if it has that attribute
+	 * @param elem {@link WebElement} referrer of the action
+	 * @param attributeName String value used in the operation
+	 * @return The attribute value or null
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final String getAttributeFromElement(WebElement elem, String attributeName) throws ActionException {
 		try {
 			return elem.getAttribute(attributeName);
@@ -231,6 +394,13 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieve the value of a property related to a specified WebElement if it has that property
+	 * @param elem {@link WebElement} referrer of the action
+	 * @param propertyName String value used in the operation
+	 * @return The property value or null
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final String getCssValueFromElement(WebElement elem, String propertyName) throws ActionException {
 		try {
 			return elem.getCssValue(propertyName);
@@ -240,6 +410,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieve a rectangle bounding a specified WebElement if it has been shown on the UI
+	 * @param elem {@link WebElement} referrer of the action
+	 * @return The rectangle related to the {@link WebElement}
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final Rectangle getRectFromElement(WebElement elem) throws ActionException {
 		try {
 			return elem.getRect();
@@ -249,6 +425,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieve a point indicating the upper right position of a specified WebElement if it has been shown on the UI
+	 * @param elem {@link WebElement} referrer of the action
+	 * @return The point related to the {@link WebElement} location on the UI
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final Point getLocationFromElement(WebElement elem) throws ActionException {
 		try {
 			return elem.getLocation();
@@ -258,6 +440,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieve a dimension related to a specified WebElement if it has been shown on the UI
+	 * @param elem {@link WebElement} referrer of the action
+	 * @return The dimension of related {@link WebElement}
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final Dimension getSizeFromElement(WebElement elem) throws ActionException {
 		try {
 			return elem.getSize();
@@ -267,6 +455,12 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method retrieve tag name of a specified WebElement
+	 * @param elem {@link WebElement} referrer of the action
+	 * @return The tag name of the {@link WebElement}
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final String getTagNameFromElement(WebElement elem) throws ActionException {
 		try {
 			return elem.getTagName();
@@ -276,6 +470,11 @@ public class SeleniumUtilities {
 		}
 	}
 	
+	/**
+	 * This method clear the value of a specified WebElement, if it has the value property
+	 * @param elem {@link WebElement} referrer of the action
+	 * @throws ActionException When any exception occurs during the {@link WebElement} operation
+	 */
 	public static final void clearValueToElement(WebElement elem) throws ActionException {
 		try {
 			elem.clear();
@@ -285,30 +484,13 @@ public class SeleniumUtilities {
 		}
 	}
 	
-	public static final WebElement findWithinElement(WebElement elem, By clause) throws NotFoundException, FrameworkException {
-		try {
-			WebElement subElem = elem.findElement(clause);
-			if (subElem==null)
-				throw new NotFoundException("Unable to locate element by clause='"+clause+"' on the user interface into the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'");
-			return subElem;
-		} catch (Throwable e) {
-		    logger.error("Error finding element by clause : " + clause +" within the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
-			throw new FrameworkException("Unable to find by clause '"+clause+"' into the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
-		}
-	}
 	
-	public static final List<WebElement> findAllWithinElement(WebElement elem, By clause) throws NotFoundException, FrameworkException {
-		try {
-			List<WebElement> subElems = elem.findElements(clause);
-			if (subElems==null || subElems.size()==0)
-				throw new NotFoundException("Unable to locate element by clause='"+clause+"' on the user interface into the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'");
-			return subElems;
-		} catch (Throwable e) {
-		    logger.error("Error finding elements by clause : " + clause +" within the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "'", e);
-			throw new FrameworkException("Unable to find by clause '"+clause+"' into the element by id='" + (elem!=null ? elem.getAttribute("id") : null) + "' exception : ", e);
-		}
-	}
-	
+	/**
+	 * This method provides the feature to load a {@link XMLTestGroup} object parsing an
+	 * input XML file
+	 * @param xmlFilePath Full file path locating the XML source
+	 * @return The found and parsed {@link XMLTestGroup} or null
+	 */
 	public static final XMLTestGroup loadXMLTestFramework(File xmlFilePath) {
 	  try {
 
@@ -330,6 +512,14 @@ public class SeleniumUtilities {
 	  return null;
 	}
 
+	/**
+	 * This method provides the feature to save a {@link XMLTestGroup} in a target XML file 
+	 * parsing the object content in the XML format
+	 * @return The found and parsed {@link XMLTestGroup} or null
+	 * @param root The {@link XMLTestGroup} to save in the XML file
+	 * @param xmlFilePath Full file path locating the XML target
+	 * @return The execution status
+	 */
 	public static final boolean saveXMLTestFramework(XMLTestGroup root, File xmlFilePath) {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(XMLTestGroup.class);
@@ -349,6 +539,11 @@ public class SeleniumUtilities {
 		return false;
 	}
 	
+	/**
+	 * This method maps the query parameters in a queryString for a web GET call
+	 * @param map Map containing the query string parameters
+	 * @return The parsed query string
+	 */
 	public static final String mapToQueryString(Map<String, String> map) {
 		String retValue = "";
 		if (map!=null) {
@@ -359,6 +554,14 @@ public class SeleniumUtilities {
 		return retValue;
 	}
 	
+	/**
+	 * This method create a {@link By} clause used to search WebElements on the UI
+	 * @param map Map containing the query string parameters
+	 * @return The parsed query string
+	 * @param type The {@link SearchType} criteria enumeration clause
+	 * @param searchText The text used to match the given criteria
+	 * @return The {@link By} clause to find out one or more elements
+	 */
 	public static final By getBy(SearchType type, String searchText) {
 		switch(type) {
 			case NAME:
@@ -380,6 +583,12 @@ public class SeleniumUtilities {
 			
 		}
 	}
+	/**
+	 * This method provides a waitFor feature of the WebDriver since a page location change 
+	 * has performed an the page context is not yet loaded with a specified check interval in seconds
+	 * @param driver {@link WebDriver} to be put in listening for the page load
+	 * @param timeout Numeric value representing seconds to stand by before check again the page is loaded
+	 */
 	public static final void waitForLoad(WebDriver driver, long timeout) {
 	    new WebDriverWait(driver, timeout).until(new ExpectedCondition<Boolean>() {
 	        public Boolean apply(WebDriver wd) {
@@ -388,8 +597,21 @@ public class SeleniumUtilities {
 		      }
 	    );
 	}
+	/**
+	 * Class containing the helper for the the Screenshot features
+	 * @author Fabrizio Torelli
+	 * @see WebDriver
+	 * @see TakesScreenshot
+	 * @see FileUtils
+	 */
 	private static class SeleniumHelper {
 		  
+	    /**
+	     * The Method provides the page's screenshot feature
+	     * @param screenshotFileName Full path file name to save in the screenshot
+	     * @param driver {@link WebDriver} to be take the page's screenshot
+	     * @throws IOException When the file saving operation fails due to an IO issue
+	     */
 	    public void saveScreenshot(String screenshotFileName,  WebDriver driver) throws IOException {
 	      File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 	      FileUtils.copyFile(screenshot, new File(screenshotFileName));

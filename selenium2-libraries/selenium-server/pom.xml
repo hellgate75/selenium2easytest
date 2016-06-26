@@ -182,7 +182,7 @@
 		<!-- Java test directory -->
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<!-- Java test resources directory -->
-<!-- 		<testResources>
+ 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
 				<includes>
@@ -190,7 +190,7 @@
 				</includes>
 			</testResource>
 		</testResources>
- --><!-- 		<pluginManagement>
+<!-- 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
