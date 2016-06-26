@@ -30,17 +30,17 @@ Automated Selenium 2 based test framework
 
 ## Maven Commands
 
-To compile the maven project run on the root :
+To compile the maven project run on the root of the main maven project :
 
 `mvn -U -up install clean test javadoc:jar`
 
-To generate the stand-alone JAVADOC run on the root :
+To generate the stand-alone JAVADOC run on the root of the main maven project :
 
 `mvn -U javadoc:jar`
 
-For the Stand-alone Tests execution (after the build) run on the root  :
+For the Stand-alone Tests execution (after the build) run on the root of the main maven project :
 
-RUN: mvn -U test
+`mvn -U test`
 
 
 ## License
