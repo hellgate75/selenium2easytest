@@ -1,7 +1,7 @@
 The Selenium2 Easy Test application
 ---------------------------------
 
-Copyright (c) npm, Inc. and Contributors
+Copyright (c) Fabrizio Torelli, Inc. and Contributors
 Licensed on the terms of The Artistic License 2.0
 
 Selenium2 Easy Test package dependencies of the Selenium2 Easy Test application
@@ -9,7 +9,8 @@ Copyright (c) their respective copyright owners
 Licensed on their respective license terms
 
 The public application registry at <T.B.D.>
-and the repository at <T.B.D.>
+the Maven repository at <T.B.D.>
+the source code repository at http://github.com/hellgate75/selenium2easytest
 Operated by Fabrizio Torelli
 Use governed by terms published on <T.B.D.>
 
