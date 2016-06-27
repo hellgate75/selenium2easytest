@@ -8,7 +8,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>selenium2-easy-test-plugin</artifactId>
-	<packaging>maven-plugin</packaging>
+	<packaging>maven-plugin</packaging><!--$NO-MVN-MAN-PACKAGING$-->
 	<url>http://maven.apache.org</url>
 	<name>Selenium2 Easy Test Maven Plugin</name>
 	<organization>
@@ -19,33 +19,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.compiler.level>1.7</java.compiler.level>
 		<java.compiler.target.level>1.7</java.compiler.target.level>
-		<clojure.level>1.8.0</clojure.level>
-		<version.arquillian_container_jetty>1.0.0.CR3</version.arquillian_container_jetty>
-		<version.arquillian_core>1.0.0.Final</version.arquillian_core>
 		<version.hamcrest>1.2</version.hamcrest>
-		<!-- Requires Java8 <version.jetty>9.3.8.RC0</version.jetty> -->
-		<version.jetty>9.3.0.M2</version.jetty>
-		<version.embedded.jetty>8.0.0.M3</version.embedded.jetty>
-		<version.arquillian_drone>1.0.0.Final</version.arquillian_drone>
-		<version.arquillian_warp>1.0.0.Alpha1</version.arquillian_warp>
-		<version.arquillian_ajocado>1.0.0.CR2</version.arquillian_ajocado>
-		<version.acquillian.junit>1.1.11.Final</version.acquillian.junit>
-		<version.glassfish>3.1.2</version.glassfish>
-		<version.hamcrest>1.2</version.hamcrest>
-		<version.hibernate_jpamodelgen>1.1.1.Final
-		</version.hibernate_jpamodelgen>
-		<version.jersey>1.19</version.jersey>
-		<version.glassfish.jersey>2.7</version.glassfish.jersey>
-		<version.jsfunit>2.0.0.Beta3-SNAPSHOT</version.jsfunit>
 		<version.junit>4.11</version.junit>
 		<version.mokito>1.10.19</version.mokito>
-        <version.log4j>1.2.14</version.log4j>
+		<version.log4j>1.2.14</version.log4j>
 		<version.slf4j>2.3</version.slf4j>
-		<version.slf4j-log4j12>2.4</version.slf4j-log4j12>
-		<version.resteasy>2.0.1.GA</version.resteasy>
-		<version.slf4j>2.3</version.slf4j>
+		<version.slf4j-log4j12>1.7.12</version.slf4j-log4j12>
 		<version.apachelogging>2.3</version.apachelogging>
-		<version.testng>6.5.2</version.testng>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -134,120 +114,50 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>java-server</artifactId>
+			<artifactId>selenium-server</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.4.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.4.1</version>
-			<scope>test</scope>
-		</dependency>
 
-		<!-- App -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>${version.jetty}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-security</artifactId>
-			<version>${version.jetty}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlet</artifactId>
-			<version>${version.jetty}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-util</artifactId>
-			<version>${version.jetty}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-webapp</artifactId>
-			<version>${version.jetty}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-plus</artifactId>
-			<version>${version.jetty}</version>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-moxy</artifactId>
-				<version>${version.glassfish.jersey}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-server</artifactId>
-				<version>${version.glassfish.jersey}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.json</artifactId>
-			<version>1.0.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet</artifactId>
-				<version>${version.glassfish.jersey}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet-core</artifactId>
-				<version>${version.glassfish.jersey}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-jetty-http</artifactId>
-				<version>${version.glassfish.jersey}</version>
-		</dependency>
 		<!-- log -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${version.slf4j-log4j12}</version><!--$NO-MVN-MAN-VER$-->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${version.slf4j-log4j12}</version><!--$NO-MVN-MAN-VER$-->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>${version.slf4j-log4j12}</version><!--$NO-MVN-MAN-VER$-->
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${version.log4j}</version>
+			<version>${version.log4j}</version><!--$NO-MVN-MAN-VER$-->
+			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>${version.slf4j-log4j12}</version>
+			<version>${version.apachelogging}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>${version.slf4j-log4j12}</version>
+			<version>${version.apachelogging}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${version.slf4j-log4j12}</version>
+			<version>${version.apachelogging}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<!-- Test -->
 			<dependency>
@@ -272,12 +182,6 @@
 				<artifactId>mockito-all</artifactId>
 				<version>${version.mokito}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>${version.testng}</version>
-				<scope>test</scope>
-			</dependency>
 		<!-- Test Rest -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
@@ -291,18 +195,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-xjc</artifactId>
-			<version>2.2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-osgi</artifactId>
 			<version>2.2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-jxc</artifactId>
-			<version>2.2.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
@@ -320,6 +214,23 @@
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
+				<!-- Java Compiler Plugin -->
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.1</version>
+					<inherited>true</inherited>
+					<configuration>
+						<source>${java.compiler.level}</source>
+						<target>${java.compiler.target.level}</target>
+						<showDeprecation>false</showDeprecation>
+						<showWarnings>true</showWarnings>
+						<optimize>true</optimize>
+						<compilerVersion>${java.compiler.target.level}</compilerVersion>
+						<fork>true</fork>
+						<argLine>-Xmx512M</argLine>
+						<compilerArgument>-proc:none</compilerArgument>
+					</configuration>
+				</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>

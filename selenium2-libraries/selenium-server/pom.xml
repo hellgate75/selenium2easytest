@@ -165,31 +165,27 @@
 			<artifactId>reflections</artifactId>
 			<version>0.9.10</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
+		<!-- Apache File IO -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.4</version>
+		</dependency>
 	</dependencies>
 	<build>
-		<defaultGoal>clean install test javadoc:jar shade:shade</defaultGoal>
-		<!-- Java source directory -->
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<!-- Java resources directory -->
+		<defaultGoal>clean install test javadoc:jar</defaultGoal>
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>*.*</include>
-				</includes>
+				<directory>${basedir}/src/main/java/com/selenium2/easy/test/server/automated/win32bin</directory>
+				<filtering>false</filtering>
+				<targetPath>/com/selenium2/easy/test/server/automated/win32bin</targetPath>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/java/com/selenium2/easy/test/server/xml/schema</directory>
+				<filtering>false</filtering>
+				<targetPath>/com/selenium2/easy/test/server/xml/schema</targetPath>
 			</resource>
 		</resources>
-		<!-- Java test directory -->
-		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<!-- Java test resources directory -->
- 		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<includes>
-					<include>*.*</include>
-				</includes>
-			</testResource>
-		</testResources>
 <!-- 		<pluginManagement>
 			<plugins>
 				<plugin>

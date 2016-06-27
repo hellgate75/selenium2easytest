@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<caseGroup allowDependencies="false" name="Google Sample Test" version="1.0">
+    <case inheritEnvironment="false" name="Test Google Page load title" retrowException="false" secureAccess="false" useUrl="true">
+        <url hostname="www.google.com" protocol="http"/>
+        <action useURL="false">
+            <operation type="GET_PAGE_TITLE" resultAs="pageTitle" targetInSource="false"/>
+        </action>
+        <action useURL="false">
+            <assertion timeout="0" title="The page title should equal Google at the start of the test." type="EQUALS" useResult="pageTitle" useFile="false" useValues="false">
+                <value>Google</value>
+            </assertion>
+        </action>
+    </case>
+    <case inheritEnvironment="true" name="Test Google Page searh for a text" retrowException="false" secureAccess="false" useUrl="false">
+        <action useURL="false">
+            <assertion timeout="0" title="The page title should start with the search string after the search." operation="GET_PAGE_TITLE" type="STARTS_WITH_IGNORE_CASE" useResult="pageTitle" useFile="false" useValues="false">
+                <value>Selenium2</value>
+            </assertion>
+            <operation type="FIND_ONE" resultAs="searchField" targetInSource="false">
+                <source by="NAME" multiple="false" query="q"/>
+            </operation>
+            <operation type="SET_VALUE" targetInSource="false" useResult="searchField">
+                <value>Selenium2</value>
+            </operation>
+            <operation type="SUBMIT_ACTION" targetInSource="false" useResult="searchField">
+                <value>Selenium2</value>
+            </operation>
+            <operation type="GET_PAGE_TITLE" resultAs="pageTitle" targetInSource="false"/>
+        </action>
+    </case>
+</caseGroup>

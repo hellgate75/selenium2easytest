@@ -1,10 +1,16 @@
 package com.selenium2.easy.test.server.utils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -13,6 +19,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
@@ -37,6 +44,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.selenium2.easy.test.server.automated.WebDriverSelector;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.exceptions.NotFoundException;
@@ -528,8 +536,8 @@ public class SeleniumUtilities {
 		// output pretty printed
 		//jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		SchemaFactory sf = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		URL schema = SeleniumUtilities.class.getResource("/com/selenium2/easy/test/server/xml/schema/XMLTestGroupSchema.xsd");
-		jaxbMarshaller.setSchema(sf.newSchema(new File(schema.getFile())));
+		File schema = SeleniumUtilities.recoverFileInJar("com/selenium2/easy/test/server/xml/schema/XMLTestGroupSchema.xsd");
+		jaxbMarshaller.setSchema(sf.newSchema(schema));
 		return (XMLTestGroup) jaxbMarshaller.unmarshal(xmlFilePath);
 
       } catch (JAXBException e) {
@@ -624,6 +632,83 @@ public class SeleniumUtilities {
 		        }
 		      }
 	    );
+	}
+	private static long copyFromZipFile(String zipFilePath, String relativeFilePath, FileOutputStream os) {
+        BufferedInputStream bis = null;
+        ZipFile zipFile = null;
+        long bytes = 0;
+	    try {
+	        zipFile = new ZipFile(zipFilePath);
+	        Enumeration<? extends ZipEntry> e = zipFile.entries();
+	        while (e.hasMoreElements()) {
+	            ZipEntry entry = (ZipEntry) e.nextElement();
+	            // if the entry is not directory and matches relative file then extract it
+	            if (!entry.isDirectory() && entry.getName().equals(relativeFilePath)) {
+	                bis = new BufferedInputStream(
+	                        zipFile.getInputStream(entry));
+	                 bytes = IOUtils.copyLarge(bis, os);
+	            } else {
+	                continue;
+	            }
+	        }
+	    } catch (Throwable e) {
+			logger.error("Error extracting from zip '"+zipFilePath+"' resource : " + relativeFilePath + " caused by : ", e);
+	    }
+	    finally {
+	    	if (bis!=null) {
+	    		try {
+	    			bis.close();
+	    	    } catch (Throwable e) {
+	    	    }
+	    	}
+	    	if (zipFile!=null) {
+	    		try {
+	    			zipFile.close();
+	    	    } catch (Throwable e) {
+	    	    }
+	    	}
+	    }
+	    return bytes;
+	}
+	/**
+	 * Extract in a temporary file a resource from the current jar
+	 * @param fileJarPath java class full path replacing the dot with the slash
+	 * @return Temporary File
+	 */
+	public static synchronized File recoverFileInJar(String fileJarPath) {
+		String jarPath = "";
+		try {
+			URL url = WebDriverSelector.class.getProtectionDomain().getCodeSource().getLocation();
+			jarPath = URLDecoder.decode(url.getFile(), "UTF-8");
+		} catch (Throwable e1) {
+		}
+		File file = null;
+		String extension = "tmp";
+		if (fileJarPath.indexOf(".")>=0) {
+			extension = fileJarPath.substring(fileJarPath.lastIndexOf(".")+1);
+		}
+		FileOutputStream output = null;
+		try {
+			file = File.createTempFile("tempfile", "."+extension);
+			output = new FileOutputStream(file);
+			long bytes = copyFromZipFile(jarPath, fileJarPath, output);
+			file.deleteOnExit();
+			if (bytes==0L) {
+				file = null;
+			}
+		} catch (Throwable ex) {
+			file = null;
+			logger.error("Error loading resource : " + fileJarPath + " caused by : ", ex);
+		}
+		finally {
+			if (output!=null) {
+				try {
+					output.close();
+				} catch (Throwable e) {
+				}
+			}
+		}
+		return file;
 	}
 	/**
 	 * Class containing the helper for the the Screenshot features

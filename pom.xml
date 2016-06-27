@@ -23,7 +23,7 @@
 				<module>selenium2-aggregator</module>
 				<module>container-boom</module>
 				<module>selenium2-libraries</module>
-				<!-- <module>plugins</module> -->
+				<module>plugins</module>
 			</modules>
 			<build>
 				<defaultGoal>clean install test javadoc:jar</defaultGoal>

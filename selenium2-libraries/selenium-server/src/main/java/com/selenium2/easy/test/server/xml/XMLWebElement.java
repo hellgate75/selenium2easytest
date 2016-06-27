@@ -65,7 +65,6 @@ public class XMLWebElement {
 	 * Retrieves the flag of match multiple elements. Not used because the match is defined in the search criteria
 	 * @return The flag of match multiple elements
 	 */
-	@Deprecated
 	public Boolean getMultipleMatches() {
 		return multipleMatches;
 	}
@@ -74,7 +73,6 @@ public class XMLWebElement {
 	 * Sets the flag of match multiple elements. Not used because the match is defined in the search criteria
 	 * @param multipleMatches The flag of match multiple elements
 	 */
-	@Deprecated
 	@XmlAttribute(name="multiple", required=false)
 	public void setMultipleMatches(Boolean multipleMatches) {
 		this.multipleMatches = multipleMatches;

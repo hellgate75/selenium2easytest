@@ -53,6 +53,24 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 
 	/**
 	 * File properties configuration reader.
+	 * @param file The configuration file
+	 * @throws NotFoundException When the file cannot be found in the file system
+	 * @throws FrameworkException When an IOException or other load exception occurs
+	 */
+	public void readConfig(File file) throws NotFoundException, FrameworkException{
+		engineProperties.clear();
+		try {
+			engineProperties.load(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			throw new NotFoundException(logginPrefix+"Unable to locate config file " + (file!=null?file.getAbsolutePath():null) + " due to : ", e);
+		} catch (IOException e) {
+			throw new FrameworkException(logginPrefix+"Unable to read config file " + (file!=null?file.getAbsolutePath():null) + " due to : ", e);
+		} catch (Throwable e) {
+			throw new FrameworkException(logginPrefix+"Unable to read config file " + (file!=null?file.getAbsolutePath():null) + " due to : ", e);
+		}
+	}
+	/**
+	 * File properties configuration reader.
 	 * @param filePath The full path of the configuration file
 	 * @throws NotFoundException When the file cannot be found in the file system
 	 * @throws FrameworkException When an IOException or other load exception occurs
@@ -67,6 +85,25 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 			throw new FrameworkException(logginPrefix+"Unable to read config file " + filePath + " due to : ", e);
 		} catch (Throwable e) {
 			throw new FrameworkException(logginPrefix+"Unable to read config file " + filePath + " due to : ", e);
+		}
+	}
+
+	/**
+	 * File XML formatted configuration reader.
+	 * @param file The configuration file
+	 * @throws NotFoundException When the file cannot be found in the file system
+	 * @throws FrameworkException When an IOException or other load exception occurs
+	 */
+	public void readConfigXml(File file) throws NotFoundException, FrameworkException{
+		engineProperties.clear();
+		try {
+			engineProperties.loadFromXML(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			throw new NotFoundException(logginPrefix+"Unable to locate xml config file " + (file!=null?file.getAbsolutePath():null) + " due to : ", e);
+		} catch (IOException e) {
+			throw new FrameworkException(logginPrefix+"Unable to read xml config file " + (file!=null?file.getAbsolutePath():null) + " due to : ", e);
+		} catch (Throwable e) {
+			throw new FrameworkException(logginPrefix+"Unable to read xml config file " + (file!=null?file.getAbsolutePath():null) + " due to : ", e);
 		}
 	}
 

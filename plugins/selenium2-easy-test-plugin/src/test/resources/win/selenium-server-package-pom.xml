@@ -18,25 +18,20 @@
 		<plugins>
 			<plugin>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>java-server-plugin</artifactId>
+				<artifactId>selenium2-easy-test-plugin</artifactId>
 				<version>${project.version}</version>
-				<extensions>true</extensions>
 				<configuration>
-					<restapps>
-						<restapp>
-							<hostname>localhost</hostname>
-							<port>8095</port>
-							<loopback>15001</loopback>
-							<deployConfigs>
-								<deployConfig>
-									<type>CLASSLIST</type>
-									<context>/*</context>
-									<classNames>java_server_plugin.services.EntryPoint</classNames>
-								</deployConfig>
-							</deployConfigs>
-						</restapp>
-					</restapps>
+					<settings>
+						<suites>
+							<suite>
+								<testCaseLoggingActive>true</testCaseLoggingActive>
+								<selector>CHROME_INTERNAL_SELECTOR</selector>
+								<testCasePackage>selenium2.easy.test.cases</testCasePackage>
+							</suite>
+						</suites>
+					</settings>
 				</configuration>
+				<extensions>true</extensions>
 			</plugin>
 		</plugins>
 	</build>

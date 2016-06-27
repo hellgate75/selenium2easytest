@@ -18,17 +18,22 @@
 		<plugins>
 			<plugin>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>java-server-plugin</artifactId>
+				<artifactId>selenium2-easy-test-plugin</artifactId>
 				<version>${project.version}</version>
-				<extensions>true</extensions>
 				<configuration>
-					<disconnectConfigs>
-						<disconnectConfig>
-							<hostname>localhost</hostname>
-							<loopback>15001</loopback>
-						</disconnectConfig>
-					</disconnectConfigs>
+					<settings>
+						<suites>
+							<suite>
+								<testCaseLoggingActive>true</testCaseLoggingActive>
+								<selector>FIREFOX_SELECTOR</selector>
+								<testCaseClasses>
+									<testCaseClass>selenium2.easy.test.cases.FakeTestCase</testCaseClass>
+								</testCaseClasses>
+							</suite>
+						</suites>
+					</settings>
 				</configuration>
+				<extensions>true</extensions>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,7 +1,6 @@
 package com.selenium2.easy.test.server.automated;
 
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,12 +34,16 @@ public class WebDriverSelector {
 	 * Windows environment selector
 	 */
 	public static final boolean isWindows = System.getProperty("os.name").toLowerCase().indexOf("win")>=0;
+	static {
+		if (System.getProperty("log4j.configurationFile")==null)
+			System.setProperty("log4j.configurationFile", "log4j2.xml");
+	}
 
 	/**
 	 * Limitation Flag for unit test instances
 	 */
 	public static boolean isInUnitTest = false;
-	
+
 	private List<Object> parameters = new ArrayList<Object>();
 	private SELECTOR_TYPE selector = null;
 	private WebDriver driver = null;
@@ -49,7 +52,7 @@ public class WebDriverSelector {
 	private InternetExplorerDriverService ieService=null;
 	private DriverService customService=null;
 	private boolean filterEventFire = false;
-	
+
 	/**
 	 * Protected class that create the WebDriverSelector instance
 	 * @param selector Selector type enumeration
@@ -61,7 +64,8 @@ public class WebDriverSelector {
 		if (parameters!=null)
 			this.parameters.addAll(Arrays.asList(parameters));
 	}
-	
+
+
 	/**
 	 * Initialize the WebDriver and create Services or what-else is needed to the WebDriver
 	 * @throws FrameworkException When an exception occurs during the WebDriver creation
@@ -75,81 +79,81 @@ public class WebDriverSelector {
 		if (driver==null) {
 			try {
 				switch(selector) {
-					case IE_INTERNAL_SELECTOR:
-						if (isWindows) {
-							URL defaultFile = getClass().getResource("/com/selenium2/easy/test/server/win32bin/IEDriverServer.exe");
-							File file = new File(isInUnitTest ? "drivers/IEDriverServer.exe":defaultFile.getFile());
-							ieService = new InternetExplorerDriverService.Builder()
-							.usingDriverExecutable(file)
-							.usingAnyFreePort()
-					        .withSilent(true)
-					        .withEngineImplementation(InternetExplorerDriverEngine.AUTODETECT)
-							.build();
-							ieService.start();
-							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, ieService.getUrl(),DesiredCapabilities.internetExplorer());
-						}
-						else {
-							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.IE);
-						}
-						break;
-					case CHROME_INTERNAL_SELECTOR:
-						if (isWindows) {
-							URL defaultFile = getClass().getResource("/com/selenium2/easy/test/server/win32bin/chromedriver.exe");
-							File file = new File(isInUnitTest ? "drivers/chromedriver.exe":defaultFile.getFile());
-							chromeService = new ChromeDriverService.Builder()
-					        .usingDriverExecutable(file)
-					        .usingAnyFreePort()
-					        .withVerbose(false)
-					        .build();
-							chromeService.start();
-							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, chromeService.getUrl(),DesiredCapabilities.chrome());
-						}
-						else {
-							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.CROME);
-						}
-						break;
-					case CHROME_SELECTOR:
-						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.CROME);
-						break;
-					case FIREFOX_SELECTOR:
-						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.FIREFOX);
-						break;
-					case IE_SELECTOR:
+				case IE_INTERNAL_SELECTOR:
+					if (isWindows) {
+						File defaultFile = SeleniumUtilities.recoverFileInJar("com/selenium2/easy/test/server/automated/win32bin/IEDriverServer.exe");
+						File file = isInUnitTest ? new File("drivers/IEDriverServer.exe"):defaultFile;
+						ieService = new InternetExplorerDriverService.Builder()
+						.usingDriverExecutable(file)
+						.usingAnyFreePort()
+						.withSilent(true)
+						.withEngineImplementation(InternetExplorerDriverEngine.AUTODETECT)
+						.build();
+						ieService.start();
+						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, ieService.getUrl(),DesiredCapabilities.internetExplorer());
+					}
+					else {
 						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.IE);
-						break;
-					case OPERA_SELECTOR:
-						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.OPERA);
-						break;
-					case REMOTE_SELECTOR:
-						if (parameters.size()<1 || parameters.get(0)==null || parameters.get(1)==null || 
-						(!CommandExecutor.class.isAssignableFrom(parameters.get(0).getClass()) &&  !DriverService.class.isAssignableFrom(parameters.get(0).getClass()) ) ||
-						!Capabilities.class.isAssignableFrom(parameters.get(1).getClass()))
-							throw new FrameworkException("Unable to define Remote WebDriver attributes during initialization ...");
-						if (CommandExecutor.class.isAssignableFrom(parameters.get(0).getClass()))
-							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, (CommandExecutor)parameters.get(0), null, (Capabilities)parameters.get(1));
-						else {
-							this.customService = (DriverService)parameters.get(0);
-							if (!this.customService.isRunning())
-								this.customService.start();
-							driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, this.customService.getUrl(), (Capabilities)parameters.get(1));
-						}
-						break;
-					case HTML_UNIT_SELECTOR:
-						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.HTML_UNIT);
-						break;
-					case EVENT_FIRING_SELECTOR:
-						if (parameters.size()==0 || parameters.get(0)==null || 
-						(!WebDriver.class.isAssignableFrom(parameters.get(0).getClass()) && !SELECTOR_TYPE.class.isAssignableFrom(parameters.get(0).getClass())) )
-							throw new FrameworkException("Unable to locate firing WebDriver during initialization ...");
-						if (WebDriver.class.isAssignableFrom(parameters.get(0).getClass()))
-							eventFiringDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.EVENT_FIRING, (WebDriver)parameters.get(0), null, null, null);
-						else {
-							this.filterEventFire = true;
-							initDriver();
-							this.filterEventFire = false;
-							eventFiringDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.EVENT_FIRING, this.driver, null, null, null);
-						}
-						break;
+					}
+					break;
+				case CHROME_INTERNAL_SELECTOR:
+					if (isWindows) {
+						File defaultFile = SeleniumUtilities.recoverFileInJar("com/selenium2/easy/test/server/automated/win32bin/chromedriver.exe");
+						File file = isInUnitTest ? new File("drivers/chromedriver.exe"):defaultFile;
+						chromeService = new ChromeDriverService.Builder()
+						.usingDriverExecutable(file)
+						.usingAnyFreePort()
+						.withVerbose(false)
+						.build();
+						chromeService.start();
+						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, chromeService.getUrl(),DesiredCapabilities.chrome());
+					}
+					else {
+						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.CROME);
+					}
+					break;
+				case CHROME_SELECTOR:
+					driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.CROME);
+					break;
+				case FIREFOX_SELECTOR:
+					driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.FIREFOX);
+					break;
+				case IE_SELECTOR:
+					driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.IE);
+					break;
+				case OPERA_SELECTOR:
+					driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.OPERA);
+					break;
+				case REMOTE_SELECTOR:
+					if (parameters.size()<1 || parameters.get(0)==null || parameters.get(1)==null || 
+					(!CommandExecutor.class.isAssignableFrom(parameters.get(0).getClass()) &&  !DriverService.class.isAssignableFrom(parameters.get(0).getClass()) ) ||
+					!Capabilities.class.isAssignableFrom(parameters.get(1).getClass()))
+						throw new FrameworkException("Unable to define Remote WebDriver attributes during initialization ...");
+					if (CommandExecutor.class.isAssignableFrom(parameters.get(0).getClass()))
+						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, (CommandExecutor)parameters.get(0), null, (Capabilities)parameters.get(1));
+					else {
+						this.customService = (DriverService)parameters.get(0);
+						if (!this.customService.isRunning())
+							this.customService.start();
+						driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.REMOTE, null, null, this.customService.getUrl(), (Capabilities)parameters.get(1));
+					}
+					break;
+				case HTML_UNIT_SELECTOR:
+					driver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.HTML_UNIT);
+					break;
+				case EVENT_FIRING_SELECTOR:
+					if (parameters.size()==0 || parameters.get(0)==null || 
+					(!WebDriver.class.isAssignableFrom(parameters.get(0).getClass()) && !SELECTOR_TYPE.class.isAssignableFrom(parameters.get(0).getClass())) )
+						throw new FrameworkException("Unable to locate firing WebDriver during initialization ...");
+					if (WebDriver.class.isAssignableFrom(parameters.get(0).getClass()))
+						eventFiringDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.EVENT_FIRING, (WebDriver)parameters.get(0), null, null, null);
+					else {
+						this.filterEventFire = true;
+						initDriver();
+						this.filterEventFire = false;
+						eventFiringDriver = SeleniumUtilities.getBrowserDriver(BROWSER_TYPE.EVENT_FIRING, this.driver, null, null, null);
+					}
+					break;
 				}
 			} catch (Throwable e) {
 				this.filterEventFire = false;
@@ -157,7 +161,7 @@ public class WebDriverSelector {
 			}
 		}
 	}
-	
+
 	/**
 	 * Initializes the WebDriver (if needed) and returns the active and running WebDriver
 	 * @return WebDriver instance
@@ -169,7 +173,7 @@ public class WebDriverSelector {
 			return this.eventFiringDriver;
 		return this.driver;
 	}
-	
+
 	/**
 	 * Stops and clean the WebDriver. After the execution of the close it is needed to 
 	 * re-initialize the WebDriver
@@ -186,7 +190,7 @@ public class WebDriverSelector {
 			this.ieService.stop();
 		if (this.customService!=null)
 			this.customService.stop();
-		
+
 		this.eventFiringDriver = null;
 		this.driver = null;
 		this.chromeService = null;
