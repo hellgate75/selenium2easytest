@@ -37,47 +37,47 @@
 <p>Automated Selenium 2 based test framework</p>
 
 <h2>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features:</h2>
+<a id="user-content-introduction" class="anchor" href="#introduction" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><strong>Introduction</strong>
+</h2>
 
-<p><code>Execution Server Side Framework</code>: Server side API to execute the test case (<code>TestAutomatedServer</code>)</p>
-
-<p><code>Configurable Test Suite</code>: Properties file configurable test Suite (<code>TestEngine</code>)</p>
-
-<p><code>Extendable Test Cases</code>: API to define custom classes to run different test case scenarios or to provide furter information (<code>BaseTestCase</code>)</p>
-
-<p><code>XML Test Case Definition</code>: XML file driven test cases definition (<code>XMLGroupTestCase</code>)</p>
-
-<p><code>Extendable XML Test Cases</code>: API to define custom XML test cases classes and run different features, security actions and so on ... Classes configurable in the XML file (<code>XMLGroupTestCase</code>)</p>
-
-<p><code>Command line interface</code>: Executable class running a the test suite and accepting a custom path for the Test Suite configuration property file (<code>com.selenium2.easy.test.server.Main</code>)</p>
+<p>This framework has been designed to get the selenium integration tests easy. It allows to Create Java Test Case's classes within the implementation of the test or to create one or more test groups within many test cases in XML file format according to the allowed grammar. It makes easy the definition of UI/Service Integration, Acceptance, Regression and Features tests. It's allowed to store a UI login multi phases procedure and takes screenshots after the group, action or assertion executions to take the picture of the UI.</p>
 
 <h2>
-<a id="work-in-progress-" class="anchor" href="#work-in-progress-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Work in progress :</h2>
+<a id="user-content-features" class="anchor" href="#features" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><strong>Features</strong>
+</h2>
 
-<p><code>Maven Plugin</code>: Maven plugin to run the execution as a maven process in the goals <code>test_compile:connect</code> (to run the Test Suite) and the <code>test:disconnect</code> (to dispose and collect the maven statistics from the engine)</p>
+<p>Many different features are available at the moment and many other will come soon.</p>
 
-<p><code>Sunfire Maven Plugin Integration</code>: Sunfire Maven Plugin integration to execute post unit tests the Selenium 2 test cases and report the UI tests and performance statistics integrating the success status of the Sunfire plugin (<code>Sunfire-Selenium2-Plugin</code>)</p>
+<h3>
+<a id="user-content-provided-features" class="anchor" href="#provided-features" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Provided features</h3>
 
-<h2>
-<a id="status" class="anchor" href="#status" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Status</h2>
+<ul>
+<li>Execution Server Side Framework: Server side API to execute the test case (TestAutomatedServer)</li>
+<li>Configurable Test Suite`: Properties file configurable test Suite (TestEngine)</li>
+<li>Extendable Test Cases: API to define custom classes to run different test case scenarios or to provide further information (BaseTestCase)</li>
+<li>XML Test Case Definition: XML file driven test cases definition (XMLGroupTestCase)</li>
+<li>Extendable XML Test Cases: API to define custom XML test cases classes and run different features, security actions and so on ... Classes configurable in the XML file (XMLGroupTestCase)</li>
+<li>Command line interface: Executable class running a the test suite and accepting a custom path for the Test Suite configuration property file (com.selenium2.easy.test.server.Main)</li>
+</ul>
 
-<p>(** UNDER DEVELOPMENT **)</p>
+<h3>
+<a id="user-content-planned-features" class="anchor" href="#planned-features" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Planned features</h3>
 
-<h2>
-<a id="maven-commands" class="anchor" href="#maven-commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Maven Commands</h2>
+<ul>
+<li><p>Maven Plugin: Maven plugin to run the execution as a maven process in the goals <code>test_compile:connect</code> (to run the Test Suite) and the <code>test:disconnect</code> (to dispose and collect the maven statistics from the engine)</p></li>
+<li><p>Sunfire Maven Plugin Integration: Sunfire Maven Plugin integration to execute post unit tests the Selenium 2 test cases and report the UI tests and performance statistics integrating the success status of the Sunfire plugin (<code>Sunfire-Selenium2-Plugin</code>)</p></li>
+</ul>
 
-<p>To compile the maven project run on the root of the main maven project :</p>
+<h3>
+<a id="user-content-coming-soon-features" class="anchor" href="#coming-soon-features" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Coming soon features</h3>
 
-<p><code>mvn -U -up install clean test javadoc:jar</code></p>
-
-<p>To generate the stand-alone JAVADOC run on the root of the main maven project :</p>
-
-<p><code>mvn -U javadoc:jar</code></p>
-
-<p>For the Stand-alone Tests execution (after the build) run on the root of the main maven project :</p>
-
-<p><code>mvn -U test</code></p>
-
+<ul>
+<li>Java 8 implementation</li>
+<li>Framework Plug-in management</li>
+<li>Clusters access</li>
+<li>AWS integration</li>
+</ul>
+</div>
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
