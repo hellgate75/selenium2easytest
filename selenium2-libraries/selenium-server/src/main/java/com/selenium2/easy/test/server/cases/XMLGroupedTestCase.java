@@ -80,7 +80,7 @@ public class XMLGroupedTestCase extends BaseTestCase {
 				if (timeout>0) {
 					SeleniumUtilities.waitForLoad(driver, timeout);
 				}
-				XMLTestCaseUtilities.doAssertion(driver, assertion, resultsMap);
+				XMLTestCaseUtilities.doAssertion(driver, assertion, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
 			}
 		}
 		if (testCase.getTestCaseDOMAssertions()!=null) {
@@ -89,12 +89,12 @@ public class XMLGroupedTestCase extends BaseTestCase {
 				if (timeout>0) {
 					SeleniumUtilities.waitForLoad(driver, timeout);
 				}
-				XMLTestCaseUtilities.doAssertion(driver, assertion, resultsMap);
+				XMLTestCaseUtilities.doAssertion(driver, assertion, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
 			}
 		}
 		if (testCase.getChildrenCases()!=null) {
 			for(XMLTestCase childCase: testCase.getChildrenCases()) {
-				resultsMap = executeCase(driver, childCase, resultsMap);
+				resultsMap = executeCase(driver, childCase, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
 			}
 		}
 		if (!testCase.getInheritEnvironment())

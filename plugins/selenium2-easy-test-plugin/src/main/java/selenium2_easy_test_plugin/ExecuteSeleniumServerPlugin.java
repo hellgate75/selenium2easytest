@@ -12,7 +12,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
 
 import selenium2_easy_test_plugin.config.Selenium2ServerConfig;
 import selenium2_easy_test_plugin.config.Selenium2ServerEntry;
@@ -22,39 +21,55 @@ import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.exceptions.NotFoundException;
 
 /**
- * Goal which disconnect a Selenium2 Automated Test Server.
+ * Selenium2 Automated Test Framework Mojo Plug-in JUnit Integration Tests
+ * <br/>'Execution' Goal which connect a Selenium2 Automated Test Server.
+ * <br/>
+ * <br/>Here we check the availability of the main configuration paths:
+ * <br/>
+ * <ul>
+ * <br/><li><b>Property file configuration</b> This feature allows to load a property file with the configuration of the Test Suite</li>
+ * <br/><li><b>Classes List dynamic configuration</b> This feature creates a configuration file and a test engine using the class list loading (concurrent with the next two configurations)</li>
+ * <br/><li><b>Package dynamic configuration</b> This feature creates a configuration file and a test engine using the package classes loading (concurrent with the previous and next configurations)</li>
+ * <br/><li><b>XML files directory dynamic configuration</b> This feature creates a configuration file and a test engine using the XML file test cases saved inside a directory (concurrent with the previous two configurations)</li>
+ * </ul>
+ * <br/>
+ * @see Selenium2ServerConfig
+ * @see Selenium2ServerEntry
+ * @see SeleniumAutomatedServer
+ * @author Fabrizio Torelli
  */
 @Mojo(defaultPhase=LifecyclePhase.TEST, threadSafe=true, name="execute")
 public class ExecuteSeleniumServerPlugin extends AbstractMojo {
-
-	@Parameter(defaultValue = "${project}", readonly = true )
-	private MavenProject project;
-
-	// ***Not yet useful***
-	//	@Parameter( defaultValue = "${session}", readonly = true )
-	//	private MavenSession session;
 	
 	@Parameter(defaultValue = "target/selenium2", readonly = false )
 	private String temporaryPath = "target/selenium2";
 
 
 	/**
-	 * List of Selenium2 Configuration Files to be installed.
+	 * List of Selenium2 Test Suite configuration properties file to be loaded in a relative list of
+	 * Selenium2 Automated Test Framework Engine.
 	 */
 	@Parameter(required=false )
 	private List<String> configFiles;
 
 	/**
-	 * List of Selenium2 Configuration to be created.
+	 * List of Selenium2 Configuration Properties used to create a relative list of Test Suite configuration properties files 
+	 * to have loaded in a relative list of Selenium2 Automated Test Framework Engine.
 	 */
 	@Parameter(required=false )
 	private Selenium2ServerConfig settings;
 
 	private List<SeleniumAutomatedServer> servers = null;
 
+	/**
+	 * Default Plug-in constructor
+	 */
 	public ExecuteSeleniumServerPlugin() {
 	}
 
+	/*
+	 * Clean a folder and all content files or delete a file in recursive way.
+	 */
 	private synchronized void cleanFolderOrFile(File file) {
 		file.setReadable(true);
 		file.setWritable(true);
@@ -68,6 +83,9 @@ public class ExecuteSeleniumServerPlugin extends AbstractMojo {
 		}
 	}
 	
+	/*
+	 * Create a temporary directory path and if it exists clean it before exit.
+	 */
 	protected synchronized void cleanTemporaryPath(String outDirectoryPath) {
 		File directory = new File(outDirectoryPath);
 		if (!directory.exists()) {
@@ -90,6 +108,10 @@ public class ExecuteSeleniumServerPlugin extends AbstractMojo {
 		
 	}
 
+	/*
+	 * Create and save in a directory a new Selenium2 Test Suite configuration properties file
+	 * according to the passed {@link Selenium2ServerEntry}.
+	 */
 	protected synchronized File initFile(Selenium2ServerEntry entry, String outDirectoryPath) {
 		String randomCode = UUID.randomUUID().toString().replace('-', '_');
 		File directory = new File(outDirectoryPath);
@@ -120,6 +142,10 @@ public class ExecuteSeleniumServerPlugin extends AbstractMojo {
 		return null;
 	}
 
+	/*
+	 * Create The List of {@link SeleniumAutomatedServer} to have used in the multiple Test Suite
+	 * execution according to the plug-in configuration. 
+	 */
 	protected List<SeleniumAutomatedServer> initPlugin() {
 		List<SeleniumAutomatedServer> servers = new ArrayList<SeleniumAutomatedServer>(0);
 		if ((settings!=null && settings.size()>0) || (configFiles!=null && configFiles.size()>0)) {
@@ -149,7 +175,6 @@ public class ExecuteSeleniumServerPlugin extends AbstractMojo {
 					new File(temporaryPath).mkdir();
 				}
 				for(Selenium2ServerEntry initEntry:settings.getSuites()) {
-					//TODO: Creare il file nel target e definire il server
 						try {
 							File initFile = this.initFile(initEntry, temporaryPath);
 							if (initFile!=null && initFile.exists() && initFile.isFile()) {
@@ -175,6 +200,9 @@ public class ExecuteSeleniumServerPlugin extends AbstractMojo {
 		}
 		return servers;
 	}
+	/* (non-Javadoc)
+	 * @see org.apache.maven.plugin.Mojo#execute()
+	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Selenium2 Automated Server Maven running ....");
 		servers = initPlugin();
@@ -199,43 +227,51 @@ public class ExecuteSeleniumServerPlugin extends AbstractMojo {
 		getLog().info("Selenium2 Automated Server Maven exit ....");
 	}
 
-	public MavenProject getProject() {
-		return project;
-	}
-
-	public void setProject(MavenProject project) {
-		this.project = project;
-	}
-
+	/**
+	 * Retrieves the temporary path to save the plug-in generated files
+	 * @return The temporary path string
+	 */
 	public String getTemporaryPath() {
 		return temporaryPath;
 	}
 
+	/**
+	 * Sets the temporary path to save the plug-in generated files
+	 * @param temporaryPath The temporary path string
+	 */
 	public void setTemporaryPath(String temporaryPath) {
 		this.temporaryPath = temporaryPath;
 	}
 
+	/**
+	 * Retrieves the list of Test Suite configuration properties file path strings 
+	 * @return The list of configuration files
+	 */
 	public List<String> getConfigFiles() {
 		return configFiles;
 	}
 
+	/**
+	 * Sets the list of Test Suite configuration properties file path strings 
+	 * @param configFiles The list of configuration files
+	 */
 	public void setConfigFiles(List<String> configFiles) {
 		this.configFiles = configFiles;
 	}
 
+	/**
+	 * Retrieves the {@link Selenium2ServerConfig} that is the dynamic Test Suite configurations container
+	 * @return The {@link Selenium2ServerConfig}
+	 */
 	public Selenium2ServerConfig getSettings() {
 		return settings;
 	}
 
+	/**
+	 * Sets the {@link Selenium2ServerConfig} that is the dynamic Test Suite configurations container
+	 * @param configurations The {@link Selenium2ServerConfig}
+	 */
 	public void setSettings(Selenium2ServerConfig configurations) {
 		this.settings = configurations;
-	}
-
-	public List<SeleniumAutomatedServer> getServers() {
-		return servers;
-	}
-
-	public void setServers(List<SeleniumAutomatedServer> servers) {
-		this.servers = servers;
 	}
 }
