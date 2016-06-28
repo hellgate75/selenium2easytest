@@ -26,7 +26,7 @@ Automated Selenium 2 based test framework
 
 ## Status
 
-### WORK IN PROGRESS
+### S.R. 1
 
 
 ## Maven Commands

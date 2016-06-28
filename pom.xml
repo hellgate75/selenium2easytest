@@ -72,7 +72,7 @@
 						<version>1.4.0</version>
 						<configuration>
 							<workingDirectory>./selenium2-libraries/selenium-server</workingDirectory>
- 							<executable>"${env.JAVA_HOME}/bin/java"</executable>
+							<executable>"${env.JAVA_HOME}/bin/java"</executable>
 							<keepAlive>true</keepAlive>
 							<arguments>
 								<argument>-classpath</argument>
@@ -88,8 +88,8 @@
 									<goal>exec</goal>
 								</goals>
 								<configuration>
-				                  	<executable>${env.JAVA_HOME}/bin/java</executable>
-			                  	</configuration>
+									<executable>${env.JAVA_HOME}/bin/java</executable>
+								</configuration>
 							</execution>
 						</executions>
 						<dependencies>
