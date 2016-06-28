@@ -15,10 +15,9 @@ Automated Selenium 2 based test framework
 
 `Command line interface`: Executable class running a the test suite and accepting a custom path for the Test Suite configuration property file (`com.selenium2.easy.test.server.Main`)
 
+`Maven Plugin`: Maven plugin to run the execution as a maven process in the goals `test_compile:connect` (to run the Test Suite) and the `test:disconnect` (to dispose and collect the maven statistics from the engine)
 
 ## Work in progress :
-
-`Maven Plugin`: Maven plugin to run the execution as a maven process in the goals `test_compile:connect` (to run the Test Suite) and the `test:disconnect` (to dispose and collect the maven statistics from the engine)
 
 `Sunfire Maven Plugin Integration`: Sunfire Maven Plugin integration to execute post unit tests the Selenium 2 test cases and report the UI tests and performance statistics integrating the success status of the Sunfire plugin (`Sunfire-Selenium2-Plugin`)
 
