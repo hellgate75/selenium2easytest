@@ -1,6 +1,7 @@
 # SELENIUM2 EASY TEST
 Automated Selenium 2 based test framework
 
+
 ## Features:
 
 `Execution Server Side Framework`: Server side API to execute the test case (`TestAutomatedServer`)
@@ -17,6 +18,7 @@ Automated Selenium 2 based test framework
 
 `Maven Plugin`: Maven plugin to run the execution as a maven process in the goals `test:execute` (to run the Test Suite)
 
+
 ## Work in progress :
 
 `Sunfire Maven Plugin Integration`: Sunfire Maven Plugin integration to execute post unit tests the Selenium 2 test cases and report the UI tests and performance statistics integrating the success status of the Sunfire plugin (`Sunfire-Selenium2-Plugin`)
@@ -24,7 +26,7 @@ Automated Selenium 2 based test framework
 
 ## Status
 
-(** UNDER DEVELOPMENT **)
+### WORK IN PROGRESS
 
 
 ## Maven Commands
