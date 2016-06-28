@@ -12,7 +12,6 @@
 	</organization>
 	<modules>
 		<module>selenium2-easy-test-plugin</module>
-		<!-- <module>plugin-tests</module> -->
 	</modules>
 	<build>
 		<pluginManagement>
