@@ -105,7 +105,7 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 	
 	/**
 	 * Constructor of the base test case instance.
-	 * It cannot be left as default constructor because in the TestEngine it is 
+	 * You cannot mean this as default constructor because in the TestEngine it is 
 	 * expected an empty parameter list's constructor
 	 * @param caseName The case name associated to the actions
 	 * @param caseURL The connection URL if needed
@@ -121,6 +121,20 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 		this.retrowExcpetion = retrowExcpetion;
 	}
 	
+	/**
+	 * Constructor of the base test case instance.
+	 * This constructor identifies the needing to implement some custom methods to return
+	 * the information in order to caseName, caseURL, openUrl, retrowExcpetion in this way
+	 * it is needed to implement the custom getter in order to define the wanted walues
+	 */
+	public BaseTestCase() {
+		super();
+		this.retrowExcpetion = false;
+		this.openUrl = false;
+		this.caseURL = "";
+		this.caseName = "";
+	}
+
 	/**
 	 * Start measuring a timer according to the timing metrics ({@link TIMER_TYPE})
 	 * <br><b>It is used by the Test Engine please do not use it to avoid side effects on the timers</b>
