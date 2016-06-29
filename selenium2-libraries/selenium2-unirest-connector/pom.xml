@@ -111,8 +111,25 @@
 						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
+				<!-- Javadoc And Jar generation -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.4</version>
+					<configuration>
+						<outputDirectory>${project.build.directory}/javadocs</outputDirectory>
+						<nohelp>true</nohelp>
+					</configuration>
+					<executions>
+						<execution>
+							<id>javadoc</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-</project>
 </project>

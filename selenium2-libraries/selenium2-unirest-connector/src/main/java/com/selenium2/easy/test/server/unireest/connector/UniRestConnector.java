@@ -2,8 +2,6 @@ package com.selenium2.easy.test.server.unireest.connector;
 
 import static com.mashape.unirest.http.Unirest.*;
 
-import java.util.Map;
-
 import com.mashape.unirest.request.GetRequest;
 import com.selenium2.easy.test.server.unireest.connector.api.RequestConfiguration;
 
