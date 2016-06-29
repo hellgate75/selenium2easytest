@@ -138,33 +138,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 			engineProperties.store(System.out, "Selenium2 Engine Configuration");
 		} catch (IOException e2) {
 		}
-		if (!engineProperties.containsKey(SeleniumServerConstants.driverSelector)) {
-			throw new FrameworkException(logginPrefix+"Driver Selector not found ...");
-		}
 		this.parameters.clear();
-		this.selector = null;
-		try {
-			this.selector = SELECTOR_TYPE.valueOf(engineProperties.getProperty(SeleniumServerConstants.driverSelector));
-			if (engineProperties.containsKey(SeleniumServerConstants.driverSubSelector)) {
-				this.parameters.add(SELECTOR_TYPE.valueOf(engineProperties.getProperty(SeleniumServerConstants.driverSubSelector)));
-			}
-			if (engineProperties.containsKey(SeleniumServerConstants.driverSubDriver)) {
-				this.parameters.add(Class.forName(engineProperties.getProperty(SeleniumServerConstants.driverSubSelector)).newInstance());
-			}
-			if (engineProperties.containsKey(SeleniumServerConstants.driverService)) {
-				this.parameters.add(Class.forName(engineProperties.getProperty(SeleniumServerConstants.driverService)).newInstance());
-			}
-			if (engineProperties.containsKey(SeleniumServerConstants.driverCommander)) {
-				this.parameters.add(Class.forName(engineProperties.getProperty(SeleniumServerConstants.driverCommander)).newInstance());
-			}
-			if (engineProperties.containsKey(SeleniumServerConstants.driverCapabilities)) {
-				String capabilitiesMethod = engineProperties.getProperty(SeleniumServerConstants.driverCapabilities);
-				Capabilities capabilities = (Capabilities)(DesiredCapabilities.class.getDeclaredMethod(capabilitiesMethod, Void.class)).invoke(null);
-				this.parameters.add(capabilities);
-			}
-		} catch (Throwable e) {
-			throw new FrameworkException(logginPrefix+"Unable to run the server due to : ", e);
-		}
 		
 		try {
 			this.testEngine.clearCaseList();
@@ -200,6 +174,35 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 			}
 		} catch (Throwable e1) {
 			throw new FrameworkException(logginPrefix+"Unable to load the test cases from Xml due to : ", e1);
+		}
+		this.selector = null;
+		if (this.testEngine.isWebDriverDriven() && this.testEngine.getCaseNumber()>0) {
+			try {
+				this.selector = SELECTOR_TYPE.valueOf(engineProperties.getProperty(SeleniumServerConstants.driverSelector));
+				if (engineProperties.containsKey(SeleniumServerConstants.driverSubSelector)) {
+					this.parameters.add(SELECTOR_TYPE.valueOf(engineProperties.getProperty(SeleniumServerConstants.driverSubSelector)));
+				}
+				if (engineProperties.containsKey(SeleniumServerConstants.driverSubDriver)) {
+					this.parameters.add(Class.forName(engineProperties.getProperty(SeleniumServerConstants.driverSubSelector)).newInstance());
+				}
+				if (engineProperties.containsKey(SeleniumServerConstants.driverService)) {
+					this.parameters.add(Class.forName(engineProperties.getProperty(SeleniumServerConstants.driverService)).newInstance());
+				}
+				if (engineProperties.containsKey(SeleniumServerConstants.driverCommander)) {
+					this.parameters.add(Class.forName(engineProperties.getProperty(SeleniumServerConstants.driverCommander)).newInstance());
+				}
+				if (engineProperties.containsKey(SeleniumServerConstants.driverCapabilities)) {
+					String capabilitiesMethod = engineProperties.getProperty(SeleniumServerConstants.driverCapabilities);
+					Capabilities capabilities = (Capabilities)(DesiredCapabilities.class.getDeclaredMethod(capabilitiesMethod, Void.class)).invoke(null);
+					this.parameters.add(capabilities);
+				}
+			} catch (Throwable e) {
+				throw new FrameworkException(logginPrefix+"Unable to run the server due to : ", e);
+			}
+		}
+		
+		if (!engineProperties.containsKey(SeleniumServerConstants.driverSelector) && this.testEngine.isWebDriverDriven()) {
+			throw new FrameworkException(logginPrefix+"Driver Selector not found ...");
 		}
 		
 		boolean runParallel = false;
@@ -308,7 +311,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		}
 		else 
 			reportJSONOut = null;
-		if (!runParallel) {
+		if (!runParallel && this.selector!=null) {
 			try {
 				driverSelector = WebDriverFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
 			} catch (Throwable e) {
@@ -321,7 +324,9 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 				testEngine.parallel(this, parallelUsers, parallelLimit);
 			}
 			else {
-				testEngine.setWebDriver(driverSelector.getWebDriver());
+				if(driverSelector!=null) {
+					testEngine.setWebDriver(driverSelector.getWebDriver());
+				}
 				testEngine.run();
 			}
 		} catch (Throwable e) {
@@ -355,10 +360,12 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 	@Override
 	public WebDriverSelector nextWebDriver() throws FrameworkException {
 		try {
-			return driverSelector = WebDriverFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
+			if (this.selector!=null)
+				return driverSelector = WebDriverFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
 		} catch (Throwable e) {
 			throw new FrameworkException(logginPrefix+"Unable to run the web driver due to : ", e);
 		}
+		return null;
 	}
 
 	/**

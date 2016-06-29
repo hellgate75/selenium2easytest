@@ -112,12 +112,17 @@
 			<artifactId>plexus-compiler-test</artifactId>
 			<version>2.7</version>
 		</dependency>
+		<!-- Selenium2 Automated Server Framework and libraries -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>selenium-server</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+				<artifactId>selenium2-unirest-connector</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- log -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

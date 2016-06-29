@@ -1,5 +1,7 @@
 package com.selenium2.easy.test.server.cases;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.UUID;
 
@@ -62,6 +64,17 @@ public abstract class TestCase {
 	 */
 	public abstract boolean isConnectionRequired();
 
+
+	/**
+	 * Return the WebDriver request flag. When in a TestSuite all the elements are not WebSriver driven,
+	 * <br/>In that case the WebDriver instance desn't happen and the Selenium2 features are disabled. Probably we have a
+	 * different kind of test suite (such as Service HTTP request driven or simply a non-interactive UI Test Suite)
+	 * @return The WebDriver request flag
+	 */
+	public boolean isWebDriverDriven() {
+		return true;
+	}
+
 	/**
 	 * Return the exception transverse flag.
 	 * @return connection request flag
@@ -80,6 +93,24 @@ public abstract class TestCase {
 	 */
 	@Override
 	public final String toString() {
+		try {
+			String elements = "";
+			for(Field field: getClass().getDeclaredFields()) {
+				if(Modifier.isPrivate(field.getModifiers())&&!Modifier.isStatic(field.getModifiers())) {
+					try {
+						elements += (elements.length()>0 ? "," : "") + field.getName();
+						elements += "=" + field.get(this);
+					} catch (IllegalArgumentException e) {
+					} catch (IllegalAccessException e) {
+					} catch (Throwable e) {
+					}
+				}
+			}
+			if (elements.length()>0) {
+				return this.getClass().getSimpleName() + " [" + elements + "]";
+			}
+		} catch (Throwable e) {
+		}
 		return "TestCase [Unique Identifier="+uid+", Case Name=" + getCaseName() + ", Case URL="
 				+ getConnectionURL() + ", Connect URL=" + isConnectionRequired() + "]";
 	}

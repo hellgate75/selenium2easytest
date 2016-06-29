@@ -26,5 +26,13 @@ public class FakeTestCase extends BaseTestCase {
 	public void automatedTest(WebDriver driver) throws Throwable {
 		this.getLogger().info("***** FakeTestCase executed!!");
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.cases.TestCase#isWebDriverDriven()
+	 */
+	@Override
+	public boolean isWebDriverDriven() {
+		return false;
+	}
 
 }

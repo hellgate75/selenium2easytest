@@ -26,11 +26,11 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	private XMLTestCase testCase;
 
 	/**
-	 * Constructor of the XML Grouped 
-	 * @param groupName
-	 * @param testCase
-	 * @throws NullPointerException
-	 * @throws RuntimeException
+	 * Constructor of the XML Grouped Test Case used by the TestEngine
+	 * @param groupName The name of the current group
+	 * @param testCase The Used test case
+	 * @throws NullPointerException When a null Test Case XML object is used s parameter for the constructor
+	 * @throws RuntimeException When any Test Case XML object data recovery exception occurs
 	 */
 	public XMLGroupedTestCase(String groupName, XMLTestCase testCase) throws NullPointerException, RuntimeException {
 		super(testCase.getName(), testCase.getConnectionURL()!=null ? testCase.getConnectionURL().getFormattedURL() : null, testCase.getUseUrl(), testCase.getRetrowException());

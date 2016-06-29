@@ -33,11 +33,11 @@ Automated Selenium 2 based test framework
 
 To compile the maven project run on the root of the main maven project :
 
-`mvn -U -up install clean test javadoc:jar`
+`mvn -U install clean test javadoc:jar`
 
 To make a dry compile of the maven project without tests run on the root of the main maven project :
 
-`mvn -U -up install clean javadoc:jar -Dmaven.test.skip=true`
+`mvn -U install clean javadoc:jar -Dmaven.test.skip=true`
 
 
 To generate the stand-alone JAVADOC run on the root of the main maven project :

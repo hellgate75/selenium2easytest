@@ -32,5 +32,6 @@
 	</properties> -->
   <modules>
   	<module>selenium-server</module>
+	<module>selenium2-unirest-connector</module>
   </modules>
 </project>

@@ -149,7 +149,20 @@ public class TestEngine implements Callable<UserCaseResult>{
 	public int getCaseNumber() {
 		return caseList.size();
 	}
-	
+
+	/**
+	 * Retrieve the needing status to give the instance of the WebDriver
+	 * @return The WebDriver instance request
+	 */
+	public boolean isWebDriverDriven() {
+		for(TestCase aCase: caseList) {
+			if (aCase!=null && aCase.isWebDriverDriven()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Log trace with information level
 	 * @param message message to log
@@ -268,7 +281,8 @@ public class TestEngine implements Callable<UserCaseResult>{
 		if (testCase.isConnectionRequired()) {
 			if(!testCase.isSecureConnection()) {
 				testCase.startTimeCounter(TIMER_TYPE.RENDERING);
-				driver.get(testCase.getConnectionURL());
+				if (driver!=null)
+					driver.get(testCase.getConnectionURL());
 				testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
 			}
 			else {
@@ -312,7 +326,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 		WebDriverSelector driverSelector = null;
 		try {
 			driverSelector = factory.nextWebDriver();
-			WebDriver driver = driverSelector.getWebDriver();
+			WebDriver driver = driverSelector!=null ? driverSelector.getWebDriver() : null;
 			userResult.setDriverName(driver!=null ? driver.getClass().getName() : null);
 			for(BaseTestCase testCase: caseList) {
 				caseExecuted++;
@@ -395,7 +409,8 @@ public class TestEngine implements Callable<UserCaseResult>{
 		}
 		if (testCase.isConnectionRequired()) {
 			testCase.startTimeCounter(TIMER_TYPE.RENDERING);
-			driver.get(testCase.getConnectionURL());
+			if (driver!=null)
+				driver.get(testCase.getConnectionURL());
 			testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
 		}
 		testCase.startTimeCounter(TIMER_TYPE.TEST_ACTION);
@@ -459,7 +474,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 				return;
 			int skipped = 0;
 			ps.println(REPORT_LINE_SEPARATOR);
-			ps.println("Test Engine Report - web driver used : " + this.driver.getClass().getName());
+			ps.println("Test Engine Report - web driver used : " + (this.driver!=null ? this.driver.getClass().getName() : "N.D."));
 			ps.println(REPORT_LINE_SEPARATOR);
 			for(int i=0; i<this.getCaseNumber();i++) {
 				BaseTestCase testCase = caseList.get(i);
@@ -523,7 +538,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 	public String jsonReport() {
 		if(parallelResults==null) {
 			if (caseExecuted==0)
-				return this.getCasesJSON("", false, this.driver.getClass().getName(), this.getCaseNumber(), this.caseExecuted, 0, this.caseFailed, this.getCaseSecceded(), (endTime-startTime), "[]", false, null);
+				return this.getCasesJSON("", false, this.driver!=null ? this.driver.getClass().getName() : "N.D.", this.getCaseNumber(), this.caseExecuted, 0, this.caseFailed, this.getCaseSecceded(), (endTime-startTime), "[]", false, null);
 			int skipped = 0;
 			String cases = "";
 			for(int i=0; i<this.getCaseNumber();i++) {
@@ -539,7 +554,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 					skipped++;
 				}
 			}
-			return this.getCasesJSON("", false, this.driver.getClass().getName(), this.getCaseNumber(), this.caseExecuted, skipped, this.caseFailed, this.getCaseSecceded(), (endTime-startTime), cases, true, null);
+			return this.getCasesJSON("", false, this.driver!=null ? this.driver.getClass().getName() : "N.D.", this.getCaseNumber(), this.caseExecuted, skipped, this.caseFailed, this.getCaseSecceded(), (endTime-startTime), cases, true, null);
 		}
 		else {
 			String parallelJSON = "{";
