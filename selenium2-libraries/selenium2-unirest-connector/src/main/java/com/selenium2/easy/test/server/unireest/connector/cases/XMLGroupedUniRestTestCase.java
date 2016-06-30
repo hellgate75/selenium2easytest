@@ -52,7 +52,11 @@ public class XMLGroupedUniRestTestCase extends XMLGroupedTestCase implements IUn
 	 */
 	@Override
 	public boolean handleSecureConnection(WebDriver driver) {
-		return this.connectServiceURL();
+		try {
+			return this.connectServiceURL();
+		} catch (ActionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

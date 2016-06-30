@@ -3,8 +3,6 @@ package com.selenium2.easy.test.server.unireest.connector;
 import static com.mashape.unirest.http.Unirest.*;
 
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequest;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.unireest.connector.model.RequestConfiguration;

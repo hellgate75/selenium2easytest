@@ -64,7 +64,11 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	 */
 	@Override
 	public boolean handleSecureConnection(WebDriver driver) {
-		return this.connectServiceURL();
+		try {
+			return this.connectServiceURL();
+		} catch (ActionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
