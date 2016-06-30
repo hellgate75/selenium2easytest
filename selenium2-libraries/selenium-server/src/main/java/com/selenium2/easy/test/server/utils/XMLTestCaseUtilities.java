@@ -110,7 +110,7 @@ public class XMLTestCaseUtilities {
 	}
 
 	
-	private static Object pack( final String str )
+	private static Object pack( final String str, Map<String, Object> results )
 	{
 	    if ( str == null || str.length() > 18 )
 	        return str;
@@ -214,6 +214,26 @@ public class XMLTestCaseUtilities {
 	    		
 	    	}
 	    }
+	    if (str.toUpperCase().trim().startsWith("$O(") && str.trim().endsWith(")")) {
+	    	String value=str.toUpperCase().trim().substring(3, str.trim().length()-1);
+	    	if (value.length()>0) {
+	    		try {
+					return Class.forName(value).newInstance();
+				} catch (Throwable e) {
+				}
+	    		
+	    	}
+	    }
+	    if (str.toUpperCase().trim().startsWith("$M(") && str.trim().endsWith(")")) {
+	    	String value=str.toUpperCase().trim().substring(3, str.trim().length()-1);
+	    	if (value.length()>0 && results!=null && results.size()>0) {
+	    		try {
+					return results.get(value);
+				} catch (Throwable e) {
+				}
+	    		
+	    	}
+	    }
 	    
 	    if (str.equals("TRUE") || str.equals("FALSE")) {
 	    	return str.equals("TRUE");
@@ -279,7 +299,7 @@ public class XMLTestCaseUtilities {
 					for(String aValue:operation.getValueList()) {
 						if (aValue==null)
 							aValue="";
-						operationValues.add(pack(aValue));
+						operationValues.add(pack(aValue,results));
 					}
 				}
 				
@@ -828,13 +848,13 @@ public class XMLTestCaseUtilities {
 				}
 			}
 		}
-		Object assertionValue=assertion.getUseValue() ? pack(assertion.getValue()) : null;
+		Object assertionValue=assertion.getUseValue() ? pack(assertion.getValue(), caseResults) : null;
 		String textFile = assertion.getUseTextFile() ? loadTextFile(assertion.getTextFile()) : null;
 		List<Object> assertionValues = null;
 		if (assertion.getUseValue() && assertion.getValues()!=null) {
 			assertionValues = new ArrayList<Object>(0);
 			for(String value: assertion.getValues()) {
-				assertionValues.add(pack(value));
+				assertionValues.add(pack(value, caseResults));
 			}
 		}
 		Object expected = null;

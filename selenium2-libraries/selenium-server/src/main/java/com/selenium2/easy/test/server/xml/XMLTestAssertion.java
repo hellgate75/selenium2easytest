@@ -77,6 +77,10 @@ public class XMLTestAssertion {
 	 * - <b>Can be used to match an expression with the location got from a WebElement</b>
 	 * <br/> <b>Rectangle -> $R(x,y,w,h)</b>  - Where x and y are the screen coordinates of the Top right vertex Point and w is the width and h is the height of the Dimension of the Rectangle
 	 * - <b>Can be used to match an expression with the size got from a WebElement</b>
+	 * <br/> <b>Object -> $O(fullClassName)</b>  - Where fullClassName is the full package class name of the object with the default constructor to get the new instance
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
+	 * <br/> <b>From Map -> $M(variable)</b>  - Where variable is the variable name of the object previously saved in the results map
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
 	 * <br/>
 	 * @return The list of String values
 	 */
@@ -94,6 +98,10 @@ public class XMLTestAssertion {
 	 * - <b>Can be used to match an expression with the location got from a WebElement</b>
 	 * <br/> <b>Rectangle -> $R(x,y,w,h)</b>  - Where x and y are the screen coordinates of the Top right vertex Point and w is the width and h is the height of the Dimension of the Rectangle
 	 * - <b>Can be used to match an expression with the size got from a WebElement</b>
+	 * <br/> <b>Object -> $O(fullClassName)</b>  - Where fullClassName is the full package class name of the object with the default constructor to get the new instance
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
+	 * <br/> <b>From Map -> $M(variable)</b>  - Where variable is the variable name of the object previously saved in the results map
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
 	 * <br/>
 	 * @param values The list of String values
 	 */
@@ -134,6 +142,10 @@ public class XMLTestAssertion {
 	 * - <b>Can be used to match an expression with the location got from a WebElement</b>
 	 * <br/> <b>Rectangle -> $R(x,y,w,h)</b>  - Where x and y are the screen coordinates of the Top right vertex Point and w is the width and h is the height of the Dimension of the Rectangle
 	 * - <b>Can be used to match an expression with the size got from a WebElement</b>
+	 * <br/> <b>Object -> $O(fullClassName)</b>  - Where fullClassName is the full package class name of the object with the default constructor to get the new instance
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
+	 * <br/> <b>From Map -> $M(variable)</b>  - Where variable is the variable name of the object previously saved in the results map
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
 	 * <br/>
 	 * @return The string value
 	 */
@@ -151,6 +163,10 @@ public class XMLTestAssertion {
 	 * - <b>Can be used to match an expression with the location got from a WebElement</b>
 	 * <br/> <b>Rectangle -> $R(x,y,w,h)</b>  - Where x and y are the screen coordinates of the Top right vertex Point and w is the width and h is the height of the Dimension of the Rectangle
 	 * - <b>Can be used to match an expression with the size got from a WebElement</b>
+	 * <br/> <b>Object -> $O(fullClassName)</b>  - Where fullClassName is the full package class name of the object with the default constructor to get the new instance
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
+	 * <br/> <b>From Map -> $M(variable)</b>  - Where variable is the variable name of the object previously saved in the results map
+	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
 	 * <br/>
 	 * @param value The string value
 	 */
