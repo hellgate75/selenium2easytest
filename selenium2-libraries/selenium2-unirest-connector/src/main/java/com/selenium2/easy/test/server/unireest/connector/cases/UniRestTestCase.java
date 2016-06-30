@@ -4,7 +4,8 @@ import org.openqa.selenium.WebDriver;
 
 import com.selenium2.easy.test.server.cases.BaseTestCase;
 import com.selenium2.easy.test.server.cases.TestEngine;
-import com.selenium2.easy.test.server.cases.api.IUniRestElement;
+import com.selenium2.easy.test.server.cases.unirest.IUniRestElement;
+import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.unireest.connector.UniRestConnector;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
 import com.selenium2.easy.test.server.xml.XMLTestURL;
@@ -41,20 +42,20 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	}
 
 	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.api.IUniRestElement#connectServiceURL()
+	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL()
 	 */
 	@Override
-	public boolean connectServiceURL() {
+	public boolean connectServiceURL() throws ActionException {
 		// TODO Implements UniRestConnector connection
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.api.IUniRestElement#connectServiceURL()
+	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL(com.selenium2.easy.test.server.xml.XMLTestURL)
 	 */
 	@Override
-	public boolean connectServiceURL(XMLTestURL url) {
-		// TODO Implements UniRestConnector connection
+	public boolean connectServiceURL(XMLTestURL url) throws ActionException {
+		// TODO Implements UniRestConnector connection with an URL
 		return false;
 	}
 
@@ -63,8 +64,7 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	 */
 	@Override
 	public boolean handleSecureConnection(WebDriver driver) {
-		// TODO Implements UniRestConnector security access
-		return super.handleSecureConnection(driver);
+		return this.connectServiceURL();
 	}
 
 	/**

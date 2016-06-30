@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.selenium2.easy.test.server.unireest.connector.UniRestConnector;
 import com.selenium2.easy.test.server.xml.WebMethod;
+import com.selenium2.easy.test.server.xml.WebResponse;
 
 /**
  * Base configuration that is used to call the {@link UniRestConnector} URL web request in the following
@@ -22,6 +23,7 @@ public class BasicConfiguration implements RequestConfiguration {
 	private Map<String, Object> queryStringMap = new HashMap<String, Object>(0);
 	private Map<String, String> routeParams = new HashMap<String, String>(0);
 	private WebMethod webMethod;
+	private WebResponse responseType;
 	/**
 	 * Default Constructor
 	 */
@@ -103,5 +105,19 @@ public class BasicConfiguration implements RequestConfiguration {
 	 */
 	public void setWebMethod(WebMethod webMethod) {
 		this.webMethod = webMethod;
+	}
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.unireest.connector.model.RequestConfiguration#getResponseType()
+	 */
+	@Override
+	public WebResponse getResponseType() {
+		return this.responseType;
+	}
+	/**
+	 * Sets the {link WebResponse} to parse the call answer
+	 * @param webMethod The {link WebResponse} to parse the call answer
+	 */
+	public void setResponseType(WebResponse responseType) {
+		this.responseType = responseType;
 	}
 }

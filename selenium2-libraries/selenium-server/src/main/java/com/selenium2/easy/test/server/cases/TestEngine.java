@@ -28,7 +28,7 @@ import com.selenium2.easy.test.server.automated.multithread.TestCaseResult;
 import com.selenium2.easy.test.server.automated.multithread.UserCaseResult;
 import com.selenium2.easy.test.server.automated.multithread.WebDriverParallelFactory;
 import com.selenium2.easy.test.server.cases.BaseTestCase.TIMER_TYPE;
-import com.selenium2.easy.test.server.cases.api.IUniRestElement;
+import com.selenium2.easy.test.server.cases.unirest.IUniRestElement;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.xml.XMLTestCase;

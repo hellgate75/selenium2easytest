@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.selenium2.easy.test.server.unireest.connector.UniRestConnector;
 import com.selenium2.easy.test.server.xml.WebMethod;
+import com.selenium2.easy.test.server.xml.WebResponse;
 
 /**
  * Generic request configuration type that introduce the features used to configure the Request in the {@link UniRestConnector}
@@ -59,4 +60,10 @@ public interface RequestConfiguration {
 	 * @return The {link WebMethod} to call the service
 	 */
 	WebMethod getWebMethod();
+	
+	/**
+	 * Retrieves the {link WebResponse} to parse the call answer
+	 * @return The {link WebResponse} to parse the call answer
+	 */
+	WebResponse getResponseType();
 }

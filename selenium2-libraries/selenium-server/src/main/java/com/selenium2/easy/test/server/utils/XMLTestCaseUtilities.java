@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.selenium2.easy.test.server.cases.TestCase;
-import com.selenium2.easy.test.server.cases.api.IUniRestElement;
+import com.selenium2.easy.test.server.cases.unirest.IUniRestElement;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.xml.AssertionOperationType;
 import com.selenium2.easy.test.server.xml.AssertionThatMatcherType;

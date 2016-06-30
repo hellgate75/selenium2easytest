@@ -43,6 +43,8 @@ public class XMLTestURL {
 
 	private Map<String, String> hostQueryString;
 
+	private WebResponse expectedResponse;
+
 	/**
 	 * Retrieves the protocol string value (e.g.: http, https, ftp, sftp, an so on ....)
 	 * @return The protocol string value
@@ -192,6 +194,22 @@ public class XMLTestURL {
 	 */
 	public void setWebMethod(WebMethod webMethod) {
 		this.webMethod = webMethod;
+	}
+
+	/**
+	 * Retrieves the {@link WebResponse} used to parse the call response, it is used almost for direct service call bypassing the Selenium2 WebDriver
+	 * @return The {@link WebResponse} used to parse the call response
+	 */
+	public WebResponse getExpectedResponse() {
+		return expectedResponse;
+	}
+
+	/**
+	 * Sets the {@link WebResponse} used to parse the call response, it is used almost for direct service call bypassing the Selenium2 WebDriver
+	 * @param expectedResponse The {@link WebResponse} used to parse the call response
+	 */
+	public void setExpectedResponse(WebResponse expectedResponse) {
+		this.expectedResponse = expectedResponse;
 	}
 
 	/**

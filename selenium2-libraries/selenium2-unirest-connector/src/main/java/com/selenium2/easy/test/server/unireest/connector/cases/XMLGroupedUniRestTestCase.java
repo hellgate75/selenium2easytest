@@ -6,7 +6,8 @@ package com.selenium2.easy.test.server.unireest.connector.cases;
 import org.openqa.selenium.WebDriver;
 
 import com.selenium2.easy.test.server.cases.XMLGroupedTestCase;
-import com.selenium2.easy.test.server.cases.api.IUniRestElement;
+import com.selenium2.easy.test.server.cases.unirest.IUniRestElement;
+import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
 import com.selenium2.easy.test.server.xml.XMLTestURL;
 
@@ -29,19 +30,19 @@ public class XMLGroupedUniRestTestCase extends XMLGroupedTestCase implements IUn
 	}
 
 	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.api.IUniRestElement#connectServiceURL()
+	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL()
 	 */
 	@Override
-	public boolean connectServiceURL() {
+	public boolean connectServiceURL() throws ActionException {
 		// TODO Implements UniRestConnector connection
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.api.IUniRestElement#connectServiceURL()
+	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL(com.selenium2.easy.test.server.xml.XMLTestURL)
 	 */
 	@Override
-	public boolean connectServiceURL(XMLTestURL url) {
+	public boolean connectServiceURL(XMLTestURL url) throws ActionException {
 		// TODO Implements UniRestConnector connection
 		return false;
 	}
@@ -51,8 +52,7 @@ public class XMLGroupedUniRestTestCase extends XMLGroupedTestCase implements IUn
 	 */
 	@Override
 	public boolean handleSecureConnection(WebDriver driver) {
-		// TODO Implements UniRestConnector security access
-		return super.handleSecureConnection(driver);
+		return this.connectServiceURL();
 	}
 
 }
