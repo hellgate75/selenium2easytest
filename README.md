@@ -21,6 +21,8 @@ Automated Selenium 2 based test framework
 
 ## Work in progress :
 
+`UniRest Service Connection`: UniRest Test Cases providing java and xml features to connect service without the Selenium2 WebDriver and collecting the service the answer in specific result areas.
+
 `Sunfire Maven Plugin Integration`: Sunfire Maven Plugin integration to execute post unit tests the Selenium 2 test cases and report the UI tests and performance statistics integrating the success status of the Sunfire plugin (`Sunfire-Selenium2-Plugin`)
 
 
