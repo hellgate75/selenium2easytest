@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import com.selenium2.easy.test.server.cases.XMLGroupedTestCase;
 import com.selenium2.easy.test.server.cases.api.IUniRestElement;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
+import com.selenium2.easy.test.server.xml.XMLTestURL;
 
 /**
  * @author Fabrizio Torelli
@@ -32,6 +33,15 @@ public class XMLGroupedUniRestTestCase extends XMLGroupedTestCase implements IUn
 	 */
 	@Override
 	public boolean connectServiceURL() {
+		// TODO Implements UniRestConnector connection
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.cases.api.IUniRestElement#connectServiceURL()
+	 */
+	@Override
+	public boolean connectServiceURL(XMLTestURL url) {
 		// TODO Implements UniRestConnector connection
 		return false;
 	}

@@ -1,12 +1,13 @@
 /**
  * 
  */
-package com.selenium2.easy.test.server.unireest.connector.api;
+package com.selenium2.easy.test.server.unireest.connector.model;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.selenium2.easy.test.server.unireest.connector.UniRestConnector;
+import com.selenium2.easy.test.server.xml.WebMethod;
 
 /**
  * Base configuration that is used to call the {@link UniRestConnector} URL web request in the following
@@ -20,6 +21,7 @@ public class BasicConfiguration implements RequestConfiguration {
 	private Map<String, String> headers = new HashMap<String, String>(0);
 	private Map<String, Object> queryStringMap = new HashMap<String, Object>(0);
 	private Map<String, String> routeParams = new HashMap<String, String>(0);
+	private WebMethod webMethod;
 	/**
 	 * Default Constructor
 	 */
@@ -88,5 +90,18 @@ public class BasicConfiguration implements RequestConfiguration {
 	public void setRouteParams(Map<String, String> routeParams) {
 		this.routeParams = routeParams;
 	}
-
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.unireest.connector.model.RequestConfiguration#getWebMethod()
+	 */
+	@Override
+	public WebMethod getWebMethod() {
+		return this.webMethod;
+	}
+	/**
+	 * Sets the {link WebMethod} to call the service
+	 * @param webMethod The {link WebMethod} to call the service
+	 */
+	public void setWebMethod(WebMethod webMethod) {
+		this.webMethod = webMethod;
+	}
 }

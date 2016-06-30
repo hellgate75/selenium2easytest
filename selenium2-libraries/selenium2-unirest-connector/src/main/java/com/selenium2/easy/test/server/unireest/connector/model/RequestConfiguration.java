@@ -1,11 +1,12 @@
 /**
  * 
  */
-package com.selenium2.easy.test.server.unireest.connector.api;
+package com.selenium2.easy.test.server.unireest.connector.model;
 
 import java.util.Map;
 
 import com.selenium2.easy.test.server.unireest.connector.UniRestConnector;
+import com.selenium2.easy.test.server.xml.WebMethod;
 
 /**
  * Generic request configuration type that introduce the features used to configure the Request in the {@link UniRestConnector}
@@ -52,4 +53,10 @@ public interface RequestConfiguration {
 	 * @return The route parameters definition status
 	 */
 	boolean hasRouteParams();
+	
+	/**
+	 * Retrieves the {link WebMethod} to call the service
+	 * @return The {link WebMethod} to call the service
+	 */
+	WebMethod getWebMethod();
 }

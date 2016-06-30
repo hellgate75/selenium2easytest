@@ -3,6 +3,7 @@
  */
 package com.selenium2.easy.test.server.cases;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,14 +60,28 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	 */
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		return new XMLGroupedTestCase(this.groupName, this.testCase);
+		try {
+			return this.getClass().getConstructor(String.class, XMLTestCase.class).newInstance(this.groupName, this.testCase);
+		} catch (InstantiationException e) {
+			throw new CloneNotSupportedException(e.getMessage());
+		} catch (IllegalAccessException e) {
+			throw new CloneNotSupportedException(e.getMessage());
+		} catch (IllegalArgumentException e) {
+			throw new CloneNotSupportedException(e.getMessage());
+		} catch (InvocationTargetException e) {
+			throw new CloneNotSupportedException(e.getMessage());
+		} catch (NoSuchMethodException e) {
+			throw new CloneNotSupportedException(e.getMessage());
+		} catch (SecurityException e) {
+			throw new CloneNotSupportedException(e.getMessage());
+		}
 	}
 
-	private static synchronized Map<String, Object> executeCase(WebDriver driver, XMLTestCase testCase, Map<String, Object> previousReultsMap) throws ActionException {
+	private synchronized Map<String, Object> executeCase(WebDriver driver, XMLTestCase testCase, Map<String, Object> previousReultsMap) throws ActionException {
 		Map<String, Object> resultsMap = new HashMap<String, Object>(0);
 		if (testCase.getTestCaseActions()!=null) {
 			for(XMLTestCaseAction action: testCase.getTestCaseActions()) {
-				Map<String, Object> temporaryMap = XMLTestCaseUtilities.doAction(driver, action);
+				Map<String, Object> temporaryMap = XMLTestCaseUtilities.doAction(driver, this, action);
 				if (temporaryMap.size()>0) {
 					resultsMap.putAll(temporaryMap);
 				}

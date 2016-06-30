@@ -3,7 +3,7 @@ package com.selenium2.easy.test.server.unireest.connector;
 import static com.mashape.unirest.http.Unirest.*;
 
 import com.mashape.unirest.request.GetRequest;
-import com.selenium2.easy.test.server.unireest.connector.api.RequestConfiguration;
+import com.selenium2.easy.test.server.unireest.connector.model.RequestConfiguration;
 
 public class UniRestConnector {
 	private static UniRestConnector instance = null;

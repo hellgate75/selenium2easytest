@@ -20,6 +20,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.selenium2.easy.test.server.cases.TestCase;
+import com.selenium2.easy.test.server.cases.api.IUniRestElement;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.xml.AssertionOperationType;
 import com.selenium2.easy.test.server.xml.AssertionThatMatcherType;
@@ -223,15 +225,24 @@ public class XMLTestCaseUtilities {
 	 * The methods provides an XMLTestCase action's operations execution and the relevant operation's
 	 * assertions execution.
 	 * @param driver The {@link WebDriver} used to execute the action operations and operation's assertions
+	 * @param action The {@link TestCase} to owner of the test action
 	 * @param action The {@link XMLTestCaseAction} to have been executed
 	 * @return The map of the environment variables discovered or created during in the operations.
 	 * @throws ActionException When any exception occurs during the {@link WebDriver} and located {@link WebElement} operation
 	 */
 	@SuppressWarnings("unchecked")
-	public static final Map<String, Object> doAction(WebDriver driver, XMLTestCaseAction action) throws ActionException {
+	public static final Map<String, Object> doAction(WebDriver driver, TestCase theCase, XMLTestCaseAction action) throws ActionException {
 		Map<String, Object> results = new HashMap<String, Object>(0);
 		if (action.getUseURL()) {
-			driver.get(action.getConnectionUrl().getFormattedURL());
+			if (theCase!=null && IUniRestElement.class.isAssignableFrom(theCase.getClass())) {
+				if (! ((IUniRestElement)theCase).connectServiceURL() ) {
+					throw new ActionException("Unable to connect to the service URL : " + (theCase!=null ? theCase.getConnectionURL() : null));
+				}
+			}
+			else {
+				driver.get(action.getConnectionUrl().getFormattedURL());
+			}
+			
 		}
 		/*
 		 * Before we run the operations, collect the results and that we run the assertions.

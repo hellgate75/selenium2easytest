@@ -28,6 +28,7 @@ import com.selenium2.easy.test.server.automated.multithread.TestCaseResult;
 import com.selenium2.easy.test.server.automated.multithread.UserCaseResult;
 import com.selenium2.easy.test.server.automated.multithread.WebDriverParallelFactory;
 import com.selenium2.easy.test.server.cases.BaseTestCase.TIMER_TYPE;
+import com.selenium2.easy.test.server.cases.api.IUniRestElement;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
@@ -283,6 +284,13 @@ public class TestEngine implements Callable<UserCaseResult>{
 				testCase.startTimeCounter(TIMER_TYPE.RENDERING);
 				if (driver!=null)
 					driver.get(testCase.getConnectionURL());
+				else if (IUniRestElement.class.isAssignableFrom(testCase.getClass())) {
+					if (!((IUniRestElement)testCase).connectServiceURL()) {
+						testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
+						testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
+						throw new FrameworkException("Unable to connect the service to the URL : " + testCase.getConnectionURL() + " - Caused by : URL not available or TestCase error ... ");
+					}
+				}
 				testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
 			}
 			else {
@@ -292,7 +300,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 				if (!testCase.handleSecureConnection(driver)) {
 					testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
 					testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
-					throw new FrameworkException("Unable to connect to " + testCase.getConnectionURL() + " : Authentication failed ... ");
+					throw new FrameworkException("Unable to connect to the URL : " + testCase.getConnectionURL() + " - Caused by : Authentication failed ... ");
 				}
 				testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
 				testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
@@ -403,7 +411,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 			if (!testCase.handleSecureConnection(driver)) {
 				testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
 				testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
-				throw new FrameworkException("Unable to connect to " + testCase.getConnectionURL() + " authentication Failed ... ");
+				throw new FrameworkException("Unable to connect to the URL : " + testCase.getConnectionURL() + " - Caused by : authentication Failed ... ");
 			}
 			testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
 		}
@@ -411,6 +419,13 @@ public class TestEngine implements Callable<UserCaseResult>{
 			testCase.startTimeCounter(TIMER_TYPE.RENDERING);
 			if (driver!=null)
 				driver.get(testCase.getConnectionURL());
+			else if (IUniRestElement.class.isAssignableFrom(testCase.getClass())) {
+				if (!((IUniRestElement)testCase).connectServiceURL()) {
+					testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
+					testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
+					throw new FrameworkException("Unable to connect the service to the URL : " + testCase.getConnectionURL() + " - Caused by : URL not available or TestCase error ... ");
+				}
+			}
 			testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
 		}
 		testCase.startTimeCounter(TIMER_TYPE.TEST_ACTION);

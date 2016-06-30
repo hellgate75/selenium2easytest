@@ -37,6 +37,10 @@ public class XMLTestURL {
 
 	private String hostPath;
 
+	private Boolean serviceURL = Boolean.FALSE;
+
+	private WebMethod webMethod;
+
 	private Map<String, String> hostQueryString;
 
 	/**
@@ -157,10 +161,42 @@ public class XMLTestURL {
 	public void setHostQueryString(Map<String, String> hostQueryString) {
 		this.hostQueryString = hostQueryString;
 	}
-	
+
 	/**
-	 * Retrieves the parsed query entries string (e.g.; '?q=selenium 2&r=12], and so on ...)
-	 * @return The parsed query entries string
+	 * Retrieves the service nature for the URL, it is used almost for direct service call bypassing the Selenium2 WebDriver
+	 * @return The service nature for the URL
+	 */
+	public Boolean getServiceURL() {
+		return serviceURL;
+	}
+
+	/**
+	 * Sets the service nature for the URL, it is used almost for direct service call bypassing the Selenium2 WebDriver
+	 * @param serviceURL The service nature for the URL
+	 */
+	public void setServiceURL(Boolean serviceURL) {
+		this.serviceURL = serviceURL;
+	}
+
+	/**
+	 * Retrieves the {@link WebMethod} used for the call, it is used almost for direct service call bypassing the Selenium2 WebDriver
+	 * @return The {@link WebMethod} used for the call
+	 */
+	public WebMethod getWebMethod() {
+		return webMethod;
+	}
+
+	/**
+	 * Sets the {@link WebMethod} used for the call, it is used almost for direct service call bypassing the Selenium2 WebDriver
+	 * @param webMethod The {@link WebMethod} used for the call
+	 */
+	public void setWebMethod(WebMethod webMethod) {
+		this.webMethod = webMethod;
+	}
+
+	/**
+	 * Retrieves the parsed formatted URL string (e.g.; 'http://www.google.com/?q=selenium 2&r=12], and so on ...)
+	 * @return The formatted URL string
 	 */
 	@XmlTransient
 	public String getFormattedURL() {
