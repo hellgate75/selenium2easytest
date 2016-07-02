@@ -29,6 +29,7 @@ import com.selenium2.easy.test.server.xml.AssertionType;
 import com.selenium2.easy.test.server.xml.OperationType;
 import com.selenium2.easy.test.server.xml.XMLTakeSnpshoot;
 import com.selenium2.easy.test.server.xml.XMLTestAssertion;
+import com.selenium2.easy.test.server.xml.XMLTestCase;
 import com.selenium2.easy.test.server.xml.XMLTestCaseAction;
 import com.selenium2.easy.test.server.xml.XMLTestDOMAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestOperation;
@@ -977,6 +978,56 @@ public class XMLTestCaseUtilities {
 			}
 		}
 	}
+	
+	/**
+	 * Executes The Test Case Operations and Assertions and returns the Map according to the inherit clause
+	 * @param executionThread Test case in action
+	 * @param driver WebDriver used to run the Test Cases
+	 * @param testCase The {@link XMLTestCase} to execute
+	 * @param previousReultsMap The previous variables's result map
+	 * @return The variables's result map image after the Test Case execution
+	 * @throws ActionException When any exception occurs during the {@link TestCase} execution.
+	 */
+	public static synchronized Map<String, Object> executeXMLCase(TestCase executionThread, WebDriver driver, XMLTestCase testCase, Map<String, Object> previousReultsMap) throws ActionException {
+		Map<String, Object> resultsMap = new HashMap<String, Object>(0);
+		if (testCase.getTestCaseActions()!=null) {
+			for(XMLTestCaseAction action: testCase.getTestCaseActions()) {
+				Map<String, Object> temporaryMap = XMLTestCaseUtilities.doAction(driver, executionThread, action);
+				if (temporaryMap.size()>0) {
+					resultsMap.putAll(temporaryMap);
+				}
+			}
+		}
+		if (testCase.getInheritEnvironment())
+			previousReultsMap.putAll(resultsMap);
+		if (testCase.getTestCaseAssertions()!=null) {
+			for(XMLTestAssertion assertion: testCase.getTestCaseAssertions()) {
+				long timeout = assertion.getAssertionTimeoutInSeconds();
+				if (timeout>0) {
+					SeleniumUtilities.waitForLoad(driver, timeout);
+				}
+				XMLTestCaseUtilities.doAssertion(driver, assertion, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
+			}
+		}
+		if (testCase.getTestCaseDOMAssertions()!=null) {
+			for(XMLTestDOMAssertion assertion: testCase.getTestCaseDOMAssertions()) {
+				long timeout = assertion.getAssertionTimeoutInSeconds();
+				if (timeout>0) {
+					SeleniumUtilities.waitForLoad(driver, timeout);
+				}
+				XMLTestCaseUtilities.doAssertion(driver, assertion, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
+			}
+		}
+		if (testCase.getChildrenCases()!=null) {
+			for(XMLTestCase childCase: testCase.getChildrenCases()) {
+				resultsMap = executeXMLCase(executionThread, driver, childCase, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
+			}
+		}
+		if (!testCase.getInheritEnvironment())
+			previousReultsMap.putAll(resultsMap);
+		return previousReultsMap;
+	}
+	
 
 	private static class CharAndNumber
 	{

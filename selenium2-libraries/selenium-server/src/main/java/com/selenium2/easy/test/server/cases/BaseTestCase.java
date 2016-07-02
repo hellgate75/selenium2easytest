@@ -79,6 +79,12 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 	 * Test Case re-throw or manage exceptions flag
 	 */
 	protected boolean retrowExcpetion;
+	/**
+	 * Test Case inherit environment and variables from the {@link TestEngine} (related to the execution of the previous test cases) flags if true allows the TestCase to use these variable during the execution
+	 */
+	protected boolean inheritEnvironment;
+	
+	
 	
 	/* Those fields are private because the security and the time metering are 
 	 * straightly part of the framework. It is not desired a re-implementation. 
@@ -457,6 +463,15 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 		return retrowExcpetion;
 	}
 
+
+	/**
+	 * Retrieves the environment and variable inherit status from the {@link TestEngine}
+	 * @return The environment and variable inherit status
+	 */
+	public boolean isInheritEnvironment() {
+		return inheritEnvironment;
+	}
+
 	/**
 	 * Action that resets the counters it is used by the TestEngine. 
 	 * Other uses can make unstable the test case time measuring. 
@@ -471,6 +486,12 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 		stopRendering = 0L;
 		startTestAction = 0L;
 		stopTestAction = 0L;
+		if (this.caseResults!=null) {
+			this.caseResults.clear();
+		}
+		else {
+			this.caseResults = new HashMap<String, Object>(0);
+		}
 	}
 
 	@Override

@@ -4,18 +4,11 @@
 package com.selenium2.easy.test.server.cases;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 
-import com.selenium2.easy.test.server.exceptions.ActionException;
-import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
-import com.selenium2.easy.test.server.xml.XMLTestAssertion;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
-import com.selenium2.easy.test.server.xml.XMLTestCaseAction;
-import com.selenium2.easy.test.server.xml.XMLTestDOMAssertion;
 
 /**
  * XML Configuration Test Case Execution Artifact.
@@ -77,53 +70,12 @@ public class XMLGroupedTestCase extends BaseTestCase {
 		}
 	}
 
-	private synchronized Map<String, Object> executeCase(WebDriver driver, XMLTestCase testCase, Map<String, Object> previousReultsMap) throws ActionException {
-		Map<String, Object> resultsMap = new HashMap<String, Object>(0);
-		if (testCase.getTestCaseActions()!=null) {
-			for(XMLTestCaseAction action: testCase.getTestCaseActions()) {
-				Map<String, Object> temporaryMap = XMLTestCaseUtilities.doAction(driver, this, action);
-				if (temporaryMap.size()>0) {
-					resultsMap.putAll(temporaryMap);
-				}
-			}
-		}
-		if (testCase.getInheritEnvironment())
-			previousReultsMap.putAll(resultsMap);
-		if (testCase.getTestCaseAssertions()!=null) {
-			for(XMLTestAssertion assertion: testCase.getTestCaseAssertions()) {
-				long timeout = assertion.getAssertionTimeoutInSeconds();
-				if (timeout>0) {
-					SeleniumUtilities.waitForLoad(driver, timeout);
-				}
-				XMLTestCaseUtilities.doAssertion(driver, assertion, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
-			}
-		}
-		if (testCase.getTestCaseDOMAssertions()!=null) {
-			for(XMLTestDOMAssertion assertion: testCase.getTestCaseDOMAssertions()) {
-				long timeout = assertion.getAssertionTimeoutInSeconds();
-				if (timeout>0) {
-					SeleniumUtilities.waitForLoad(driver, timeout);
-				}
-				XMLTestCaseUtilities.doAssertion(driver, assertion, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
-			}
-		}
-		if (testCase.getChildrenCases()!=null) {
-			for(XMLTestCase childCase: testCase.getChildrenCases()) {
-				resultsMap = executeCase(driver, childCase, testCase.getInheritEnvironment()? previousReultsMap : resultsMap);
-			}
-		}
-		if (!testCase.getInheritEnvironment())
-			previousReultsMap.putAll(resultsMap);
-		return previousReultsMap;
-	}
-	
 	/* (non-Javadoc)
 	 * @see com.selenium2.easy.test.server.cases.TestCase#automatedTest(org.openqa.selenium.WebDriver)
 	 */
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
-		Map<String, Object> resultsMap = new HashMap<String, Object>(0);
-		executeCase(driver, this.testCase, resultsMap);
+		this.setCaseResults(XMLTestCaseUtilities.executeXMLCase(this, driver, this.testCase, this.getCaseResults()));
 	}
 
 }

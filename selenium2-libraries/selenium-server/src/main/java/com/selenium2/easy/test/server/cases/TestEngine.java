@@ -66,6 +66,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 	private long parallelStart = 0L;
 	private long parallelEnd = 0L;
 	private WebDriverParallelFactory factory = null;
+	private Map<String, Object> testCaseResults = new HashMap<String, Object>(0);
 
 	/**
 	 * Public constructor
@@ -236,14 +237,14 @@ public class TestEngine implements Callable<UserCaseResult>{
 				XMLTestGroup testGroup = SeleniumUtilities.loadXMLTestFramework(xmlFile);
 				for(XMLTestCase testCase: testGroup.getTestCases()) {
 					try {
-						if (testGroup.getImplementationClassFullName()==null) {
+						if (testGroup.getTemplateClass()==null && testCase.getTemplateClass()==null) {
 							BaseTestCase xmlTestCase = new XMLGroupedTestCase(testGroup.getGroupName() + (testGroup.getGroupVersion()!=null ? "@" + testGroup.getGroupVersion(): ""), testCase);
 							if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
 								caseList.add(xmlTestCase);
 							}
 						}
 						else {
-							Constructor<?> constructor = Class.forName(testGroup.getImplementationClassFullName()).getConstructor(String.class, XMLTestCase.class);
+							Constructor<?> constructor = Class.forName(testCase.getTemplateClass()!=null ? testCase.getTemplateClass() : testGroup.getTemplateClass()).getConstructor(String.class, XMLTestCase.class);
 							BaseTestCase xmlTestCase = (XMLGroupedTestCase)constructor.newInstance(testGroup.getGroupName(), testCase);
 							if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
 								caseList.add(xmlTestCase);
@@ -273,6 +274,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 		this.caseMessages.clear();
 		this.caseResponseStatus.clear();
 		this.parallelResults=null;
+		this.testCaseResults.clear();
 	}
 	
 	private TestCaseResult executeParallelTestCase(WebDriver driver, BaseTestCase testCase) throws Throwable {
@@ -306,7 +308,19 @@ public class TestEngine implements Callable<UserCaseResult>{
 				testCase.stopTimeCounter(TIMER_TYPE.SECURITY);
 			}
 		}
+		if (testCase.isInheritEnvironment()) {
+			testCase.setCaseResults(this.testCaseResults);
+		}
 		testCase.automatedTest(driver);
+		if (testCase.isInheritEnvironment()) {
+			this.testCaseResults = testCase.getCaseResults();
+		}
+		else {
+			if (testCase.getCaseResults()!=null && testCase.getCaseResults().size()>0) {
+				this.testCaseResults.putAll(testCase.getCaseResults());
+			}
+			
+		}
 		testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
 		result.setMessage("[SUCCESS]: Test Case '"+testCase.getCaseName()+"' executed correctly");
 		result.setSuccess(true);
@@ -429,7 +443,19 @@ public class TestEngine implements Callable<UserCaseResult>{
 			testCase.stopTimeCounter(TIMER_TYPE.RENDERING);
 		}
 		testCase.startTimeCounter(TIMER_TYPE.TEST_ACTION);
-		testCase.automatedTest(this.driver);
+		if (testCase.isInheritEnvironment()) {
+			testCase.setCaseResults(this.testCaseResults);
+		}
+		testCase.automatedTest(driver);
+		if (testCase.isInheritEnvironment()) {
+			this.testCaseResults = testCase.getCaseResults();
+		}
+		else {
+			if (testCase.getCaseResults()!=null && testCase.getCaseResults().size()>0) {
+				this.testCaseResults.putAll(testCase.getCaseResults());
+			}
+			
+		}
 		testCase.stopTimeCounter(TIMER_TYPE.TEST_ACTION);
 		testCase.stopTimeCounter(TIMER_TYPE.TEST_CASE);
 		info("Executed test case [UID:"+testCase.getCaseUID()+"] name : " + testCase.getCaseName());

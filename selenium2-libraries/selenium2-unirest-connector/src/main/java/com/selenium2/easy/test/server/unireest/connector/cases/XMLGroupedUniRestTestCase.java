@@ -6,17 +6,20 @@ package com.selenium2.easy.test.server.unireest.connector.cases;
 import org.openqa.selenium.WebDriver;
 
 import com.selenium2.easy.test.server.cases.XMLGroupedTestCase;
-import com.selenium2.easy.test.server.cases.unirest.IUniRestElement;
-import com.selenium2.easy.test.server.exceptions.ActionException;
+import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
+import com.selenium2.easy.test.server.xml.WebMethod;
+import com.selenium2.easy.test.server.xml.WebResponse;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
-import com.selenium2.easy.test.server.xml.XMLTestURL;
 
 /**
+ * XML Load Service Oriented Test Case, It do not use the WebDriver and the Selenium2 utilities to 
+ * connect to the related service URL, it can be loaded in the XML Path load mechanism and execute the
+ * loaded test case operations and assertions.
  * @author Fabrizio Torelli
  *
  */
-public class XMLGroupedUniRestTestCase extends XMLGroupedTestCase implements IUniRestElement {
-
+public class XMLGroupedUniRestTestCase extends UniRestTestCase {
+	
 	/**
 	 * Test Engine's uUsed Constructor for the {@link XMLGroupedTestCase} derived classes
 	 * @param groupName The name of the current group
@@ -30,33 +33,27 @@ public class XMLGroupedUniRestTestCase extends XMLGroupedTestCase implements IUn
 	}
 
 	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL()
+	 * @see com.selenium2.easy.test.server.unireest.connector.cases.UniRestTestCase#getWebMethodType()
 	 */
 	@Override
-	public boolean connectServiceURL() throws ActionException {
-		// TODO Implements UniRestConnector connection
-		return false;
+	public WebMethod getWebMethodType() {
+		return this.testCase!=null && this.testCase.getConnectionURL()!=null ? this.testCase.getConnectionURL().getWebMethod() : null;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL(com.selenium2.easy.test.server.xml.XMLTestURL)
+	 * @see com.selenium2.easy.test.server.unireest.connector.cases.UniRestTestCase#getWebResponseType()
 	 */
 	@Override
-	public boolean connectServiceURL(XMLTestURL url) throws ActionException {
-		// TODO Implements UniRestConnector connection
-		return false;
+	public WebResponse getWebResponseType() {
+		return this.testCase!=null && this.testCase.getConnectionURL()!=null ? this.testCase.getConnectionURL().getExpectedResponse() : null;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.BaseTestCase#handleSecureConnection(org.openqa.selenium.WebDriver)
+	 * @see com.selenium2.easy.test.server.unireest.connector.cases.UniRestTestCase#automatedTest(org.openqa.selenium.WebDriver)
 	 */
 	@Override
-	public boolean handleSecureConnection(WebDriver driver) {
-		try {
-			return this.connectServiceURL();
-		} catch (ActionException e) {
-			throw new RuntimeException(e);
-		}
+	public void automatedTest(WebDriver driver) throws Throwable {
+		this.setCaseResults(XMLTestCaseUtilities.executeXMLCase(this, driver, super.testCase, this.getCaseResults()));
 	}
-
+	
 }

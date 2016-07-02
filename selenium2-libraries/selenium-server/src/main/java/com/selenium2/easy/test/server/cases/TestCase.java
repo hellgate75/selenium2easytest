@@ -2,6 +2,7 @@ package com.selenium2.easy.test.server.cases;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -9,6 +10,10 @@ import org.openqa.selenium.WebDriver;
 
 public abstract class TestCase {
 	private String uid = null;
+	/**
+	 * Test Case Result variables Map
+	 */
+	protected Map<String, Object> caseResults = new HashMap<String, Object>(0);
 	
 	/**
 	 * Default Constructor generating a random UUID for the test case
@@ -144,6 +149,57 @@ public abstract class TestCase {
 		} else if (!uid.equals(other.uid))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Retrieves the case results variables Map
+	 * @return The results variable map
+	 */
+	public Map<String, Object> getCaseResults() {
+		return caseResults;
+	}
+
+	/**
+	 * Sets the case results variables Map
+	 * @param caseResults The results variable map
+	 */
+	public void setCaseResults(Map<String, Object> caseResults) {
+		this.caseResults = caseResults;
+	}
+
+	/**
+	 * Add a variable value to the case results variables Map
+	 * @param variableName The variable name
+	 * @param value The variable value
+	 */
+	public void addCaseResult(String variableName, Object value) {
+		this.caseResults.put(variableName, value);
+	}
+
+	/**
+	 * Removes a variable value from the case results variables Map
+	 * @param variableName The variable name
+	 */
+	public void removeCaseResult(String variableName) {
+		this.caseResults.remove(variableName);
+	}
+
+	/**
+	 * Retrieves a variable value from the case results variables Map
+	 * @param variableName The variable name
+	 * @return The variable value or null
+	 */
+	public Object getCaseResult(String variableName) {
+		return this.caseResults.get(variableName);
+	}
+
+	/**
+	 * Checks the existence of a variable into the case results variables Map
+	 * @param variableName The variable name
+	 * @return The existence status of the variable
+	 */
+	public boolean hasCaseResult(String variableName) {
+		return this.caseResults.containsKey(variableName);
 	}
 
 	

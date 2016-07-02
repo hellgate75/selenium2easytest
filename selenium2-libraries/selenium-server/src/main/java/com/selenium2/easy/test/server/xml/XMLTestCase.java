@@ -8,12 +8,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.selenium2.easy.test.server.cases.TestEngine;
+import com.selenium2.easy.test.server.cases.XMLGroupedTestCase;
 
 /**
  * JAXB Class wrapper for the XMLTestCase and it provides the test features used by the {@link TestEngine}.
  * <br/>It is used by the TestGroup in the TestEngine during the Test Cases execution.
  * 
  * @see TestEngine
+ * @see XMLGroupedTestCase
  * @see XMLTestGroup
  * @see XMLTestURL
  * @see XMLTestCase
@@ -47,6 +49,8 @@ public class XMLTestCase {
 	private List<XMLTestAssertion> testCaseAssertions;
 
 	private List<XMLTestDOMAssertion> testCaseDOMAssertions;
+
+	private String templateClass;
 
 	/**
 	 * Retrieves the list of DOM Assertions related to the Test Case (see: {@link XMLTestDOMAssertion})
@@ -269,5 +273,23 @@ public class XMLTestCase {
 	public void setInheritEnvironment(Boolean inheritEnvironment) {
 		this.inheritEnvironment = inheritEnvironment;
 	}
-	
+	/**
+	 * Retrieves the Test Case full java path name of a derived class (an extended or inherited one) by the {@link XMLGroupedTestCase}.
+	 * <br/>It is used to create the test case instance within this Test Case configuration.
+	 * @return The full java path name of the case class
+	 */
+	public String getTemplateClass() {
+		return templateClass;
+	}
+
+	/**
+	 * Sets the Test Case full java path name of a derived class (an extended or inherited one) by the {@link XMLGroupedTestCase}.
+	 * <br/>It is used to create the test case instance within this Test Case configuration.
+	 * @param templateClass The full java path name of the case class
+	 */
+	@XmlAttribute(required=false)
+	public void setTemplateClass(String templateClass) {
+		this.templateClass = templateClass;
+	}
+
 }

@@ -28,7 +28,7 @@ public class XMLTestGroup {
 
 	private String groupVersion;
 
-	private String implementationClassFullName;
+	private String templateClass;
 
 	private Boolean allowDependencies = Boolean.FALSE;
 
@@ -69,22 +69,23 @@ public class XMLTestGroup {
 	public void setGroupVersion(String groupVersion) {
 		this.groupVersion = groupVersion;
 	}
-
 	/**
-	 * Retrieves the Test Case full java path name derived (extending or inheriting) by the {@link XMLGroupedTestCase}
+	 * Retrieves the Test Case full java path name of a derived class (an extended or inherited one) by the {@link XMLGroupedTestCase}.
+	 * <br/>It is used to create all the test case instances that has not a template within the specific Test Case configurations.
 	 * @return The full java path name of the case class
 	 */
-	public String getImplementationClassFullName() {
-		return implementationClassFullName;
+	public String getTemplateClass() {
+		return templateClass;
 	}
 
 	/**
-	 * Sets the Test Case full java path name derived (extending or inheriting) by the {@link XMLGroupedTestCase}
-	 * @param implementationClassFullName The full java path name of the case class
+	 * Sets the Test Case full java path name of a derived class (an extended or inherited one) by the {@link XMLGroupedTestCase}.
+	 * <br/>It is used to create all the test case instances that has not a template within the specific Test Case configurations.
+	 * @param templateClass The full java path name of the case class
 	 */
-	@XmlAttribute(name="implmentation", required=false)
-	public void setImplementationClassFullName(String implementationClassFullName) {
-		this.implementationClassFullName = implementationClassFullName;
+	@XmlAttribute(required=false)
+	public void setTemplateClass(String templateClass) {
+		this.templateClass = templateClass;
 	}
 
 	/**

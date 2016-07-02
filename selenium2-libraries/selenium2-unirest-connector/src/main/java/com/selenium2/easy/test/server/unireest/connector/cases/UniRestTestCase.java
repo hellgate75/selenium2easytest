@@ -1,12 +1,16 @@
 package com.selenium2.easy.test.server.unireest.connector.cases;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver.When;
 
 import com.selenium2.easy.test.server.cases.BaseTestCase;
 import com.selenium2.easy.test.server.cases.TestEngine;
 import com.selenium2.easy.test.server.cases.unirest.IUniRestElement;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.unireest.connector.UniRestConnector;
+import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
+import com.selenium2.easy.test.server.xml.WebMethod;
+import com.selenium2.easy.test.server.xml.WebResponse;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
 import com.selenium2.easy.test.server.xml.XMLTestURL;
 
@@ -20,9 +24,10 @@ import com.selenium2.easy.test.server.xml.XMLTestURL;
  *
  */
 public abstract class UniRestTestCase extends BaseTestCase implements IUniRestElement {
-	private XMLTestCase testCase;
-	private String groupName;
-	
+	public static final String RESPONSE_VARIABLE_NAME="ServiceResponse";
+	protected XMLTestCase testCase;
+	protected String groupName;
+
 	/**
 	 * Constructor used to be installed by loadXMLPathFiles {@link TestEngine} configuration option
 	 * @param caseName 
@@ -32,6 +37,11 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 		super(testCase.getName(), testCase.getConnectionURL().getFormattedURL(), testCase.getUseUrl(), testCase.getRetrowException());
 		this.testCase = testCase;
 		this.groupName = groupName;
+		super.openUrl = testCase.getUseUrl();
+		super.caseURL = testCase!=null && testCase.getConnectionURL()!=null ? testCase.getConnectionURL().getFormattedURL() : null;
+		super.inheritEnvironment = testCase.getInheritEnvironment();
+		super.retrowExcpetion = testCase.getRetrowException();
+		super.caseName = testCase.getName();
 	}
 
 	/**
@@ -41,21 +51,102 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL()
+	/**
+	 * Retrieves the {@link WebMethod} used during the URL lookup
+	 * @return The {@link WebMethod} used during the URL lookup
+	 */
+	public abstract WebMethod getWebMethodType();
+
+	/**
+	 * Retrieves the {@link WebResponse} used to parse the URL lookup result
+	 * @return The {@link WebResponse} used to parse the URL lookup result
+	 */
+	public abstract WebResponse getWebResponseType();
+
+
+	/**
+	 * UNIRestConnector Test Case self URL connector 
+	 * @return The connection status
+	 * @throws When any exception occurs during the URL connection or to gather the answer in the required format
 	 */
 	@Override
 	public boolean connectServiceURL() throws ActionException {
-		// TODO Implements UniRestConnector connection
+		if (this.getConnectionURL()!=null && this.getWebMethodType()!=null && this.getWebResponseType()!=null) {
+			try {
+				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), this.getConnectionURL(), this.getWebMethodType(), this.getWebResponseType());
+				if (response!=null) {
+					this.addCaseResult(RESPONSE_VARIABLE_NAME, response);
+				}
+				else {
+					this.getLogger().warn("The response for the URL '" + this.getConnectionURL() + "' has not returned any response!!");
+				}
+			} catch (AssertionError e) {
+				if (this.retrowExcpetion) {
+					this.getLogger().error("URL connection failed - Stopping the Test Case : " + this.getCaseName() + " caused by : ", e);
+					throw e;
+				}
+				else {
+					this.getLogger().warn("The response for the URL '" + this.getConnectionURL() + "' has failed!! Contiune due the exceptio retrow policies");
+				}
+			} catch (Throwable e) {
+				if (this.retrowExcpetion) {
+					this.getLogger().error("URL connection failed - Stopping the Test Case : " + this.getCaseName() + " caused by : ", e);
+				}
+				else {
+					this.getLogger().warn("The request for the URL '" + this.getConnectionURL() + "' has failed!! Contiune due the exceptio retrow policies");
+					
+				}
+			}
+			return !this.retrowExcpetion;
+		}
+		else {
+			this.getLogger().warn("No URL found for the Test Case : " + this.getCaseName());
+			this.getLogger().error("Stopping the Test Case : " + this.getCaseName());
+		}
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.selenium2.easy.test.server.cases.unirest.IUniRestElement#connectServiceURL(com.selenium2.easy.test.server.xml.XMLTestURL)
+	/**
+	 * UNIRestConnector Test Case self URL connector used by any child to use the Test Case authentication constraints
+	 * @param url - The URL to load
+	 * @return The connection status
+	 * @throws When any exception occurs during the URL connection or to gather the answer in the required format
 	 */
 	@Override
 	public boolean connectServiceURL(XMLTestURL url) throws ActionException {
-		// TODO Implements UniRestConnector connection with an URL
+		if (url!=null) {
+			try {
+				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), url.getFormattedURL(), url.getWebMethod(), url.getExpectedResponse());
+				if (response!=null) {
+					this.addCaseResult(RESPONSE_VARIABLE_NAME, response);
+				}
+				else {
+					this.getLogger().warn("The response for the URL '" + this.getConnectionURL() + "' has not returned any response!!");
+				}
+				return true;
+			} catch (AssertionError e) {
+				if (this.retrowExcpetion) {
+					this.getLogger().error("URL connection failed - Stopping the Test Case : " + this.getCaseName() + " caused by : ", e);
+					throw e;
+				}
+				else {
+					this.getLogger().warn("The request for the URL '" + this.getConnectionURL() + "' has failed!! Contiune due the exceptio retrow policies");
+				}
+			} catch (Throwable e) {
+				if (this.retrowExcpetion) {
+					this.getLogger().error("URL connection failed - Stopping the Test Case : " + this.getCaseName() + " caused by : ", e);
+				}
+				else {
+					this.getLogger().warn("The response for the URL '" + this.getConnectionURL() + "' has failed!! Contiune due the exceptio retrow policies");
+					
+				}
+			}
+			return !this.retrowExcpetion;
+		}
+		else {
+			this.getLogger().warn("No URL found for the Test Case : " + this.getCaseName());
+			this.getLogger().error("Stopping the Test Case : " + this.getCaseName());
+		}
 		return false;
 	}
 
@@ -101,6 +192,20 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	 */
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.cases.TestCase#automatedTest(org.openqa.selenium.WebDriver)
+	 */
+	@Override
+	public void automatedTest(WebDriver driver) throws Throwable {
+		if (this.testCase!=null) {
+			this.setCaseResults(XMLTestCaseUtilities.executeXMLCase(this, driver, this.testCase, this.getCaseResults()));
+		}
+		else {
+			throw new ActionException("The test case implementation needs to define the custom test actions");
+		}
+
 	}
 
 }
