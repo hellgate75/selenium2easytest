@@ -10,6 +10,9 @@
 	<artifactId>container-bom-selenium2</artifactId>
 	<packaging>pom</packaging>
 	<name>Selenium 2 Container Boom</name>
+	<properties>
+		<repo.directory>${basedir}/../..</repo.directory>
+	</properties>
 	<dependencies>
 			<dependency>
 				<groupId>org.slf4j</groupId>

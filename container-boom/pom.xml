@@ -8,6 +8,9 @@
   </parent>
   <artifactId>container-booms</artifactId>
   <packaging>pom</packaging>
+ 	<properties>
+		<repo.directory>${basedir}/..</repo.directory>
+	</properties>
   <modules>
 	<module>container-bom-selenium2</module>
   </modules>

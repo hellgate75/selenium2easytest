@@ -10,6 +10,9 @@
 		<name>Fabrizio Torelli</name>
 		<url>http://ie.linkedin.com/in/fabriziotorelli</url>
 	</organization>
+	<properties>
+		<repo.directory>${basedir}</repo.directory>
+	</properties>
 	<profiles>
 		<profile>
 			<id>build</id>
@@ -19,34 +22,81 @@
 					<name>build</name>
 				</property>
 			</activation>
+			<distributionManagement>
+				<repository>
+					<id>internal.repo</id>
+					<name>Temporary Staging Repository</name>
+					<url>file://${repo.directory}/mvn-repo</url>
+				</repository>
+			</distributionManagement>
+			<repositories>
+				<repository>
+					<id>internal.repo</id>
+					<name>Temporary Staging Repository</name>
+					<url>file://${repo.directory}/mvn-repo</url>
+					<releases>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+				<repository>
+					<id>jboss-public-repository</id>
+					<name>JBoss Repository</name>
+					<url>http://repository.jboss.org/nexus/content/groups/public</url>
+					<releases>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+				<repository>
+					<id>maven2-repository.dev.java.net</id>
+					<name>Java.net Repository for Maven</name>
+					<url>http://download.java.net/maven/glassfish/</url>
+					<releases>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<!-- distribution management plugin -->
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-deploy-plugin</artifactId>
+							<version>2.8.2</version>
+							<configuration>
+								<altDeploymentRepository>internal.repo::default::file://${repo.directory}/mvn-repo</altDeploymentRepository>
+							</configuration>
+							<executions>
+								<execution>
+									<configuration>
+										<altDeploymentRepository>internal.repo::default::file://${repo.directory}/mvn-repo</altDeploymentRepository>
+									</configuration>
+									<phase>site</phase>
+									<goals>
+										<goal>deploy</goal>
+										<goal>default-deploy</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
 			<modules>
 				<module>selenium2-aggregator</module>
 				<module>container-boom</module>
 				<module>selenium2-libraries</module>
 				<module>plugins</module>
 			</modules>
-			<distributionManagement>
-				<repository>
-					<id>internal.repo</id>
-					<name>Temporary Staging Repository</name>
-					<url>file://${project.build.directory}/mvn-repo</url>
-				</repository>
-			</distributionManagement>
-			<build>
-				<defaultGoal>clean install test javadoc:jar</defaultGoal>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-deploy-plugin</artifactId>
-							<version>2.8.2</version>
-							<configuration>
-								<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
 		</profile>
 		<profile>
 			<id>run-selenium</id>

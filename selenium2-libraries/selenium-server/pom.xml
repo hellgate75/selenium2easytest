@@ -14,6 +14,12 @@
 		<name>Fabrizio Torelli</name>
 		<url>http://ie.linkedin.com/in/fabriziotorelli</url>
 	</organization>
+	<properties>
+		<repo.directory>${basedir}/../..</repo.directory>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.compiler.level>1.7</java.compiler.level>
+		<java.compiler.target.level>1.7</java.compiler.target.level>
+	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<!-- Import the BOOM file for selenium2 test framework -->
@@ -43,6 +49,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<version>${version.junit}</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
 		<dependency>

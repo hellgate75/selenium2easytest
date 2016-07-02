@@ -1,8 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+<!-- 	<parent>
+		<groupId>org.selenium2.easytest</groupId>
+		<artifactId>easytest</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+ -->
 	<groupId>org.selenium2.easytest</groupId>
-	<artifactId>selenium2-aggregator</artifactId>
+ 	<artifactId>selenium2-aggregator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Selenium2 Easy Test Aggregator POM</name>
 	<packaging>pom</packaging>
@@ -11,6 +18,7 @@
 		<url>http://ie.linkedin.com/in/fabriziotorelli</url>
 	</organization>
 	<properties>
+		<repo.directory>${basedir}/..</repo.directory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.compiler.level>1.7</java.compiler.level>
 		<java.compiler.target.level>1.7</java.compiler.target.level>
@@ -26,36 +34,6 @@
 		<version.jaxb>2.2.12</version.jaxb>
 		<version.jaxb-osgi>2.2</version.jaxb-osgi>
 	</properties>
-	<repositories>
-		<repository>
-			<id>internal.repo</id>
-			<name>Temporary Staging Repository</name>
-			<url>file://${project.build.directory}/mvn-repo</url>
-		</repository>
-		<repository>
-			<id>jboss-public-repository</id>
-			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/nexus/content/groups/public</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<!-- temporary until we get to Arquillian 1.0.0.Final -->
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/glassfish/</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>jboss-public-repository</id>
@@ -228,6 +206,27 @@
 		</testResources>
 		<pluginManagement>
 			<plugins>
+				<!-- distribution management plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+					<configuration>
+						<altDeploymentRepository>internal.repo::default::file://${repo.directory}/mvn-repo</altDeploymentRepository>
+					</configuration>
+					<executions>
+						<execution>
+							<configuration>
+								<altDeploymentRepository>internal.repo::default::file://${repo.directory}/mvn-repo</altDeploymentRepository>
+							</configuration>
+							<phase>site</phase>
+							<goals>
+								<goal>deploy</goal>
+								<goal>default-deploy</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 				<!-- Eclipse compatibility and dependency resolver Plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

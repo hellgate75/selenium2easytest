@@ -16,6 +16,7 @@
 		<url>http://ie.linkedin.com/in/fabriziotorelli</url>
 	</organization>
 	<properties>
+		<repo.directory>${basedir}/../..</repo.directory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.compiler.level>1.7</java.compiler.level>
 		<java.compiler.target.level>1.7</java.compiler.target.level>

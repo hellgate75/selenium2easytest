@@ -14,22 +14,10 @@
   	<name>Fabrizio Torelli</name>
   	<url>http://ie.linkedin.com/in/fabriziotorelli</url>
   </organization>
-	<!-- <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.compiler.level>1.7</java.compiler.level>
-		<java.compiler.target.level>1.7</java.compiler.target.level>
-		<version.hamcrest>1.2</version.hamcrest>
-		<version.junit>4.11</version.junit>
-		<version.mokito>1.10.19</version.mokito>
-		<version.log4j>1.2.14</version.log4j>
-		<version.slf4j>2.3</version.slf4j>
-		<version.slf4j-log4j12>1.7.12</version.slf4j-log4j12>
-		<version.slf4j>2.3</version.slf4j>
-		<version.apachelogging>2.3</version.apachelogging>
-		<version.testng>6.5.2</version.testng>
-		<version.selenium>2.52.0</version.selenium>
-		<version.jaxb>2.2.12</version.jaxb>
-	</properties> -->
+	<properties>
+		<repo.directory>${basedir}/..</repo.directory>
+	</properties>
+
   <modules>
   	<module>selenium-server</module>
 	<module>selenium2-unirest-connector</module>
