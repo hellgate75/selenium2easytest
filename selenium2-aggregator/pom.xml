@@ -28,6 +28,11 @@
 	</properties>
 	<repositories>
 		<repository>
+			<id>internal.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+		<repository>
 			<id>jboss-public-repository</id>
 			<name>JBoss Repository</name>
 			<url>http://repository.jboss.org/nexus/content/groups/public</url>
