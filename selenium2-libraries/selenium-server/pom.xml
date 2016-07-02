@@ -208,6 +208,8 @@
 				                  <exclude>*:slf4j-log4j12:*</exclude>
 				                  <exclude>*:slf4j-log4j14:*</exclude>
 				                  <exclude>*:xml-apis</exclude>
+				                  <exclude>org.reflections:*</exclude>
+				                  <exclude>commons-io:*</exclude>
 				                  <exclude>org.apache.maven:lib:tests</exclude>
 				                  <exclude>log4j:*</exclude>
 				                </excludes>
