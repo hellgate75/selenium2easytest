@@ -117,6 +117,12 @@
 					<version>2.10.4</version>
 					<configuration>
 						<outputDirectory>${project.build.directory}/javadocs</outputDirectory>
+						<includeDependencySources>false</includeDependencySources>
+						<detectLinks>true</detectLinks>
+						<detectOfflineLinks>false</detectOfflineLinks>
+						<dependencySourceIncludes>
+							<dependencySourceInclude>${project.groupId}:selenium-server:${project.version}:jar</dependencySourceInclude>
+						</dependencySourceIncludes>
 						<nohelp>true</nohelp>
 					</configuration>
 					<executions>
@@ -127,13 +133,6 @@
 							</goals>
 						</execution>
 					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>selenium-server</artifactId>
-							<version>${project.version}</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
