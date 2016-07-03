@@ -16,6 +16,7 @@ import org.openqa.selenium.remote.service.DriverService;
 
 import com.selenium2.easy.test.server.automated.WebDriverFactory.SELECTOR_TYPE;
 import com.selenium2.easy.test.server.exceptions.FrameworkException;
+import com.selenium2.easy.test.server.utils.FrameworkUtilities;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities;
 import com.selenium2.easy.test.server.utils.SeleniumUtilities.BROWSER_TYPE;
 
@@ -81,7 +82,7 @@ public class WebDriverSelector {
 				switch(selector) {
 				case IE_INTERNAL_SELECTOR:
 					if (isWindows) {
-						File defaultFile = SeleniumUtilities.recoverFileInJar("com/selenium2/easy/test/server/automated/win32bin/IEDriverServer.exe");
+						File defaultFile = FrameworkUtilities.recoverFileInJar("com/selenium2/easy/test/server/automated/win32bin/IEDriverServer.exe");
 						File file = isInUnitTest ? new File("drivers/IEDriverServer.exe"):defaultFile;
 						ieService = new InternetExplorerDriverService.Builder()
 						.usingDriverExecutable(file)
@@ -98,7 +99,7 @@ public class WebDriverSelector {
 					break;
 				case CHROME_INTERNAL_SELECTOR:
 					if (isWindows) {
-						File defaultFile = SeleniumUtilities.recoverFileInJar("com/selenium2/easy/test/server/automated/win32bin/chromedriver.exe");
+						File defaultFile = FrameworkUtilities.recoverFileInJar("com/selenium2/easy/test/server/automated/win32bin/chromedriver.exe");
 						File file = isInUnitTest ? new File("drivers/chromedriver.exe"):defaultFile;
 						chromeService = new ChromeDriverService.Builder()
 						.usingDriverExecutable(file)

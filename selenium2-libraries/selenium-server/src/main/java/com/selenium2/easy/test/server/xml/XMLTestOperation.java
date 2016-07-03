@@ -102,6 +102,8 @@ public class XMLTestOperation {
 	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
 	 * <br/> <b>From Map -> $M(variable)</b>  - Where variable is the variable name of the object previously saved in the results map
 	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
+	 * <br/> <b>From Text File -> $F(textFileFullPath)</b>  - Where text file pull path is the file name including the path of the information to be loaded from the file system
+	 * - <b>Can be used to match an expression with some string file data referring to the original values</b>
 	 * <br/>
 	 * @return The value list
 	 */
@@ -123,10 +125,12 @@ public class XMLTestOperation {
 	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
 	 * <br/> <b>From Map -> $M(variable)</b>  - Where variable is the variable name of the object previously saved in the results map
 	 * - <b>Can be used to match an expression with some object referring to the original ones</b>
+	 * <br/> <b>From Text File -> $F(textFileFullPath)</b>  - Where text file pull path is the file name including the path of the information to be loaded from the file system
+	 * - <b>Can be used to match an expression with some string file data referring to the original values</b>
 	 * <br/>
 	 * @param valueList The value list
 	 */
-	@XmlElement(name="value", required=true)
+	@XmlElement(name="value", required=false)
 	public void setValueList(List<String> valueList) {
 		this.valueList = valueList;
 	}

@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.openqa.selenium.WebDriver;
 
-import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
+import com.selenium2.easy.test.server.utils.FrameworkUtilities;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
 
 /**
@@ -75,7 +75,7 @@ public class XMLGroupedTestCase extends BaseTestCase {
 	 */
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
-		this.setCaseResults(XMLTestCaseUtilities.executeXMLCase(this, driver, this.testCase, this.getCaseResults()));
+		this.setCaseResults(FrameworkUtilities.executeXMLCase(this, driver, this.testCase, this.getCaseResults()));
 	}
 
 }

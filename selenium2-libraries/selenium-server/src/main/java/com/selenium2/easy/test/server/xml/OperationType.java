@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlEnum;
 	 * <br/><b>SET_VALUE</b> - The operation used to set the value of a WebElement
 	 * <br/><b>SUBMIT_ACTION</b> - The operation used to submit a WebElement
 	 * <br/><b>TAKE_SCREENSHOT_FROM</b> - The operation used to take a screenshot of a WebElement
+	 * <br/><b>RETRIEVE_MAPPED_VALUE</b> - The operation used to retrieve an element from the mapped result variables
 	 * <br/>
  * @author Fabrizio Torelli
  *
@@ -111,5 +112,9 @@ public enum OperationType {
 	/**
 	 * The operation used to take a screenshot of a WebElement
 	 */
-	TAKE_SCREENSHOT_FROM
+	TAKE_SCREENSHOT_FROM,
+	/**
+	 * The operation used to take a value from the mapped result variables
+	 */
+	RETRIEVE_MAPPED_VALUE
 }

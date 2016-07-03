@@ -150,7 +150,7 @@ public class XMLTestCase {
 	 * Sets the flag of use Secure Access to login the URL
 	 * @param secureAccess The secure access request flag
 	 */
-	@XmlAttribute(required=true)
+	@XmlAttribute(required=false)
 	public void setSecureAccess(Boolean secureAccess) {
 		this.secureAccess = secureAccess;
 	}

@@ -345,7 +345,9 @@ public class Selenium2ServerEntry {
 	 */
 	public Properties getMergedProperties() {
 		Properties properties = new Properties();
-		properties.put(SeleniumServerConstants.driverSelector, ""+this.selector);
+		if (this.selector!=null) {
+			properties.put(SeleniumServerConstants.driverSelector, ""+this.selector);
+		}
 		if (this.driverService!=null) {
 			properties.put(SeleniumServerConstants.driverService, this.driverService);
 		}

@@ -112,4 +112,18 @@ public class TestSelenium2EastTestServer {
         assertNotNull( executeSeleniumServerPlugin );
         executeSeleniumServerPlugin.execute();
     }
+	
+	/**
+	 * Here we test the instance available and operative state of the plug-in loaded with an XML files directory's POM file
+	 * @throws Exception Test execution exceptions
+	 */
+	@Test
+	public void testInitAsUlltimateUnirestScenarioBeExecutedForXMLPath() throws Exception {
+		File pom = new File( "src/test/resources/unirest/selenium-server-unirest-xmlpath-pom.xml" );
+		assertNotNull( pom );
+		assertTrue( pom.exists() );
+        ExecuteSeleniumServerPlugin executeSeleniumServerPlugin = (ExecuteSeleniumServerPlugin) rule.lookupMojo("execute", pom );
+        assertNotNull( executeSeleniumServerPlugin );
+        executeSeleniumServerPlugin.execute();
+    }
 }

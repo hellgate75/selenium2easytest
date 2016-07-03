@@ -168,6 +168,14 @@ public abstract class TestCase {
 	}
 
 	/**
+	 * Sets the case results variables Map
+	 * @param caseResults The results variable map
+	 */
+	public void appendAllToCaseResults(Map<String, Object> caseResults) {
+		this.caseResults.putAll(caseResults);
+	}
+
+	/**
 	 * Add a variable value to the case results variables Map
 	 * @param variableName The variable name
 	 * @param value The variable value

@@ -231,30 +231,38 @@ public class TestEngine implements Callable<UserCaseResult>{
 	 */
 	public void addCasesByXMLDirectory(String directory) throws FrameworkException {
 		try {
+			logger.debug("Loding xml path : "+directory);
 			FilenameFilter filter = new PatternFilenameFilter(".*\\.xml");
 			File[] xmlFiles = new File(directory).listFiles(filter);
+			logger.debug("Loding xml path contains "+xmlFiles.length + " xml files ...");
 			for(File xmlFile: xmlFiles) {
+				logger.debug("Loding xml file : "+xmlFile);
 				XMLTestGroup testGroup = SeleniumUtilities.loadXMLTestFramework(xmlFile);
-				for(XMLTestCase testCase: testGroup.getTestCases()) {
-					try {
-						if (testGroup.getTemplateClass()==null && testCase.getTemplateClass()==null) {
-							BaseTestCase xmlTestCase = new XMLGroupedTestCase(testGroup.getGroupName() + (testGroup.getGroupVersion()!=null ? "@" + testGroup.getGroupVersion(): ""), testCase);
-							if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
-								caseList.add(xmlTestCase);
+				if (testGroup!=null) {
+					for(XMLTestCase testCase: testGroup.getTestCases()) {
+						try {
+							if (testGroup.getTemplateClass()==null && testCase.getTemplateClass()==null) {
+								BaseTestCase xmlTestCase = new XMLGroupedTestCase(testGroup.getGroupName() + (testGroup.getGroupVersion()!=null ? "@" + testGroup.getGroupVersion(): ""), testCase);
+								if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
+									caseList.add(xmlTestCase);
+								}
 							}
-						}
-						else {
-							Constructor<?> constructor = Class.forName(testCase.getTemplateClass()!=null ? testCase.getTemplateClass() : testGroup.getTemplateClass()).getConstructor(String.class, XMLTestCase.class);
-							BaseTestCase xmlTestCase = (XMLGroupedTestCase)constructor.newInstance(testGroup.getGroupName(), testCase);
-							if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
-								caseList.add(xmlTestCase);
+							else {
+								Constructor<?> constructor = Class.forName(testCase.getTemplateClass()!=null ? testCase.getTemplateClass() : testGroup.getTemplateClass()).getConstructor(String.class, XMLTestCase.class);
+								BaseTestCase xmlTestCase = (BaseTestCase)constructor.newInstance(testGroup.getGroupName(), testCase);
+								if (xmlTestCase!=null && !caseList.contains(xmlTestCase)) {
+									caseList.add(xmlTestCase);
+								}
+								
 							}
-							
+						} catch (Throwable e) {
+							error("Error creating test Case : " + testCase, e);
+							throw new FrameworkException("Error creating test Case : " + testCase, e);
 						}
-					} catch (Throwable e) {
-						error("Error creating test Case : " + testCase, e);
-						throw new FrameworkException("Error creating test Case : " + testCase, e);
 					}
+				}
+				else {
+					logger.warn("XML File '"+xmlFile+"' not parsed from the xml directory : " + directory);
 				}
 			}
 		} catch (Throwable e) {
@@ -309,7 +317,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 			}
 		}
 		if (testCase.isInheritEnvironment()) {
-			testCase.setCaseResults(this.testCaseResults);
+			testCase.appendAllToCaseResults(this.testCaseResults);
 		}
 		testCase.automatedTest(driver);
 		if (testCase.isInheritEnvironment()) {
@@ -444,7 +452,7 @@ public class TestEngine implements Callable<UserCaseResult>{
 		}
 		testCase.startTimeCounter(TIMER_TYPE.TEST_ACTION);
 		if (testCase.isInheritEnvironment()) {
-			testCase.setCaseResults(this.testCaseResults);
+			testCase.appendAllToCaseResults(this.testCaseResults);
 		}
 		testCase.automatedTest(driver);
 		if (testCase.isInheritEnvironment()) {

@@ -157,28 +157,30 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		} catch (Throwable e1) {
 			throw new FrameworkException(logginPrefix+"Unable to load the test cases from Classes/Package due to : ", e1);
 		}
-		try {
 			if (engineProperties.containsKey(SeleniumServerConstants.testXmlDirectory)) {
 				String xmlPath = engineProperties.getProperty(SeleniumServerConstants.testXmlDirectory);
-				if (xmlPath!=null && (xmlPath.trim().length()==0 || xmlPath.trim().equals(".") || xmlPath.trim().equals("."+File.separator) || xmlPath.trim().equals("./"))) {
-					xmlPath = System.getProperty("user.dir");
-				}
-				if (xmlPath!=null) {
-					if (new File(xmlPath).exists() && new File(xmlPath).isDirectory()) {
-						this.testEngine.addCasesByXMLDirectory(xmlPath);
+				try {
+					if (xmlPath!=null && (xmlPath.trim().length()==0 || xmlPath.trim().equals(".") || xmlPath.trim().equals("."+File.separator) || xmlPath.trim().equals("./"))) {
+						xmlPath = System.getProperty("user.dir");
 					}
-					else {
-						logger.warn(logginPrefix+"Unable to locate the directory "+xmlPath+" or the reference is not a directory");
+					if (xmlPath!=null) {
+						if (new File(xmlPath).exists() && new File(xmlPath).isDirectory()) {
+							this.testEngine.addCasesByXMLDirectory(xmlPath);
+						}
+						else {
+							logger.warn(logginPrefix+"Unable to locate the directory "+xmlPath+" or the reference is not a directory");
+						}
 					}
+				} catch (Throwable e1) {
+					throw new FrameworkException(logginPrefix+"Unable to load the test cases from Xml path '"+xmlPath+"' due to : ", e1);
 				}
 			}
-		} catch (Throwable e1) {
-			throw new FrameworkException(logginPrefix+"Unable to load the test cases from Xml due to : ", e1);
-		}
 		this.selector = null;
 		if (this.testEngine.isWebDriverDriven() && this.testEngine.getCaseNumber()>0) {
 			try {
-				this.selector = SELECTOR_TYPE.valueOf(engineProperties.getProperty(SeleniumServerConstants.driverSelector));
+				if (engineProperties.containsKey(SeleniumServerConstants.driverSelector)) {
+					this.selector = SELECTOR_TYPE.valueOf(engineProperties.getProperty(SeleniumServerConstants.driverSelector));
+				}
 				if (engineProperties.containsKey(SeleniumServerConstants.driverSubSelector)) {
 					this.parameters.add(SELECTOR_TYPE.valueOf(engineProperties.getProperty(SeleniumServerConstants.driverSubSelector)));
 				}
@@ -311,7 +313,7 @@ public class SeleniumAutomatedServer implements WebDriverParallelFactory {
 		}
 		else 
 			reportJSONOut = null;
-		if (!runParallel && this.selector!=null) {
+		if (!runParallel && this.selector!=null &&  this.parameters!=null) {
 			try {
 				driverSelector = WebDriverFactory.getInstance().getDriverSelector(this.selector, this.parameters.toArray());
 			} catch (Throwable e) {

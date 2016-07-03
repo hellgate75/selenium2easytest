@@ -176,6 +176,7 @@ public class XMLTestURL {
 	 * Sets the service nature for the URL, it is used almost for direct service call bypassing the Selenium2 WebDriver
 	 * @param serviceURL The service nature for the URL
 	 */
+	@XmlAttribute(name="service", required=false)
 	public void setServiceURL(Boolean serviceURL) {
 		this.serviceURL = serviceURL;
 	}
@@ -192,6 +193,7 @@ public class XMLTestURL {
 	 * Sets the {@link WebMethod} used for the call, it is used almost for direct service call bypassing the Selenium2 WebDriver
 	 * @param webMethod The {@link WebMethod} used for the call
 	 */
+	@XmlAttribute(name="webMethod", required=false)
 	public void setWebMethod(WebMethod webMethod) {
 		this.webMethod = webMethod;
 	}
@@ -208,6 +210,7 @@ public class XMLTestURL {
 	 * Sets the {@link WebResponse} used to parse the call response, it is used almost for direct service call bypassing the Selenium2 WebDriver
 	 * @param expectedResponse The {@link WebResponse} used to parse the call response
 	 */
+	@XmlAttribute(name="expectedResponse", required=false)
 	public void setExpectedResponse(WebResponse expectedResponse) {
 		this.expectedResponse = expectedResponse;
 	}

@@ -6,7 +6,7 @@ package com.selenium2.easy.test.server.unireest.connector.cases;
 import org.openqa.selenium.WebDriver;
 
 import com.selenium2.easy.test.server.cases.XMLGroupedTestCase;
-import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
+import com.selenium2.easy.test.server.utils.FrameworkUtilities;
 import com.selenium2.easy.test.server.xml.WebMethod;
 import com.selenium2.easy.test.server.xml.WebResponse;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
@@ -53,7 +53,15 @@ public class XMLGroupedUniRestTestCase extends UniRestTestCase {
 	 */
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
-		this.setCaseResults(XMLTestCaseUtilities.executeXMLCase(this, driver, super.testCase, this.getCaseResults()));
+		this.setCaseResults(FrameworkUtilities.executeXMLCase(this, driver, super.testCase, this.getCaseResults()));
+	}
+
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.cases.TestCase#isWebDriverDriven()
+	 */
+	@Override
+	public boolean isWebDriverDriven() {
+		return false;
 	}
 	
 }

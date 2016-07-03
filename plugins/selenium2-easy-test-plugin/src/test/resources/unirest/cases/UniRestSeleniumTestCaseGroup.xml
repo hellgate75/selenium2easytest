@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<caseGroup allowDependencies="false" name="Unirest Sample Test" version="1.0">
+    <case inheritEnvironment="true" templateClass="com.selenium2.easy.test.server.unireest.connector.cases.XMLGroupedUniRestTestCase" name="Test UniRest JSON GET call" retrowException="true" secureAccess="false" useUrl="true">
+        <url hostname="jsonplaceholder.typicode.com" path="users" protocol="http" webMethod="GET" expectedResponse="STRING"/>
+        <assertion timeout="10" title="The JSON result should contain the expected structure." type="EQUALS" useResult="ServiceResponse" useFile="true" file="src/test/resources/unirest/request-json.txt" useValues="false" />
+    </case>
+</caseGroup>

@@ -4,11 +4,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver.When;
 
 import com.selenium2.easy.test.server.cases.BaseTestCase;
+import com.selenium2.easy.test.server.cases.TestCase;
 import com.selenium2.easy.test.server.cases.TestEngine;
 import com.selenium2.easy.test.server.cases.unirest.IUniRestElement;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.unireest.connector.UniRestConnector;
-import com.selenium2.easy.test.server.utils.XMLTestCaseUtilities;
+import com.selenium2.easy.test.server.utils.FrameworkUtilities;
 import com.selenium2.easy.test.server.xml.WebMethod;
 import com.selenium2.easy.test.server.xml.WebResponse;
 import com.selenium2.easy.test.server.xml.XMLTestCase;
@@ -73,13 +74,15 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	public boolean connectServiceURL() throws ActionException {
 		if (this.getConnectionURL()!=null && this.getWebMethodType()!=null && this.getWebResponseType()!=null) {
 			try {
-				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), this.getConnectionURL(), this.getWebMethodType(), this.getWebResponseType());
+				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), this.getConnectionURL(), this.getWebMethodType(), this.getWebResponseType(), this.isSecureConnection());
 				if (response!=null) {
+					this.getLogger().debug("Object Response : " + response);
 					this.addCaseResult(RESPONSE_VARIABLE_NAME, response);
 				}
 				else {
 					this.getLogger().warn("The response for the URL '" + this.getConnectionURL() + "' has not returned any response!!");
 				}
+				return true;
 			} catch (AssertionError e) {
 				if (this.retrowExcpetion) {
 					this.getLogger().error("URL connection failed - Stopping the Test Case : " + this.getCaseName() + " caused by : ", e);
@@ -93,7 +96,7 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 					this.getLogger().error("URL connection failed - Stopping the Test Case : " + this.getCaseName() + " caused by : ", e);
 				}
 				else {
-					this.getLogger().warn("The request for the URL '" + this.getConnectionURL() + "' has failed!! Contiune due the exceptio retrow policies");
+					this.getLogger().warn("The request for the URL '" + this.getConnectionURL() + "' has failed!! Contiune due the exception retrow policies");
 					
 				}
 			}
@@ -116,8 +119,9 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	public boolean connectServiceURL(XMLTestURL url) throws ActionException {
 		if (url!=null) {
 			try {
-				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), url.getFormattedURL(), url.getWebMethod(), url.getExpectedResponse());
+				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), url.getFormattedURL(), url.getWebMethod(), url.getExpectedResponse(), this.isSecureConnection());
 				if (response!=null) {
+					this.getLogger().debug("Object Response : " + response);
 					this.addCaseResult(RESPONSE_VARIABLE_NAME, response);
 				}
 				else {
@@ -200,7 +204,7 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	@Override
 	public void automatedTest(WebDriver driver) throws Throwable {
 		if (this.testCase!=null) {
-			this.setCaseResults(XMLTestCaseUtilities.executeXMLCase(this, driver, this.testCase, this.getCaseResults()));
+			this.setCaseResults(FrameworkUtilities.executeXMLCase((TestCase)this, driver, this.testCase, this.getCaseResults()));
 		}
 		else {
 			throw new ActionException("The test case implementation needs to define the custom test actions");

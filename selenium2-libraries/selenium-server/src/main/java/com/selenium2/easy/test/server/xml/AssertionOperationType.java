@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlEnum;
  * <br/><b>GET_LOCATION</b> - The operation used to retrieve and save an environment variable with the location of a WebElement
  * <br/><b>GET_PAGE_SOURCE</b> - The operation used to retrieve the page source code
  * <br/><b>GET_PAGE_TITLE</b> - The operation used to retrieve the page title
+ * <br/><b>RETRIEVE_MAPPED_VALUE</b> - The operation used to retrieve an element from the mapped result variables
  * <br/>
  * @author Fabrizio Torelli
  *
@@ -51,5 +52,9 @@ public enum AssertionOperationType {
 	/**
 	 * The operation used to retrieve the page title
 	 */
-	GET_PAGE_TITLE
+	GET_PAGE_TITLE,
+	/**
+	 * The operation used to take a value from the mapped result variables
+	 */
+	RETRIEVE_MAPPED_VALUE
 }
