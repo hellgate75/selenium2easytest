@@ -32,7 +32,7 @@ public class BasicConfiguration implements RequestConfiguration {
 	}
 	@Override
 	public boolean hasHeaders() {
-		return headers.size()>0;
+		return headers!=null && headers.size()>0;
 	}
 	/* (non-Javadoc)
 	 * @see com.selenium2.easy.test.server.unireest.connector.api.RequestConfiguration#getHeaders()
@@ -53,7 +53,7 @@ public class BasicConfiguration implements RequestConfiguration {
 	 */
 	@Override
 	public boolean hasQueryStringParameters() {
-		return queryStringMap.size()>0;
+		return queryStringMap!=null && queryStringMap.size()>0;
 	}
 	/* (non-Javadoc)
 	 * @see com.selenium2.easy.test.server.unireest.connector.api.RequestConfiguration#getQueryStringMap()
@@ -74,7 +74,7 @@ public class BasicConfiguration implements RequestConfiguration {
 	 */
 	@Override
 	public boolean hasRouteParams() {
-		return routeParams.size()>0;
+		return routeParams!=null && routeParams.size()>0;
 	}
 	/* (non-Javadoc)
 	 * @see com.selenium2.easy.test.server.unireest.connector.api.RequestConfiguration#getRouteParams()

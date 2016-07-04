@@ -15,7 +15,7 @@ public enum WebResponse {
 	 */
 	JSON, 
 	/**
-	 * Object response type
+	 * Object response type. Actually not implemented.
 	 */
 	OBJECT, 
 	/**

@@ -342,8 +342,8 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 			while(securityInfos.containsKey("action"+(actionId+1)+"-name")) {
 				actionId++;
 				String actionPrefix = "action"+actionId;
-				getLogger().info("login action " + actionId+" : " + securityInfos.get(actionPrefix+"-name"));
-				getLogger().info("login action " + actionId+" : Attempting login action ....");
+				getLogger().debug("login action " + actionId+" : " + securityInfos.get(actionPrefix+"-name"));
+				getLogger().debug("login action " + actionId+" : Attempting login action ....");
 				if (securityInfos.containsKey(actionPrefix+"-url")) {
 					driver.get(securityInfos.get(actionPrefix+"-url"));
 				}
@@ -416,7 +416,7 @@ public abstract class BaseTestCase extends TestCase implements Cloneable {
 						getLogger().error("During the thread sleep an exception occurred for the login action : " + actionId+" due to", e);
 					}
 				}
-				getLogger().info("login action " + actionId+" : Completed!!");
+				getLogger().debug("login action " + actionId+" : Completed!!");
 			}
 			return actionId > 0;
 		}

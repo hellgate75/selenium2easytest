@@ -67,14 +67,35 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 
 	/**
 	 * UNIRestConnector Test Case self URL connector 
-	 * @return The connection status
+	 * <br/> The security info map is expected as follows:
+	 * <br/>
+	 * <br/><b>Header : </b>
+	 * <br/>for (1..n) iterations (right now {index}) of :
+	 * <br/><b/>unirest-header-{index}-key<br/> - The key of the header map entry.
+	 * <br/><b/>unirest-header-{index}-value<br/> - The value of the header map entry.
+	 * <br/>
+	 * <br/><b>Query Parameters : </b>
+	 * <br/>for (1..n) iterations (right now {index}) of :
+	 * <br/><b/>unirest-query-{index}-key<br/> - The key of the query parameters map entry.
+	 * <br/><b/>unirest-query-{index}-value<br/> - The value of the query parameters map entry.
+	 * <br/>
+	 * <br/><b>Route Parameters : </b>
+	 * <br/>for (1..n) iterations (right now {index}) of :
+	 * <br/><b/>unirest-route-{index}-key<br/> - The key of the route parameter map entry used to parse the URL.
+	 * <br/><b/>unirest-route-{index}-value<br/> - The value of the route parameter map entry.
+	 * <br/>
+	 * <br/><b>Base authentication : </b>
+	 * <br/><b/>unirest-username<br/> - The key basic service authentication protocol user name.
+	 * <br/><b/>unirest-password<br/> - The key basic service authentication protocol password
+	 * 
+v	 * @return The connection status
 	 * @throws When any exception occurs during the URL connection or to gather the answer in the required format
 	 */
 	@Override
 	public boolean connectServiceURL() throws ActionException {
 		if (this.getConnectionURL()!=null && this.getWebMethodType()!=null && this.getWebResponseType()!=null) {
 			try {
-				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), this.getConnectionURL(), this.getWebMethodType(), this.getWebResponseType(), this.isSecureConnection());
+				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), this.getConnectionURL(), this.getWebMethodType(), this.getWebResponseType(), this.isSecureConnection(), this.getCaseResults());
 				if (response!=null) {
 					this.getLogger().debug("Object Response : " + response);
 					this.addCaseResult(RESPONSE_VARIABLE_NAME, response);
@@ -111,6 +132,26 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 
 	/**
 	 * UNIRestConnector Test Case self URL connector used by any child to use the Test Case authentication constraints
+	 * <br/> The security info map is expected as follows:
+	 * <br/>
+	 * <br/><b>Header : </b>
+	 * <br/>for (1..n) iterations (right now {index}) of :
+	 * <br/><b/>unirest-header-{index}-key<br/> - The key of the header map entry.
+	 * <br/><b/>unirest-header-{index}-value<br/> - The value of the header map entry.
+	 * <br/>
+	 * <br/><b>Query Parameters : </b>
+	 * <br/>for (1..n) iterations (right now {index}) of :
+	 * <br/><b/>unirest-query-{index}-key<br/> - The key of the query parameters map entry.
+	 * <br/><b/>unirest-query-{index}-value<br/> - The value of the query parameters map entry.
+	 * <br/>
+	 * <br/><b>Route Parameters : </b>
+	 * <br/>for (1..n) iterations (right now {index}) of :
+	 * <br/><b/>unirest-route-{index}-key<br/> - The key of the route parameter map entry used to parse the URL.
+	 * <br/><b/>unirest-route-{index}-value<br/> - The value of the route parameter map entry.
+	 * <br/>
+	 * <br/><b>Base authentication : </b>
+	 * <br/><b/>unirest-username<br/> - The key basic service authentication protocol user name.
+	 * <br/><b/>unirest-password<br/> - The key basic service authentication protocol password
 	 * @param url - The URL to load
 	 * @return The connection status
 	 * @throws When any exception occurs during the URL connection or to gather the answer in the required format
@@ -119,7 +160,7 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	public boolean connectServiceURL(XMLTestURL url) throws ActionException {
 		if (url!=null) {
 			try {
-				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), url.getFormattedURL(), url.getWebMethod(), url.getExpectedResponse(), this.isSecureConnection());
+				Object response = UniRestConnector.getInstance().retrieveUrlResponse(this.getSecurityInfo(), url.getFormattedURL(), url.getWebMethod(), url.getExpectedResponse(), this.isSecureConnection(), this.getCaseResults());
 				if (response!=null) {
 					this.getLogger().debug("Object Response : " + response);
 					this.addCaseResult(RESPONSE_VARIABLE_NAME, response);
