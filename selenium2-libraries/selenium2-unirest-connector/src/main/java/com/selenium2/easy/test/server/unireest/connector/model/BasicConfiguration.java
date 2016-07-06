@@ -24,6 +24,7 @@ public class BasicConfiguration implements RequestConfiguration {
 	private Map<String, String> routeParams = new HashMap<String, String>(0);
 	private WebMethod webMethod;
 	private WebResponse responseType;
+	private Object body;
 	/**
 	 * Default Constructor
 	 */
@@ -120,4 +121,19 @@ public class BasicConfiguration implements RequestConfiguration {
 	public void setResponseType(WebResponse responseType) {
 		this.responseType = responseType;
 	}
+	/* (non-Javadoc)
+	 * @see com.selenium2.easy.test.server.unireest.connector.model.RequestConfiguration#getBody()
+	 */
+	@Override
+	public Object getBody() {
+		return body;
+	}
+	/**
+ 	 * Sets the body Object as call body structure used to communicate with the service
+	 * @param body The body Object to set
+	 */
+	public void setBody(Object body) {
+		this.body = body;
+	}
+	
 }

@@ -1,8 +1,11 @@
 package com.selenium2.easy.test.server.unireest.connector.cases;
 
+import java.util.Map;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver.When;
 
+import com.mashape.unirest.http.JsonNode;
 import com.selenium2.easy.test.server.cases.BaseTestCase;
 import com.selenium2.easy.test.server.cases.TestCase;
 import com.selenium2.easy.test.server.cases.TestEngine;
@@ -87,6 +90,9 @@ public abstract class UniRestTestCase extends BaseTestCase implements IUniRestEl
 	 * <br/><b>Base authentication : </b>
 	 * <br/><b/>unirest-username<br/> - The key basic service authentication protocol user name.
 	 * <br/><b/>unirest-password<br/> - The key basic service authentication protocol password
+	 * <br/>
+	 * <br/><b>Body (for requests with a body) : </b>
+	 * <br/><b/>unirest-body<br/> - The value to be recovered from the results or to be transformed from the string to the class (see the pack() method in the FrameworkUtilities : {@link FrameworkUtilities#pack(String, Map)}) or {@link JsonNode} type class extension.
 	 * 
 v	 * @return The connection status
 	 * @throws When any exception occurs during the URL connection or to gather the answer in the required format

@@ -56,6 +56,12 @@ public interface RequestConfiguration {
 	boolean hasRouteParams();
 	
 	/**
+	 * Retrieves the body Object as call body structure used to communicate with the service
+	 * @return The body Object
+	 */
+	Object getBody();
+	
+	/**
 	 * Retrieves the {link WebMethod} to call the service
 	 * @return The {link WebMethod} to call the service
 	 */

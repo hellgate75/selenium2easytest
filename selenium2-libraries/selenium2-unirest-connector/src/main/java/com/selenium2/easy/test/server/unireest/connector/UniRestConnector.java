@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.request.HttpRequest;
+import com.mashape.unirest.request.HttpRequestWithBody;
 import com.selenium2.easy.test.server.exceptions.ActionException;
 import com.selenium2.easy.test.server.unireest.connector.cases.UniRestTestCase;
 import com.selenium2.easy.test.server.unireest.connector.cases.XMLGroupedUniRestTestCase;
@@ -89,6 +90,9 @@ public class UniRestConnector {
 					if (userName!=null) {
 						request.basicAuth(userName, userPassword);
 					}
+				}
+				if (config.getBody()!=null && HttpRequestWithBody.class.isAssignableFrom(request.getClass())) {
+					((HttpRequestWithBody)request).body(config.getBody());
 				}
 				try {
 					switch(config.getResponseType()) {
@@ -178,6 +182,9 @@ public class UniRestConnector {
 	 * <br/><b>Base authentication : </b>
 	 * <br/><b/>unirest-username<br/> - The key basic service authentication protocol user name.
 	 * <br/><b/>unirest-password<br/> - The key basic service authentication protocol password
+	 * <br/>
+	 * <br/><b>Body (for requests with a body) : </b>
+	 * <br/><b/>unirest-body<br/> - The value to be recovered from the results or to be transformed from the string to the class (see the pack() method in the FrameworkUtilities : {@link FrameworkUtilities#pack(String, Map)}) or {@link JsonNode} type class extension.
 	 * 
 	 * @param configurationMap The map of attributes used for the Headers, the QueryString, the Routing parameters and to retrieve the Body Object.
 	 * @param url the URL to lookup
@@ -201,6 +208,9 @@ public class UniRestConnector {
 			configuration.setQueryStringMap(getObjectMap("query", configurationMap, registry));
 			configuration.setUserName(configurationMap.get("unirest-username"));
 			configuration.setPassword(configurationMap.get("unirest-password"));
+			if (configurationMap.get("unirest-body")!=null) {
+				configuration.setBody(FrameworkUtilities.pack(configurationMap.get("unirest-body"), registry));
+			}
 			response =  performaURLAction(url, configuration);
 			
 		}
@@ -212,6 +222,9 @@ public class UniRestConnector {
 			configuration.setHeaders(getStringMap("header", configurationMap));
 			configuration.setRouteParams(getStringMap("route", configurationMap));
 			configuration.setQueryStringMap(getObjectMap("query", configurationMap, registry));
+			if (configurationMap.get("unirest-body")!=null) {
+				configuration.setBody(FrameworkUtilities.pack(configurationMap.get("unirest-body"), registry));
+			}
 			response =  performaURLAction(url, configuration);
 		}
 		/*
